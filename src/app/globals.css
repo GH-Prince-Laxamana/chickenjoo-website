@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ─── Brand palette ─────────────────────────────────────── */
+  /* Generates utilities: bg-blue, text-blue, border-blue, etc. */
+  --color-blue: #34309f;
+  --color-red: #e81e2f;
+  --color-steel: #679cbc;
+  --color-white: #F4F4F4;
+
+  /* ─── Typography ─────────────────────────────────────────── */
+  /* CSS variables --font-outfit and --font-inter are injected  */
+  /* by next/font in layout.tsx and referenced here.            */
+  --font-heading: var(--font-outfit);
+  --font-sans: var(--font-inter);
+}
+
+/* ─── Base styles ────────────────────────────────────────────── */
+body {
+  background-color: var(--color-white);
+  /* white — avoids flash before Tailwind loads */
+  color: var(--color-blue);
+  /* blue */
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
