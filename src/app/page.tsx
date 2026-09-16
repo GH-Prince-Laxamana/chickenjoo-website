@@ -27,8 +27,14 @@ const menuItems = [
     desc: "A hearty combination of chicken, steaming rice, and a refreshing drink.",
   },
 ];
+interface MenuItem {
+  name: string;
+  oldPrice: string;
+  newPrice: string;
+  desc: string;
+}
 
-function MenuItemCard({ item }) {
+function MenuItemCard({ item }: { item: MenuItem }) {
   return (
     <div className="group flex flex-col rounded-3xl bg-white p-6 text-left shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:ring-black/10">
       <span className="mb-4 inline-flex w-fit items-center rounded-full bg-cj-red/10 px-3 py-1 text-xs font-bold tracking-wide text-cj-red">
