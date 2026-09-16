@@ -1,27 +1,20 @@
 @import "tailwindcss";
 
-@theme inline {
-  /* ─── Brand palette ─────────────────────────────────────── */
-  /* Generates utilities: bg-blue, text-blue, border-blue, etc. */
-  --color-blue: #34309f;
-  --color-red: #e81e2f;
-  --color-steel: #679cbc;
-  --color-white: #F4F4F4;
+@theme {
+  --color-cj-red: #E4211C;
+  --color-cj-navy: #26256E;
+  --color-cj-cream: #FFF8EF;
+  --color-cj-yellow: #FFC93C;
+  --color-cj-charcoal: #2B2320;
 
-  /* ─── Typography ─────────────────────────────────────────── */
-  /* CSS variables --font-outfit and --font-inter are injected  */
-  /* by next/font in layout.tsx and referenced here.            */
-  --font-heading: var(--font-outfit);
-  --font-sans: var(--font-inter);
+  --font-display: var(--font-fredoka);
+  --font-body: var(--font-inter);
 }
 
-/* ─── Base styles ────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background-color: var(--color-white);
-  /* white — avoids flash before Tailwind loads */
-  color: var(--color-blue);
-  /* blue */
-  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: #FFF8EF;
 }

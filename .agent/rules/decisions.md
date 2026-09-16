@@ -3,42 +3,26 @@ trigger: model_decision
 description: Use when making or recommending a significant architectural, library, infrastructure, or data model decision.
 ---
 
-When a significant decision is made, record it as an Architecture Decision Record (ADR) in `docs/decisions/`.
+When a significant decision is made, record it as an ADR in `docs/decisions/`.
 
 ## What qualifies as significant?
-- Choosing a library or service (e.g., Auth.js, Supabase, Zod)
-- Defining a data model or schema structure
-- Establishing a routing or auth pattern
-- Any decision that would be hard to reverse later, or that a new contributor would need to understand to work safely
+- A decision that would take real rework to reverse later (data model/schema shape, auth pattern, routing structure)
+- Choosing between genuinely competing libraries/services where the choice has lasting consequences
+- Anything a future contributor (including future-you) would need to understand to safely change the system
 
-Trivial decisions (which Tailwind class, which variable name) do not need an ADR.
+When unsure, ask rather than default to writing one.
 
 ## File naming
-`docs/decisions/NNN-short-kebab-title.md` — increment NNN from the last file (e.g., `001-auth-strategy.md`, `002-database-choice.md`).
+docs/decisions/NNN-short-kebab-title.md — increment NNN from the last file.
 
 ## Template
 
-```markdown
 # NNN — Title
+**Date**: YYYY-MM-DD | **Status**: Accepted | Superseded by NNN | Deprecated
 
-**Date**: YYYY-MM-DD
-**Status**: Accepted | Superseded by NNN | Deprecated
-
-## Context
-What problem were we solving? What constraints or requirements shaped this decision?
-
-## Decision
-What did we decide, and why is this the right call given the context?
-
-## Alternatives considered
-| Option | Why rejected |
-|--------|-------------|
-| ...    | ...         |
-
-## Consequences
-- **Makes easier**: ...
-- **Makes harder / locks us into**: ...
-- **Open risks**: ...
-```
+**Decision**: What was decided, in 1-2 sentences.
+**Why**: The reasoning, briefly.
+**Alternative considered**: The next-best option and why it lost (one line, unless 3+ real contenders).
+**Risk/tradeoff**: What this makes harder or what to watch for.
 
 If a previous decision is superseded, update its status line and link to the new ADR.

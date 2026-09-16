@@ -1,42 +1,144 @@
-import Link from "next/link";
+import Image from "next/image";
+import DemoPopup from "@/components/DemoPopup"; // Adjust path based on your folder structure
 
-// No per-page metadata export — this page uses the layout default:
-// "ChickenJoo — Korean Fried Chicken"
-// This is intentional: the homepage title IS the default.
+export const metadata = {
+  title: "Chicken Joo | 25% Off Promo (Angeles City)",
+  description:
+    "Get 25% off our Korean-style boneless chicken. Valid at the Angeles City branch this week only.",
+};
 
-/**
- * Placeholder homepage — Phase 1 only.
- * Purpose: prove the design system is wired correctly (fonts, colors, header, footer).
- * Replace entirely in Phase 2 with the real landing page content.
- */
-export default function HomePage() {
+const menuItems = [
+  {
+    name: "Boneless Fried Chicken",
+    oldPrice: "₱132.00",
+    newPrice: "₱99.00",
+    desc: "Our signature boneless chicken, perfectly crispy on the outside and incredibly juicy inside.",
+  },
+  {
+    name: "Chicken with Fries",
+    oldPrice: "₱199.00",
+    newPrice: "₱149.25",
+    desc: "Perfectly fried chicken paired with our golden, crispy shoestring fries.",
+  },
+  {
+    name: "Chicken Joo Combo Meal",
+    oldPrice: "₱249.00",
+    newPrice: "₱186.75",
+    desc: "A hearty combination of chicken, steaming rice, and a refreshing drink.",
+  },
+];
+
+function MenuItemCard({ item }) {
   return (
-    <section
-      className="flex flex-col items-center justify-center flex-1 px-4 py-24 text-center"
-      aria-label="Coming soon"
-    >
-      {/* Eyebrow label */}
-      <p className="text-sm font-semibold uppercase tracking-widest text-red mb-4">
-        Now Serving
+    <div className="group flex flex-col rounded-3xl bg-white p-6 text-left shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:ring-black/10">
+      <span className="mb-4 inline-flex w-fit items-center rounded-full bg-cj-red/10 px-3 py-1 text-xs font-bold tracking-wide text-cj-red">
+        25% OFF
+      </span>
+      <h3 className="font-display text-xl font-bold leading-tight text-cj-navy">
+        {item.name}
+      </h3>
+
+      {/* Improved Price Content Visualization */}
+      <div className="mt-3 flex items-end gap-2.5">
+        <span className="text-3xl font-black tracking-tight text-cj-navy">
+          {item.newPrice}
+        </span>
+        <span className="mb-1 text-sm font-medium text-cj-charcoal/40 line-through decoration-1">
+          {item.oldPrice}
+        </span>
+      </div>
+
+      <p className="mt-3 flex-1 text-sm leading-relaxed text-cj-charcoal/70">
+        {item.desc}
       </p>
 
-      {/* Primary heading — font-heading uses Outfit via CSS variable */}
-      <h1 className="font-heading text-6xl sm:text-8xl font-bold text-blue mb-6 leading-none tracking-tight">
-        ChickenJoo
-      </h1>
+      <button className="mt-6 w-full rounded-xl bg-cj-red py-3 text-sm font-bold text-white shadow-sm transition hover:bg-red-600 hover:shadow-md active:scale-[0.98]">
+        Order Now
+      </button>
+    </div>
+  );
+}
 
-      <p className="text-base sm:text-lg text-blue/70 max-w-sm mb-10 leading-relaxed">
-        Premium Korean fried chicken. Fresh, crispy, and made for every craving.
-        Full website coming soon.
-      </p>
+export default function Home() {
+  return (
+    <main className="relative flex min-h-screen flex-col bg-[#F9F8F6]">
+      {/* 
+        The Demo Popup is rendered here. 
+        It isolates the interactive "client" code from this "server" page. 
+      */}
+      <DemoPopup />
 
-      {/* CTA — links to /menu (page doesn't exist yet, that's fine for placeholder) */}
-      <Link
-        href="/menu"
-        className="inline-flex items-center gap-2 bg-red text-white font-semibold text-sm px-8 py-3.5 rounded-full hover:bg-blue transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-red focus-visible:outline-offset-2"
-      >
-        View Our Menu
-      </Link>
-    </section>
+      {/* Nav */}
+      <header className="sticky top-0 z-50 flex items-center justify-between border-b border-black/5 bg-white/80 px-4 py-3 backdrop-blur-xl sm:px-8">
+        <Image
+          src="/images/chicken-joo-logo.jpg"
+          alt="Chicken Joo Logo"
+          width={140}
+          height={44}
+          className="h-16 w-auto sm:h-20"
+          priority
+        />
+        <span className="hidden rounded-full bg-cj-navy/5 px-4 py-1.5 font-display text-sm font-semibold text-cj-navy sm:block">
+          Angeles City Branch
+        </span>
+      </header>
+
+      {/* Hero */}
+      <section className="relative flex flex-col">
+        <div className="relative h-[360px] w-full sm:h-[500px]">
+          <Image
+            src="/images/promo-banner-resized.png"
+            alt="Got Chicken Cravings? 25% Off"
+            fill
+            className="object-cover object-right sm:object-center"
+            priority
+          />
+          {/* Subtle gradient overlay to make the transition into the page smoother */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+        </div>
+
+        {/* Overlapping discount card */}
+        <div className="relative z-10 -mt-16 flex justify-center px-4 sm:-mt-20">
+          <div className="w-full max-w-md rounded-3xl bg-white px-6 py-8 text-center shadow-xl ring-1 ring-black/5 sm:max-w-lg sm:px-12">
+            <div className="mb-3 inline-flex items-center rounded-full bg-cj-red/10 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-cj-red">
+              Limited Time Promo
+            </div>
+            <h2 className="font-display text-2xl font-black tracking-tight text-cj-navy sm:text-4xl">
+              Get 25% OFF <span className="text-cj-red">Every Bite</span>
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-cj-charcoal/80 sm:text-base">
+              Exclusive to our Angeles City branch this week. Enjoy instant
+              savings across all best-sellers—no promo code required.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Menu section */}
+      <section className="mx-auto flex-1 w-full max-w-6xl px-4 pb-20 pt-16 sm:px-8">
+        <div className="mb-12 text-center">
+          <h1 className="font-display text-3xl font-black tracking-tight text-cj-navy sm:text-4xl">
+            Promo Menu
+          </h1>
+          <p className="mx-auto mt-3 max-w-xl text-base text-cj-charcoal/70">
+            Crispy Korean-style boneless chicken at discounted prices.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
+          {menuItems.map((item) => (
+            <MenuItemCard key={item.name} item={item} />
+          ))}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="mt-auto border-t border-white/10 bg-cj-navy px-4 py-10 text-center sm:px-8">
+        <p className="font-display text-base font-bold tracking-widest text-white">
+          CHICKEN JOO
+        </p>
+        <p className="mt-2 text-sm text-white/60">Angeles City Branch</p>
+      </footer>
+    </main>
   );
 }
