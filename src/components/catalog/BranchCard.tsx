@@ -1,10 +1,11 @@
 import type { PublicBranch } from "@/lib/public/types";
 
-export default function BranchCard({ branch }: { branch: PublicBranch }) {
+export default function BranchCard({ branch, headingLevel = 2 }: { branch: PublicBranch; headingLevel?: 2 | 3 }) {
+  const Heading = headingLevel === 3 ? "h3" : "h2";
   return (
     <article className="flex min-w-0 flex-col rounded-3xl bg-white p-6 ring-1 ring-cj-navy/10">
       <p className="mb-3 text-sm font-semibold text-cj-navy">{branch.city}{branch.province ? `, ${branch.province}` : ""}</p>
-      <h2 className="break-words font-display text-2xl font-semibold text-cj-navy">{branch.name}</h2>
+      <Heading className="break-words font-display text-2xl font-semibold text-cj-navy">{branch.name}</Heading>
       <address className="mt-4 break-words text-base not-italic leading-relaxed text-cj-charcoal/85">{branch.address}</address>
       <dl className="mt-5 space-y-3 text-sm leading-relaxed">
         <div><dt className="font-semibold text-cj-navy">Hours</dt><dd className="mt-1 whitespace-pre-line break-words">{branch.businessHours || "Hours have not been supplied yet."}</dd></div>

@@ -1,0 +1,44 @@
+[
+  {
+    "seedKey": "cravings-budget-2026-10-09",
+    "title": "Chicken Joo Muna, Adulting Ulit Pagkatapos",
+    "slug": "chicken-joo-muna-adulting-ulit-pagkatapos",
+    "publishedDate": "2026-10-09",
+    "type": "article",
+    "status": "published",
+    "excerpt": "May cravings? Make a little room for Chicken Joo, then get back to your day.",
+    "coverImage": "",
+    "sourceUrl": "",
+    "body": ["Pag may cravings, biglang may “budget adjustment.” Deserve mo rin naman 'yan. Chicken Joo muna, adulting ulit pagkatapos.", "Explore the menu and choose your next chicken meal or sharing box. Daan sa nearest Chicken Joo branch for your next chicken break."],
+    "ctaLabel": "Explore the Menu",
+    "ctaHref": "/menu"
+  },
+  {
+    "seedKey": "teachers-day-2026-10-05",
+    "title": "A Little Joo Time for Our Teachers",
+    "slug": "a-little-joo-time-for-our-teachers",
+    "publishedDate": "2026-10-05",
+    "type": "article",
+    "status": "published",
+    "excerpt": "A thank-you to the teachers who guide, encourage, and believe in their students every day.",
+    "coverImage": "",
+    "sourceUrl": "",
+    "body": ["To the teachers who give their time, patience, heart, and energy every day: thank you for showing up, guiding, encouraging, and believing in your students.", "This World Teachers' Day, Chicken Joo celebrates the little things you do that make a big difference. After teaching all day, you deserve a little Joo time.", "Happy World Teachers' Day from Chicken Joo."],
+    "ctaLabel": "Find a Branch",
+    "ctaHref": "/branches"
+  },
+  {
+    "seedKey": "kainang-mahalaga-2026-09-28",
+    "title": "Kainang Mahalaga, Moments na Masarap Balikan",
+    "slug": "kainang-mahalaga-moments-na-masarap-balikan",
+    "publishedDate": "2026-09-28",
+    "type": "article",
+    "status": "published",
+    "excerpt": "Make room for food, conversation, and Chicken Joo na pinagsasaluhan.",
+    "coverImage": "",
+    "sourceUrl": "",
+    "body": ["Kainang mahalaga, moments na masarap balikan.", "Celebrate the simple moments: masarap na food, kwentuhan, tawanan, at Chicken Joo na pinagsasaluhan. Choose a chicken box to share and make time for a meal with the people around you."],
+    "ctaLabel": "Explore Sharing Options",
+    "ctaHref": "/menu"
+  }
+]

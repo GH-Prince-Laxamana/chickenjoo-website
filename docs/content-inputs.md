@@ -1,4 +1,4 @@
-# Verified menu and branch inputs
+# Supplied public content inputs
 
 Initial text content was supplied in `CHICKEN_JOO_MENU_AND_BRANCH_DATA.md` on
 October 11, 2026: seven products and four branches. It has not been independently
@@ -61,4 +61,36 @@ admin forms will apply the model defaults and validation. Do not paste
 credentials, guest details, or fictional business claims into these collections.
 
 No new environment variables are required. The existing database user must have
-read access to the configured database; later admin writes will need write access.
+read/write access for seeding posts and saving inquiries.
+
+## Brand, updates, and contact
+
+`CHICKEN_JOO_PUBLIC_CONTENT.md` supplies a brand introduction (not an invented
+historical origin story), four restaurant strengths, and three published short
+articles dated October 9, October 5, and September 28, 2026. Copy is adapted from
+user-supplied captions; it has not been independently verified. The confirmed
+menu remains authoritative. No extra products, delivery links, discounts,
+vouchers, or redemption terms are inferred.
+
+The `blogPosts` collection stores a slug, title, excerpt, plain-text paragraph
+array, article type, draft/published status, calendar publication date, optional
+local cover image/Facebook source URL, and menu/branch CTA. Insert-only post
+seeding preserves existing edits. Public reads exclude drafts and future dates,
+including direct article routes and metadata.
+
+Contact displays current active branch records, including supplied hours and
+only supplied phone/social controls. It does not treat a branch number as a
+company-wide number. The student-project form stores valid inquiries for later
+dashboard review and sends no email. The dashboard is not implemented yet.
+
+Outstanding supplied content:
+
+- A general business email to satisfy the instructor's company contact-information
+  requirement. Keep it out of the page until supplied.
+- Four strength images, update cover images, and the existing menu photo gaps.
+- The three actual Facebook post URLs; source-link buttons remain omitted.
+- Actual campaign materials and terms for the separate campaign/voucher work.
+
+No new external configuration is needed for this increment. Hosting-specific
+origin/proxy and stronger abuse controls should be configured when deployment
+is planned. Admin credentials and session secrets belong to the next increment.

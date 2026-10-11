@@ -40,6 +40,7 @@ npm run typecheck
 npm run build
 npm run db:check
 npm run test:catalog
+npm run test:public
 ```
 
 The database check loads environment files using Next.js's loader in development
@@ -146,19 +147,72 @@ pagination bounds, literal search escaping, and safe local image paths offline.
 
 Home uses the supplied menu through direct server reads, replacing the previous
 unverified promotion and sample prices. Menu and Branches are API-backed and
-include search/filter and loading/empty/error states. Our Story, Blog / Updates, and Contact
-remain placeholders. Ordering controls are disabled.
+include search/filter and loading/empty/error states. Our Story introduces the
+brand using supplied copy and four strengths with image placeholders. Blog /
+Updates lists published articles and provides direct article pages. Contact
+reuses the branch records and accepts student-project inquiries. Ordering controls are disabled.
 The existing `public/email.html` mockup is retained for later review.
 
-Next increments add blog retrieval/display, admin
-authentication and content management, then simulated ordering. Menu and branch
+Next increments add admin authentication and content management, then simulated ordering. Menu and branch
 schemas and public GET contracts are implemented; admin credentials/session
-mechanism and confirmation access remain undecided. No customer data is seeded
-or collected. See [content inputs](docs/content-inputs.md) for the content checklist.
+mechanism and confirmation access remain undecided. Inquiry details are now
+collected only when someone submits the Contact form; the dashboard for reviewing
+them is the next increment. No customer-order data is seeded.
+See [content inputs](docs/content-inputs.md) for the content checklist.
 
 Menu and branch text content is now supplied. Outstanding inputs include food
-photos, brand story, general contact details, and campaign dates/terms/social links.
+photos, general contact details, original Facebook post links, and campaign dates/terms.
 Before admin work, select the session mechanism and configure its credentials
 and secrets. Hosting configuration can wait until deployment is planned; choose
 a Node.js runtime with MongoDB connectivity and keep all database/auth secrets
 server-only, without a `NEXT_PUBLIC_` prefix.
+
+## Public content and inquiries
+
+`CHICKEN_JOO_PUBLIC_CONTENT.md` supplies the brand introduction and three short
+updates. The dates/captions are user supplied, not independently verified.
+Posts store publication dates as `YYYY-MM-DD` calendar strings, without invented
+times. Public list, direct slug lookup, and metadata use the same published-only
+filter; drafts, missing dates, and future dates are excluded. Paragraphs render
+as escaped text, not HTML. Missing photos use placeholders and missing source
+URLs have no link buttons. These articles do not establish voucher campaigns.
+
+```bash
+npm run seed:posts
+```
+
+This explicit insert-only command loads `src/data/posts.seed.json`. Stable keys,
+slugs and deterministic IDs prevent repeat inserts for the maintained content.
+Existing records and admin edits are preserved. Use `--dry-run` with the script
+directly to preview counts. Automatic index creation remains disabled; unique
+slug and visibility indexes must be created during the admin setup.
+
+`POST /api/v1/inquiries` accepts JSON with name, email, subject, message, a blank
+honeypot `website`, and a UUID-v4 `submissionId`. It validates field lengths/types,
+bounds the actual request stream to 16 KiB, and requires a same-origin request.
+The server sets timestamps/status. Opaque submission IDs make unchanged retries
+safe through MongoDB's `_id` uniqueness. Responses contain a receipt message only;
+there is no public inquiry GET endpoint. The form retains values on failure and
+provides linked error summaries, inline errors, and pending/success feedback.
+Messages are saved in `inquiries`; no email is sent and Chicken Joo does not
+receive them. Existing database read/write access is sufficient, with no new
+environment variables or mail service needed.
+
+Basic abuse controls include a honeypot and a database-backed limit of three
+inquiries per normalized email in ten minutes. This is a student-demo guard,
+not a comprehensive spam defense: it can be bypassed with different emails and
+concurrent requests can race. Before public deployment, add an atomic rate limiter
+at the hosting boundary and configure trusted proxy/origin handling for that host.
+Do not expose an inquiry review route until admin authentication is implemented.
+
+With the local production app on port 3100:
+
+```bash
+npm run test:public:api
+```
+
+`PUBLIC_TEST_ORIGIN` can select a different localhost port. The integration check
+inserts isolated draft/future posts and temporary inquiry records, verifies
+privacy/validation/storage/retry/limits, and removes only its exact fixture IDs.
+It requires database write access. Offline `test:public` checks inquiry validation,
+calendar dates, and supplied seed content.

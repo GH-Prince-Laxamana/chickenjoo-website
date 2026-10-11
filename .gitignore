@@ -45,6 +45,9 @@ tests/
 /scripts/*
 !/scripts/db-smoke.mjs
 !/scripts/seed-catalog.mjs
+!/scripts/seed-posts.mjs
+!/scripts/test-public-unit.mjs
+!/scripts/test-public-api.mjs
 
 # vercel
 .vercel

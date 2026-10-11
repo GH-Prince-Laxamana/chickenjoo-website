@@ -10,6 +10,9 @@
     "test:catalog": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/catalog-query.test.mjs tests/catalog-seed.test.mjs",
     "test:catalog:api": "node --test tests/catalog-api.test.mjs",
     "seed:catalog": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seed-catalog.mjs",
+    "seed:posts": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seed-posts.mjs",
+    "test:public": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test scripts/test-public-unit.mjs",
+    "test:public:api": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/test-public-api.mjs",
     "typecheck": "next typegen && tsc --noEmit",
     "db:check": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/db-smoke.mjs"
   },
