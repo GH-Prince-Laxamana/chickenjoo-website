@@ -18,3 +18,16 @@ html {
 body {
   background-color: #FFF8EF;
 }
+
+:focus-visible {
+  outline: 3px solid #A16207;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

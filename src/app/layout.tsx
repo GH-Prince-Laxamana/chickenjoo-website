@@ -14,6 +14,11 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+export const metadata: Metadata = {
+  title: { default: "Chicken Joo | Student Demonstration", template: "%s | Chicken Joo" },
+  description: "A student demonstration website for Chicken Joo. Explore the brand and preview upcoming menu, branch, and campaign content.",
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${fredoka.variable} ${inter.variable}`}>
