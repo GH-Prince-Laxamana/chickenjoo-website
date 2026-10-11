@@ -5,7 +5,7 @@ import { escapeSearchText, listMeta, type PublicListQuery } from "./query";
 import type { PublicBranch, PublicList, PublicMenuItem } from "./types";
 import { isMapsLink, isFacebookLink } from "./links";
 
-export async function getPublicMenu(query: PublicListQuery): Promise<PublicList<PublicMenuItem>> {
+export async function getPublicMenu(query: PublicListQuery, featuredFirst = false): Promise<PublicList<PublicMenuItem>> {
   const { menuItems } = getCatalogModels(await connectDatabase());
   const visible = { isArchived: false };
   const filter = {
@@ -16,7 +16,7 @@ export async function getPublicMenu(query: PublicListQuery): Promise<PublicList<
 
   const [records, total, categories] = await Promise.all([
     menuItems.find(filter).select("name description category priceCentavos image isAvailable isFeatured flavorOptions requiredFlavorCount")
-      .sort({ name: 1, _id: 1 }).skip((query.page - 1) * query.limit).limit(query.limit).maxTimeMS(5000).lean().exec(),
+      .sort({ ...(featuredFirst ? { isFeatured: -1 as const } : {}), name: 1, _id: 1 }).skip((query.page - 1) * query.limit).limit(query.limit).maxTimeMS(5000).lean().exec(),
     menuItems.countDocuments(filter).maxTimeMS(5000).exec(),
     menuItems.aggregate<{ _id: string }>([
       { $match: visible }, { $group: { _id: "$category" } }, { $sort: { _id: 1 } }, { $limit: 100 },

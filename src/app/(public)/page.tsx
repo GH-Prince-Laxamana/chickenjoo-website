@@ -15,7 +15,7 @@ export default async function Home() {
   let items: PublicMenuItem[] = [];
   let menuUnavailable = false;
   try {
-    items = (await getPublicMenu({ q: "", filter: "", page: 1, limit: 3 })).data;
+    items = (await getPublicMenu({ q: "", filter: "", page: 1, limit: 3 }, true)).data;
   } catch {
     menuUnavailable = true;
   }

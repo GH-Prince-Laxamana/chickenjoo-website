@@ -41,6 +41,7 @@ npm run build
 npm run db:check
 npm run test:catalog
 npm run test:public
+npm run test:admin
 ```
 
 The database check loads environment files using Next.js's loader in development
@@ -153,17 +154,17 @@ Updates lists published articles and provides direct article pages. Contact
 reuses the branch records and accepts student-project inquiries. Ordering controls are disabled.
 The existing `public/email.html` mockup is retained for later review.
 
-Next increments add admin authentication and content management, then simulated ordering. Menu and branch
-schemas and public GET contracts are implemented; admin credentials/session
-mechanism and confirmation access remain undecided. Inquiry details are now
-collected only when someone submits the Contact form; the dashboard for reviewing
-them is the next increment. No customer-order data is seeded.
+Admin sign-in and content management are implemented at `/admin/login` and
+`/admin`, with menu/branch/post editing and inquiry review/resolution. The next
+increment adds simulated ordering and admin order statuses. Confirmation access
+will be settled before checkout implementation. Inquiry details are collected
+only when someone submits the Contact form. No customer-order data is seeded.
 See [content inputs](docs/content-inputs.md) for the content checklist.
 
 Menu and branch text content is now supplied. Outstanding inputs include food
 photos, general contact details, original Facebook post links, and campaign dates/terms.
-Before admin work, select the session mechanism and configure its credentials
-and secrets. Hosting configuration can wait until deployment is planned; choose
+See [admin setup](docs/admin-setup.md) for seed credentials, opaque database sessions,
+index creation, protected APIs and verification. Hosting configuration can wait until deployment is planned; choose
 a Node.js runtime with MongoDB connectivity and keep all database/auth secrets
 server-only, without a `NEXT_PUBLIC_` prefix.
 
@@ -185,7 +186,10 @@ This explicit insert-only command loads `src/data/posts.seed.json`. Stable keys,
 slugs and deterministic IDs prevent repeat inserts for the maintained content.
 Existing records and admin edits are preserved. Use `--dry-run` with the script
 directly to preview counts. Automatic index creation remains disabled; unique
-slug and visibility indexes must be created during the admin setup.
+slug and visibility indexes are created explicitly by `npm run setup:admin`.
+
+Review inquiries through the protected admin dashboard. No inquiry review API
+is exposed publicly.
 
 `POST /api/v1/inquiries` accepts JSON with name, email, subject, message, a blank
 honeypot `website`, and a UUID-v4 `submissionId`. It validates field lengths/types,
@@ -203,7 +207,7 @@ inquiries per normalized email in ten minutes. This is a student-demo guard,
 not a comprehensive spam defense: it can be bypassed with different emails and
 concurrent requests can race. Before public deployment, add an atomic rate limiter
 at the hosting boundary and configure trusted proxy/origin handling for that host.
-Do not expose an inquiry review route until admin authentication is implemented.
+Inquiry review routes require an active admin session on every request.
 
 With the local production app on port 3100:
 

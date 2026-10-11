@@ -7,16 +7,18 @@ import { isFacebookLink } from "./links";
 
 export type PublicPost = {
   title: string; slug: string; excerpt: string; body: string[];
+  type: "article" | "promotion";
   publishedDate: string; coverImage: string | null; sourceUrl: string | null;
   ctaLabel: string; ctaHref: "/menu" | "/branches" | null;
 };
 export function todayDate() { return new Date().toISOString().slice(0, 10); }
 function visible() { return { status: "published" as const, publishedDate: { $type: "string" as const, $lte: todayDate(), $regex: /^\d{4}-\d{2}-\d{2}$/ } }; }
-const selection = "title slug excerpt body publishedDate coverImage sourceUrl ctaLabel ctaHref";
-type PostProjection = { title: string; slug: string; excerpt: string; body: string[]; publishedDate?: string | null; coverImage?: string; sourceUrl?: string; ctaLabel?: string; ctaHref?: string };
+const selection = "title slug excerpt body type publishedDate coverImage sourceUrl ctaLabel ctaHref";
+type PostProjection = { title: string; slug: string; excerpt: string; body: string[]; type?: string; publishedDate?: string | null; coverImage?: string; sourceUrl?: string; ctaLabel?: string; ctaHref?: string };
 function publicPost(post: PostProjection): PublicPost {
   return {
     title: post.title, slug: post.slug, excerpt: post.excerpt, body: post.body,
+    type: post.type === "promotion" ? "promotion" : "article",
     publishedDate: post.publishedDate!,
     coverImage: post.coverImage && isLocalMenuImage(post.coverImage) ? post.coverImage : null,
     sourceUrl: post.sourceUrl && isFacebookLink(post.sourceUrl) ? post.sourceUrl : null,

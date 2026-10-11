@@ -9,8 +9,8 @@ const postSchema = new Schema({
   title: { type: String, required: true, trim: true, maxlength: 160 },
   slug: { type: String, required: true, maxlength: 160, match: slugPattern },
   excerpt: { type: String, required: true, trim: true, maxlength: 500 },
-  body: { type: [String], required: true, validate: (value: string[]) => value.length > 0 && value.length <= 100 && value.every((p) => p.trim().length > 0 && p.length <= 5000) },
-  type: { type: String, enum: ["article"], default: "article", required: true },
+  body: { type: [String], required: true, validate: (value: string[]) => value.length > 0 && value.length <= 100 && value.join("\n\n").length <= 40000 && value.every((p) => p.trim().length > 0 && p.length <= 5000) },
+  type: { type: String, enum: ["article", "promotion"], default: "article", required: true },
   status: { type: String, enum: ["draft", "published"], default: "draft", required: true },
   publishedDate: { type: String, default: null, validate: (value: string | null) => !value || isPublicationDate(value) },
   coverImage: { type: String, default: "", validate: (value: string) => !value || isLocalMenuImage(value) },
@@ -27,7 +27,7 @@ const inquirySchema = new Schema({
   email: { type: String, required: true, maxlength: inquiryLimits.email },
   subject: { type: String, required: true, maxlength: inquiryLimits.subject },
   message: { type: String, required: true, maxlength: inquiryLimits.message },
-  status: { type: String, enum: ["new", "reviewed"], default: "new", required: true },
+  status: { type: String, enum: ["new", "reviewed", "resolved"], default: "new", required: true },
 }, { timestamps: true, collection: "inquiries", autoCreate: false, autoIndex: false });
 inquirySchema.index({ email: 1, createdAt: -1 });
 type PostRecord = InferSchemaType<typeof postSchema>;

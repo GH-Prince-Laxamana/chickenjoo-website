@@ -48,6 +48,11 @@ tests/
 !/scripts/seed-posts.mjs
 !/scripts/test-public-unit.mjs
 !/scripts/test-public-api.mjs
+!/scripts/setup-admin.mjs
+!/scripts/test-admin-unit.mjs
+!/scripts/test-admin-api.mjs
+!/scripts/test-admin-unit.mjs
+!/scripts/test-admin-api.mjs
 
 # vercel
 .vercel
@@ -58,3 +63,5 @@ next-env.d.ts
 
 .agents/
 .claude/
+
+docs/
