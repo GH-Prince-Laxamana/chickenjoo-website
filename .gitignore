@@ -41,18 +41,10 @@ yarn-error.log*
 !/tests/catalog-api.test.mjs
 tests/
 
-# Keep other local scripts ignored, but include the documented database check.
-/scripts/*
-!/scripts/db-smoke.mjs
-!/scripts/seed-catalog.mjs
-!/scripts/seed-posts.mjs
-!/scripts/test-public-unit.mjs
-!/scripts/test-public-api.mjs
-!/scripts/setup-admin.mjs
-!/scripts/test-admin-unit.mjs
-!/scripts/test-admin-api.mjs
-!/scripts/test-admin-unit.mjs
-!/scripts/test-admin-api.mjs
+# Local scratch scripts are ignored; maintained commands live in tools/.
+/scripts/
+scripts/
+tools/
 
 # vercel
 .vercel

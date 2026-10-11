@@ -5,10 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { publicNavigation } from "@/lib/navigation";
+import { useCart } from "@/lib/orders/cart";
 
 export default function SiteHeader() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const cart = useCart();
 
   return (
     <header className="border-b border-cj-navy/10 bg-white">
@@ -16,6 +18,7 @@ export default function SiteHeader() {
         <Link href="/" aria-label="Chicken Joo home" onClick={() => setMenuOpen(false)}>
           <Image src="/images/chicken-joo-logo.jpg" alt="Chicken Joo" width={140} height={80} className="h-16 w-auto" preload />
         </Link>
+        <Link href="/cart" className="inline-flex min-h-11 items-center rounded-xl bg-cj-navy px-4 text-sm font-semibold text-white" aria-current={pathname === "/cart" ? "page" : undefined}>Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)})</Link>
         <button
           type="button"
           aria-expanded={menuOpen}

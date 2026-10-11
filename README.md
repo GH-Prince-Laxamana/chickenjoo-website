@@ -123,15 +123,15 @@ file does not update existing records: use future admin CRUD for revisions.
 To preview the insert/skip counts without writing, invoke:
 
 ```bash
-node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seed-catalog.mjs --dry-run
+node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/seed-catalog.mjs --dry-run
 ```
 
 Chicken flavor options and required counts are stored and displayed as product
-information, not separate menu items or ordering controls. Midnight closing
+information, with distinct flavor choices required before adding to the demo cart. Midnight closing
 times and following-day flags are retained for later use. Missing phones and
 Facebook links remain null, with no corresponding public controls. Supplied
 Maps links are preserved; search links are not claimed to be exact place pins.
-All menu photos remain blank and show placeholders. Ordering remains disabled.
+All menu photos remain blank and show placeholders. Simulated pickup ordering is available; no payment or food preparation takes place.
 
 To check the live APIs, start the app locally on port 3100 and run:
 
@@ -151,13 +151,13 @@ unverified promotion and sample prices. Menu and Branches are API-backed and
 include search/filter and loading/empty/error states. Our Story introduces the
 brand using supplied copy and four strengths with image placeholders. Blog /
 Updates lists published articles and provides direct article pages. Contact
-reuses the branch records and accepts student-project inquiries. Ordering controls are disabled.
+reuses the branch records and accepts student-project inquiries. Demo cart and pickup checkout are available.
 The existing `public/email.html` mockup is retained for later review.
 
 Admin sign-in and content management are implemented at `/admin/login` and
-`/admin`, with menu/branch/post editing and inquiry review/resolution. The next
-increment adds simulated ordering and admin order statuses. Confirmation access
-will be settled before checkout implementation. Inquiry details are collected
+`/admin`, with menu/branch/post editing and inquiry review/resolution. Simulated
+pickup ordering and admin order statuses are implemented. Private confirmation
+uses a browser-tab capability token. Inquiry details are collected
 only when someone submits the Contact form. No customer-order data is seeded.
 See [content inputs](docs/content-inputs.md) for the content checklist.
 
@@ -220,3 +220,62 @@ inserts isolated draft/future posts and temporary inquiry records, verifies
 privacy/validation/storage/retry/limits, and removes only its exact fixture IDs.
 It requires database write access. Offline `test:public` checks inquiry validation,
 calendar dates, and supplied seed content.
+
+
+
+## Simulated pickup ordering
+
+`/cart`, `/checkout`, and `/confirmation` implement guest pickup simulation only.
+No payment, delivery, customer accounts, food preparation, pickup reservation or
+confirmation email is provided. Use test guest details. Cart storage contains
+menu snapshots and flavor selections, without guest information. Checkout saves
+only the submitted name/email to the private `orders` collection.
+
+Checkout first fetches a current server quote. The server validates active,
+unarchived branches and available, unarchived dishes; exact distinct flavor
+counts; positive integer quantities (1–10 per line, at most 20 lines/50 items);
+and guest field bounds. Totals are computed in integer centavos from MongoDB.
+Changed prices or branch details return a fresh quote with HTTP 409 and require
+another explicit submit. Availability failures preserve the cart for editing.
+Saved menu/branch snapshots preserve order history after content edits/archive.
+
+A UUID submission key, payload fingerprint and MongoDB `_id` uniqueness make
+unchanged repeated/concurrent submissions return the same order. Retry metadata
+contains a payload hash, not guest details, in sessionStorage. An opaque 256-bit
+receipt capability is stored in the browser tab before submitting; only its hash
+is saved in MongoDB. Receipt lookup requires a same-origin POST with that token,
+expires after 24 hours, and excludes guest name/email. There is no public order
+list or lookup by reference. Tokens are never placed in URLs. The latest private
+receipt can be recovered from checkout after a lost response. Receipt expiration
+does not delete the saved order. Preserve the tab to retain receipt access.
+
+`/admin/orders` lists private order details with status filters and pagination.
+Authenticated same-origin PATCH requests enforce pending → preparing → ready →
+completed, with cancellation from any nonterminal status. Completed/cancelled
+orders are final. Updates match the expected current status to reject stale edits.
+No create/delete actions are exposed through admin order management.
+
+Run `npm run setup:admin` to create the declared order/reference/token/status
+indexes and the submission-limit TTL index. Existing MongoDB and admin seed
+configuration is sufficient. Setup preserves the existing account/password.
+The persistent limit permits at most five new submissions per normalized email
+per 15-minute window; unchanged saved-order retries bypass it. Before public
+hosting, choose edge/request throttling to bound anonymous quote traffic; the
+email limit is a basic demonstration control rather than identity verification.
+
+```bash
+npm run test:orders
+npm run test:orders:api
+```
+
+The API check expects a local production preview on port 3100 (override with
+`ORDERS_TEST_ORIGIN`) and uses isolated temporary records. It checks server prices,
+flavors, inactive content, price review, concurrent duplicate submission, snapshot
+history, capability privacy/expiry, protected admin transitions and submission
+limits, then removes only its own fixtures.
+
+Maintained seed, setup and verification commands now live in `tools/` and are
+versioned. The entire `scripts/` directory is ignored for local scratch work.
+Package commands retain their names; run them through npm as before. Catalog
+checks were also moved from the ignored `tests/` folder so a clean clone contains
+all documented verification commands.
