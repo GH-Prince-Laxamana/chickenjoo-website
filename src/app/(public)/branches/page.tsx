@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
-import FoundationPage from "@/components/FoundationPage";
+import CatalogBrowser from "@/components/catalog/CatalogBrowser";
 
 export const metadata: Metadata = { title: "Branches" };
 
 export default function Branches() {
-  return <FoundationPage title="Branches" description="Find your nearest Chicken Joo. Branch addresses, hours, contact details, and directions will be added after verification." />;
+  return (
+    <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-8 sm:py-16">
+      <h1 className="font-display text-4xl font-semibold text-cj-navy sm:text-5xl">Branches</h1>
+      <p className="mt-5 max-w-2xl text-base leading-relaxed text-cj-charcoal/85">Find a Chicken Joo branch and check its address, hours, and contact details.</p>
+      <CatalogBrowser kind="branches" />
+    </section>
+  );
 }

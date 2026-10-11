@@ -34,10 +34,17 @@ yarn-error.log*
 .env*
 !.env.example
 .env.example
+# Keep other local tests ignored; include the checks referenced by package.json.
+/tests/*
+!/tests/catalog-query.test.mjs
+!/tests/catalog-seed.test.mjs
+!/tests/catalog-api.test.mjs
+tests/
 
 # Keep other local scripts ignored, but include the documented database check.
 /scripts/*
 !/scripts/db-smoke.mjs
+!/scripts/seed-catalog.mjs
 
 # vercel
 .vercel

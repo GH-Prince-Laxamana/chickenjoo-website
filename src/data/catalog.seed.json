@@ -1,0 +1,81 @@
+{
+  "menuItems": [
+    {
+      "seedKey": "chicken-3-rice", "name": "3-Piece Chicken with Rice",
+      "description": "3 pieces of chicken, 150g, served with rice.", "category": "Meals", "priceCentavos": 9900,
+      "image": "", "isAvailable": true, "isArchived": false, "isFeatured": false,
+      "requiredFlavorCount": 1, "flavorOptions": ["Original", "Yangnyeom", "Yangnyeom Extra Spicy", "Yangnyeom with Garlic"]
+    },
+    {
+      "seedKey": "joomami-fries", "name": "Joomami Fries",
+      "description": "200g serving of Joomami Fries.", "category": "Sides", "priceCentavos": 7500,
+      "image": "", "isAvailable": true, "isArchived": false, "isFeatured": false,
+      "requiredFlavorCount": 0, "flavorOptions": []
+    },
+    {
+      "seedKey": "chicken-3-fries", "name": "3-Piece Chicken with Joomami Fries",
+      "description": "3 pieces of chicken served with Joomami Fries.", "category": "Meals", "priceCentavos": 13500,
+      "image": "", "isAvailable": true, "isArchived": false, "isFeatured": false,
+      "requiredFlavorCount": 1, "flavorOptions": ["Original", "Yangnyeom", "Yangnyeom Extra Spicy", "Yangnyeom with Garlic"]
+    },
+    {
+      "seedKey": "japanese-rice", "name": "Japanese Rice",
+      "description": "A serving of Japanese rice.", "category": "Sides", "priceCentavos": 2000,
+      "image": "", "isAvailable": true, "isArchived": false, "isFeatured": false,
+      "requiredFlavorCount": 0, "flavorOptions": []
+    },
+    {
+      "seedKey": "chicken-7", "name": "7-Piece Chicken",
+      "description": "7 pieces of chicken, 350g. Rice is not included.", "category": "Chicken", "priceCentavos": 19900,
+      "image": "", "isAvailable": true, "isArchived": false, "isFeatured": false,
+      "requiredFlavorCount": 1, "flavorOptions": ["Original", "Yangnyeom", "Yangnyeom Extra Spicy", "Yangnyeom with Garlic"]
+    },
+    {
+      "seedKey": "chicken-14-one-flavor", "name": "14-Piece Chicken, One Flavor",
+      "description": "14 pieces of chicken, 700g, in one flavor. Rice is not included.", "category": "Chicken", "priceCentavos": 38800,
+      "image": "", "isAvailable": true, "isArchived": false, "isFeatured": false,
+      "requiredFlavorCount": 1, "flavorOptions": ["Original", "Yangnyeom", "Yangnyeom Extra Spicy", "Yangnyeom with Garlic"]
+    },
+    {
+      "seedKey": "chicken-14-two-flavors", "name": "14-Piece Chicken, Two Flavors",
+      "description": "14 pieces of chicken, 700g, in two flavors. Rice is not included.", "category": "Chicken", "priceCentavos": 39500,
+      "image": "", "isAvailable": true, "isArchived": false, "isFeatured": false,
+      "requiredFlavorCount": 2, "flavorOptions": ["Original", "Yangnyeom", "Yangnyeom Extra Spicy", "Yangnyeom with Garlic"]
+    }
+  ],
+  "branches": [
+    {
+      "seedKey": "hau-angeles", "name": "Chicken Joo HAU",
+      "address": "Unit 1F-B 295 Gloans Annex Building, Santo Rosario St., Barangay Sto. Rosario",
+      "city": "Angeles City", "province": "Pampanga",
+      "businessHours": "Daily, 10:00 AM to midnight", "openingTime": "10:00", "closingTime": "00:00", "closesNextDay": true,
+      "phone": "+63 927 385 8139", "email": null,
+      "mapsUrl": "https://maps.google.com/maps?cid=14039277774153906711",
+      "facebookUrl": "https://www.facebook.com/chickenjooHAU/", "isActive": true, "isArchived": false
+    },
+    {
+      "seedKey": "auf-angeles", "name": "Chicken Joo AUF",
+      "address": "JMS Building, Brgy. Salapungan, McArthur Highway", "city": "Angeles City", "province": "Pampanga",
+      "businessHours": "Daily, 10:00 AM to midnight", "openingTime": "10:00", "closingTime": "00:00", "closesNextDay": true,
+      "phone": null, "email": null,
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Chicken+Joo+McArthur+Highway+Angeles+City",
+      "facebookUrl": null, "isActive": true, "isArchived": false
+    },
+    {
+      "seedKey": "san-fernando-downtown", "name": "Chicken Joo San Fernando Downtown",
+      "address": "V. Tiomico St., Sto. Rosario", "city": "San Fernando", "province": "Pampanga",
+      "businessHours": "Daily, 10:00 AM to 10:00 PM", "openingTime": "10:00", "closingTime": "22:00", "closesNextDay": false,
+      "phone": "+63 45 892 0621", "email": null,
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Chicken+Joo+San+Fernando+Downtown",
+      "facebookUrl": "https://www.facebook.com/chickenjoo.sfdo/", "isActive": true, "isArchived": false
+    },
+    {
+      "seedKey": "magalang", "name": "Chicken Joo Magalang",
+      "address": "Back of 7-Eleven, San Agustin", "city": "Magalang", "province": "Pampanga",
+      "businessHours": "Daily, 10:00 AM to 10:00 PM", "openingTime": "10:00", "closingTime": "22:00", "closesNextDay": false,
+      "phone": null, "email": null,
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Chicken+Joo+Magalang",
+      "facebookUrl": null, "isActive": true, "isArchived": false
+    }
+  ]
+}

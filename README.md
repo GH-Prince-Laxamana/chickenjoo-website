@@ -39,6 +39,7 @@ npm run lint
 npm run typecheck
 npm run build
 npm run db:check
+npm run test:catalog
 ```
 
 The database check loads environment files using Next.js's loader in development
@@ -66,23 +67,97 @@ the explicit lint check.
   failed attempts can retry. Database failures expose deliberate messages only.
 
 No public database health endpoint is provided. The shell does not connect to
-MongoDB at build time. Public data caching will be chosen explicitly when data
-queries are introduced; there are no cached database reads in this increment.
+MongoDB at build time. Home retrieves its menu preview directly on the server
+at request time. Public catalog reads run on the Node.js runtime with
+`force-dynamic` handlers, `Cache-Control: no-store`, and uncached browser requests.
+MongoDB connection reuse does not cache query results. Later admin changes will
+appear on a fresh request without cache invalidation work.
+
+## Public catalog API
+
+| GET endpoint | Query fields | Public visibility |
+| --- | --- | --- |
+| `/api/v1/menu-items` | `q`, `category`, `page`, `limit` | Nonarchived dishes; unavailable dishes remain visible |
+| `/api/v1/branches` | `q`, `city`, `page`, `limit` | Active, nonarchived branches |
+
+Responses contain `data`, `meta` (`page`, `limit`, `total`, `totalPages`), and
+`options` (up to 100 categories or cities from visible records). Lists default
+to 12 records per page, capped at 48, with page numbers capped at 1000. Text
+queries are at most 80 characters. Search is case-insensitive literal matching,
+not raw regex or MongoDB query input. Unsupported/repeated query fields return
+400. Database failures return a deliberate 503 message without driver details.
+Only explicitly projected public fields are serialized; no write methods exist.
+
+Menu and Branches retrieve these GET endpoints in the browser, providing a
+visible API retrieval/display path for grading. Page frames remain server
+rendered; database results load on the client with cancellation, retry,
+search/filter controls, pagination, and loading/empty/error states. No server
+component makes HTTP requests to its own API.
+
+Models declare indexes but disable automatic collection/index creation during
+public reads. Create and verify
+indexes as part of the future admin/data setup, rather than on a public request.
+
+## Supplied catalog content and seeding
+
+`src/data/catalog.seed.json` contains the seven menu items and four Pampanga
+branches supplied in `CHICKEN_JOO_MENU_AND_BRANCH_DATA.md` on October 11, 2026.
+These are user-supplied business details, not independently verified restaurant
+claims. Product names/categories are proposed website labels. Availability is
+for the student demonstration and does not represent live stock.
+
+```bash
+npm run seed:catalog
+```
+
+This explicit command requires `MONGODB_URI`, `MONGODB_DB_NAME`, network access,
+and a database user with read/write permission. It is never run at startup or
+during a build. It inserts only missing stable seed keys via `$setOnInsert` and
+deterministic IDs. Reruns preserve all fields and timestamps of existing keyed
+records, including later admin edits; they never clear collections or overwrite
+unrelated records. Partial failures can be rerun safely. Editing the local seed
+file does not update existing records: use future admin CRUD for revisions.
+
+To preview the insert/skip counts without writing, invoke:
+
+```bash
+node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seed-catalog.mjs --dry-run
+```
+
+Chicken flavor options and required counts are stored and displayed as product
+information, not separate menu items or ordering controls. Midnight closing
+times and following-day flags are retained for later use. Missing phones and
+Facebook links remain null, with no corresponding public controls. Supplied
+Maps links are preserved; search links are not claimed to be exact place pins.
+All menu photos remain blank and show placeholders. Ordering remains disabled.
+
+To check the live APIs, start the app locally on port 3100 and run:
+
+```bash
+npm run test:catalog:api
+```
+
+For a different local port, set `CATALOG_TEST_ORIGIN` to that local origin for
+the test command. These checks read current data and confirm 400/405 responses;
+they do not insert/delete records. `test:catalog` covers query validation,
+pagination bounds, literal search escaping, and safe local image paths offline.
 
 ## Current scope and next inputs
 
-Home retains the existing campaign artwork and sample menu, with unverified
-promotion and price labeling. Our Story, Menu, Branches, Blog / Updates, and
-Contact are clearly identified placeholders. Ordering controls are disabled.
+Home uses the supplied menu through direct server reads, replacing the previous
+unverified promotion and sample prices. Menu and Branches are API-backed and
+include search/filter and loading/empty/error states. Our Story, Blog / Updates, and Contact
+remain placeholders. Ordering controls are disabled.
 The existing `public/email.html` mockup is retained for later review.
 
-Next increments add real public retrieval/display, admin authentication and
-content management, then simulated ordering. Collection schemas, API contracts,
-admin credentials/session mechanism, and confirmation access are not implemented
-in this foundation. No customer data is seeded or collected.
+Next increments add blog retrieval/display, admin
+authentication and content management, then simulated ordering. Menu and branch
+schemas and public GET contracts are implemented; admin credentials/session
+mechanism and confirmation access remain undecided. No customer data is seeded
+or collected. See [content inputs](docs/content-inputs.md) for the content checklist.
 
-Before real content work, supply verified menu prices/categories, branch and
-contact details, brand story, food photos, and campaign dates/terms/social links.
+Menu and branch text content is now supplied. Outstanding inputs include food
+photos, brand story, general contact details, and campaign dates/terms/social links.
 Before admin work, select the session mechanism and configure its credentials
 and secrets. Hosting configuration can wait until deployment is planned; choose
 a Node.js runtime with MongoDB connectivity and keep all database/auth secrets

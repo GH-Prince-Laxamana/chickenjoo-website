@@ -16,7 +16,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: { default: "Chicken Joo | Student Demonstration", template: "%s | Chicken Joo" },
-  description: "A student demonstration website for Chicken Joo. Explore the brand and preview upcoming menu, branch, and campaign content.",
+  description: "Browse Chicken Joo’s menu and Pampanga branches on a student demonstration website.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
