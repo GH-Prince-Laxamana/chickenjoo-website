@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 export const metadata = {
-  title: "Home | Chicken Joo Student Demonstration",
+  title: "Home",
   description:
     "Preview a student Chicken Joo campaign concept. Menu prices and promotion details are sample content awaiting verification.",
 };

@@ -31,6 +31,10 @@ export function getDatabaseConfig() {
     throw new DatabaseConfigurationError("MONGODB_URI must be a MongoDB connection URI.");
   }
 
+  if (/<[^>]+>/.test(uri)) {
+    throw new DatabaseConfigurationError("Replace placeholders in MONGODB_URI locally before connecting.");
+  }
+
   return { uri, dbName };
 }
 
