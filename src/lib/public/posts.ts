@@ -39,7 +39,7 @@ export async function getPublicPosts(page = 1, type?: "article" | "promotion") {
 }
 export async function getFeaturedPosts() {
   const { posts } = getContentModels(await connectDatabase());
-  const records = await posts.find({ ...visible(), isFeatured: true, coverImage: { $regex: /^\/images\/[a-zA-Z0-9_-]+\.(png|jpe?g|webp|avif)$/i } })
+  const records = await posts.find({ ...visible(), isFeatured: true, coverImage: { $regex: /^\/images\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]+\.(png|jpe?g|webp|avif)$/i } })
     .select(selection).sort({ publishedDate: -1, slug: 1 }).limit(5).maxTimeMS(5000).lean().exec();
   return records.map(publicPost);
 }

@@ -33,7 +33,9 @@ test("regular-expression metacharacters are searched literally", () => {
 
 test("menu image paths reject remote URLs, traversal, and executable data", () => {
   assert.equal(isLocalMenuImage("/images/chicken-meal.webp"), true);
-  for (const path of ["https://example.com/image.jpg", "/images/../private.jpg", "data:image/svg+xml,script", "/images/a.svg", "/images/a.png?secret=x"]) {
+  assert.equal(isLocalMenuImage("/images/menu/chicken-meal.webp"), true);
+  assert.equal(isLocalMenuImage("/images/menu/flavors/original.webp"), true);
+  for (const path of ["https://example.com/image.jpg", "/images/../private.jpg", "/images/menu/../private.jpg", "data:image/svg+xml,script", "/images/a.svg", "/images/a.png?secret=x", "/images/menu/a b.webp"]) {
     assert.equal(isLocalMenuImage(path), false, path);
   }
 });

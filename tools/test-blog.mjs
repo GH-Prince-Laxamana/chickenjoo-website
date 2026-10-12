@@ -44,8 +44,9 @@ test("homepage selects only published, non-future, featured local artwork and ca
   assert.equal(filter.status, "published");
   assert.equal(filter.publishedDate.$lte, api.todayDate());
   assert.equal(filter.isFeatured, true);
-  assert.ok(filter.coverImage.$regex.test("/images/blog-delivery.webp"));
+  assert.ok(filter.coverImage.$regex.test("/images/blog/blog-delivery.webp"));
   assert.equal(filter.coverImage.$regex.test("https://other.example/image.webp"), false);
+  assert.equal(filter.coverImage.$regex.test("/images/../private.webp"), false);
   assert.equal(limit, 5);
 });
 test("news categories and pagination share the publication filter", async () => {

@@ -236,6 +236,17 @@ Existing records and admin edits are preserved. Use `--dry-run` with the script
 directly to preview counts. Automatic index creation remains disabled; unique
 slug and visibility indexes are created explicitly by `npm run setup:admin`.
 
+If an existing database was seeded before the image folders were reorganized,
+preview and then apply the exact blog and campaign path updates with:
+
+```bash
+npm run db:migrate-image-paths
+npm run db:migrate-image-paths:apply
+```
+
+The migration updates only known old paths in `blogPosts`; it does not replace
+images, rewrite other fields, or touch unrelated records.
+
 Review inquiries through the protected admin dashboard. No inquiry review API
 is exposed publicly.
 

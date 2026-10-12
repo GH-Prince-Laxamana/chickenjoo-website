@@ -47,7 +47,7 @@ test("seven artwork stories have full copy, real assets, and three homepage feat
     assert.equal(post.body.length, 4);
     assert.ok(post.body.every(p => p.trim().length > 30));
     assert.ok(["/menu", "/branches"].includes(post.ctaHref));
-    assert.match(post.coverImage, /^\/images\/blog-[a-z-]+\.webp$/);
+    assert.match(post.coverImage, /^\/images\/blog\/blog-[a-z-]+\.webp$/);
     assert.ok((await readFile(new URL(`../public${post.coverImage}`, import.meta.url))).length > 0);
   }
 });
