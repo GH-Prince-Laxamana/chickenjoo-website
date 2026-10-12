@@ -32,6 +32,38 @@ Open http://localhost:3000. The informational pages can run without MongoDB;
 database configuration is validated when the connection helper is called.
 Restart the development server after changing environment variables.
 
+### Sharing the project and diagnosing local 503 errors
+
+Real `.env` files stay ignored; `.env.example`, `package-lock.json`, source,
+assets, and maintained `tools/` commands belong in Git. Pull the latest changes,
+use Node.js 22.17 or newer, and run `npm ci` in the folder containing `package.json`.
+Place the privately shared database settings in `.env.local` in that same folder.
+Both `MONGODB_URI` and `MONGODB_DB_NAME` must be set. Admin seed settings are not
+needed to display Menu or Branches.
+
+If Menu and Branches return 503, run `npm run db:check` before starting the server.
+This is a read-only connection/ping check. Share only its sanitized output, never
+the connection URI or environment file. Public API 503 responses deliberately
+hide database details, so the HTTP status alone does not identify the cause.
+
+- If configuration is missing, check the filename is not `.env.local.txt` and the
+  file is beside `package.json`, not inside `src/`. Restart `npm run dev`.
+- Existing shell variables and `.env.development.local` override `.env.local`;
+  `.env.local` and `.env.development` override `.env` during development. A stale
+  higher-priority setting can override the file that was shared.
+- If connection/ping fails, verify the Atlas **database user** and password,
+  selected cluster, database permissions, and URI credential encoding. Allowing
+  public IP access does not bypass authentication or the friend's network's DNS,
+  firewall, or outbound MongoDB-port restrictions. A different network can help
+  isolate a network-specific failure.
+- If ping passes but catalog requests still fail, confirm the database user can
+  read the selected database and check the server terminal. Ping alone does not
+  establish collection permissions. Missing seed records normally produce empty
+  lists rather than 503; do not reseed a shared database to diagnose connectivity.
+
+For a deployed copy, configure environment variables on the hosting service;
+local ignored files are not automatically included in Git deployments.
+
 ## Checks
 
 ```bash

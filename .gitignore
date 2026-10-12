@@ -30,20 +30,14 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# Keep credentials local; share only the placeholder template.
 .env*
 !.env.example
-.env.example
-# Keep other local tests ignored; include the checks referenced by package.json.
-/tests/*
-!/tests/catalog-query.test.mjs
-!/tests/catalog-seed.test.mjs
-!/tests/catalog-api.test.mjs
-tests/
+# Maintained checks are versioned in tools/; local scratch tests stay ignored.
+/tests/
 
 # Local scratch scripts are ignored; maintained commands live in tools/.
 /scripts/
-scripts/
 
 # vercel
 .vercel
