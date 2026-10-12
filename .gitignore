@@ -44,7 +44,6 @@ tests/
 # Local scratch scripts are ignored; maintained commands live in tools/.
 /scripts/
 scripts/
-tools/
 
 # vercel
 .vercel

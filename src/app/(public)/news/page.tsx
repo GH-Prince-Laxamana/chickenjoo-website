@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "News", description: "Find your next 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export default async function BlogPage({ searchParams }: { searchParams: Promise<{ page?: string; type?: string }> }) {
+export default async function NewsPage({ searchParams }: { searchParams: Promise<{ page?: string; type?: string }> }) {
   const { page: rawPage, type: rawType } = await searchParams;
   const page = typeof rawPage === "string" && /^[1-9]\d{0,2}$/.test(rawPage) ? Number(rawPage) : 1;
   const type = rawType === "article" || rawType === "promotion" ? rawType : undefined;
@@ -21,7 +21,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
 
   return <div className="mx-auto max-w-6xl px-4 pb-16 pt-9 sm:px-8 sm:py-16">
     <header className="max-w-2xl">
-      <p className="cj-eyebrow">CHICKEN JOO · BLOG</p>
+      <p className="cj-eyebrow">CHICKEN JOO · NEWS</p>
       <h1 className="mt-3 font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-cj-navy sm:text-6xl">Good food.<br /><span className="text-cj-red">More Joo moments.</span></h1>
       <p className="mt-5 max-w-lg leading-relaxed">Your next flavor crush, a well-earned lunch break, and the little moments worth sharing. Catch up with Chicken Joo.</p>
     </header>

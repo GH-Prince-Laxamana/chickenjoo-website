@@ -1,8 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: true,
+  redirects() {
+    return [{ source: "/blog/:path*", destination: "/news/:path*", permanent: true }];
+  },
 };
 
 export default nextConfig;
