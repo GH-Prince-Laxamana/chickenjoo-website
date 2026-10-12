@@ -15,6 +15,8 @@ html {
   scroll-behavior: smooth;
 }
 
+[id] { scroll-margin-top: 110px; }
+
 body {
   background-color: var(--color-cj-cream);
 }
@@ -28,7 +30,26 @@ input:not([type="checkbox"]), textarea, select { min-width: 0; }
   .cj-eyebrow { @apply text-xs font-bold tracking-wide text-cj-red; }
   .cj-title { @apply font-display text-[32px] font-bold leading-[1.1] tracking-tight text-cj-navy sm:text-5xl; }
   .cj-button { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-cj-yellow px-6 py-3 text-sm font-semibold text-cj-navy transition-colors hover:bg-cj-yellow/80 disabled:cursor-not-allowed disabled:opacity-50; }
+  .cj-button-order { @apply min-h-12 bg-cj-red font-bold text-white hover:bg-[#cb1024] active:bg-cj-navy; }
+  .footer-social { @apply inline-flex h-12 w-12 items-center justify-center rounded-full border border-cj-navy/15 bg-white text-cj-navy transition-colors hover:border-cj-red hover:bg-cj-red hover:text-white; }
   .cj-surface { @apply rounded-2xl bg-white shadow-[0_8px_20px_-10px_#11144730]; }
+}
+
+.cj-button:not(:disabled):active, .menu-choose:not(:disabled):active { transform: translateY(1px); }
+
+.home-hero { overflow: hidden; background: var(--color-cj-red); color: white; }
+.home-hero-inner { display: grid; align-items: center; gap: 44px; max-width: 1280px; margin-inline: auto; padding: 48px 20px; }
+.home-hero-copy { position: relative; z-index: 1; }
+.home-hero h1 { max-width: 10ch; font-size: clamp(48px, 6.4vw, 84px); font-weight: 900; line-height: 1.02; letter-spacing: -.055em; }
+.home-hero-art { position: relative; display: block; width: 100%; max-width: 560px; min-width: 0; aspect-ratio: 1.2; justify-self: center; border-radius: 50% 50% 28px 28px; background: white; }
+.home-hero-art img { padding: 36px 12px 30px; }
+.home-hero-stamp { position: absolute; top: 0; right: 0; z-index: 1; display: grid; place-content: center; width: clamp(92px, 10vw, 136px); aspect-ratio: 1; border: 5px solid var(--color-cj-red); border-radius: 50%; background: var(--color-cj-yellow); color: var(--color-cj-navy); font-size: clamp(26px, 3vw, 40px); font-weight: 900; font-style: italic; line-height: .95; text-align: center; transform: rotate(10deg); }
+.home-hero-caption { position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 12px; color: var(--color-cj-navy); font-weight: 700; }
+@media (min-width: 640px) {
+  .home-hero-inner { padding: 64px 32px; }
+}
+@media (min-width: 1024px) {
+  .home-hero-inner { grid-template-columns: 1fr 1fr; gap: 56px; min-height: 620px; padding-block: 64px; }
 }
 
 :focus-visible {
@@ -37,7 +58,7 @@ input:not([type="checkbox"]), textarea, select { min-width: 0; }
 }
 
 /* Native scroll snapping keeps the artwork swipeable without a carousel library. */
-.feature-carousel { padding-block: 12px 10px; overflow: hidden; }
+.feature-carousel { max-width: 1280px; margin-inline: auto; padding-block: 12px 10px; overflow: hidden; }
 .feature-track {
   --card-width: min(74vw, 400px);
   position: relative;
@@ -69,7 +90,7 @@ input:not([type="checkbox"]), textarea, select { min-width: 0; }
 .feature-controls > div { gap: 0; }
 .feature-arrow, .feature-dot { align-items: center; justify-content: center; color: var(--color-cj-navy); border-radius: 50%; }
 .feature-arrow { display: none; width: 44px; height: 44px; border: 1px solid #11144730; }
-.feature-dot { display: inline-flex; width: 24px; height: 32px; }
+.feature-dot { display: inline-flex; width: 44px; height: 44px; }
 .feature-arrow:disabled { opacity: .3; cursor: default; }
 .feature-arrow:not(:disabled):hover, .feature-dot:hover { background: var(--color-cj-cream); }
 .feature-dot span { width: 4px; height: 4px; border-radius: 50%; background: #11144755; }
@@ -79,18 +100,22 @@ input:not([type="checkbox"]), textarea, select { min-width: 0; }
   .feature-track { gap: 24px; padding-bottom: 32px; }
   .feature-poster { border-radius: 24px; }
   .feature-arrow { display: inline-flex; }
-  .feature-dot { width: 32px; height: 44px; }
   .feature-dot span { width: 6px; height: 6px; }
+}
+@media (min-width: 1024px) {
+  .feature-track { --card-width: min(30vw, 380px); }
+  .feature-slide[data-position] .feature-poster { transform: none; }
 }
 
 .menu-section { margin-block: 36px; }
-.menu-dish { display: flex; min-width: 0; height: 100%; flex-direction: column; text-align: center; }
+.menu-dish { display: flex; min-width: 0; height: 100%; flex-direction: column; padding: 12px; border: 1px solid #11144712; border-radius: 24px; background: white; text-align: center; }
 .menu-dish-art { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 4 / 3; }
 .menu-dish-details { display: flex; flex: 1; flex-direction: column; align-items: center; padding-top: 8px; }
 .menu-dish-details > div:last-child { margin-top: auto; padding-top: 12px; }
 .menu-dish-details h3 { font-size: 14px; }
 .menu-choose { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; border-radius: 999px; padding: 10px 14px; background: var(--color-cj-red); color: white; font-size: 13px; font-weight: 600; line-height: 1.3; transition: background-color 150ms ease; }
-.menu-choose:hover { background: #cb1024; }
+.menu-choose:not(:disabled):hover { background: #cb1024; }
+.menu-choose:not(:disabled):active { background: var(--color-cj-navy); }
 .menu-feature { overflow: hidden; border-radius: 20px; background: white; box-shadow: 0 10px 24px -14px #11144740; }
 .menu-feature-art { position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 1.9; background: white; }
 .menu-feature-word { position: absolute; left: 6%; top: 10%; z-index: -1; max-width: 45%; font-size: clamp(32px, 9vw, 70px); line-height: .9; font-weight: 700; font-style: italic; letter-spacing: -.06em; color: var(--color-cj-red); transform: rotate(-9deg); }
@@ -107,6 +132,7 @@ body:has(.menu-dialog[open]) { overflow: hidden; }
   .menu-feature-details { padding: 28px; }
   .menu-feature-details h3 { font-size: 24px; }
   .menu-dish-details h3 { font-size: 16px; }
+  .menu-dish { padding: 20px; }
   .menu-choose { padding-inline: 20px; font-size: 14px; }
 }
 

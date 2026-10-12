@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ArrowRight, Mail, MessageCircle, Phone } from "lucide-react";
 import InquiryForm from "@/components/InquiryForm";
+import { companyContact } from "@/lib/contact";
 export const metadata: Metadata = {
   title: "Contact Us",
   description: "Contact Chicken Joo for general questions, campaign inquiries, and feedback. Reach us by email, phone, Facebook, or our inquiry form.",
@@ -23,22 +25,23 @@ export default function ContactPage() {
             <dl className="mt-6 space-y-4">
               <div>
                 <dt className="text-sm font-semibold text-white/80">Email</dt>
-                <dd><a href="mailto:jooservice@chickenjoo.com" className="inline-flex min-h-11 items-center gap-2 break-all font-semibold underline underline-offset-4"><Mail size={18} className="shrink-0" aria-hidden="true" />jooservice@chickenjoo.com</a></dd>
+                <dd><a href={`mailto:${companyContact.email}`} className="inline-flex min-h-11 items-center gap-2 break-all font-semibold underline underline-offset-4"><Mail size={18} className="shrink-0" aria-hidden="true" />{companyContact.email}</a></dd>
               </div>
               <div>
                 <dt className="text-sm font-semibold text-white/80">Phone</dt>
-                <dd><a href="tel:+639762002000" className="inline-flex min-h-11 items-center gap-2 font-semibold underline underline-offset-4"><Phone size={18} aria-hidden="true" />0976 200 2000</a></dd>
+                <dd><a href={companyContact.phoneHref} className="inline-flex min-h-11 items-center gap-2 font-semibold underline underline-offset-4"><Phone size={18} aria-hidden="true" />{companyContact.phone}</a></dd>
               </div>
               <div>
-                <dt className="text-sm font-semibold text-white/80">Address</dt>
-                <dd className="mt-2"><address className="not-italic leading-relaxed">Lot 5 Blk 7 Japan Street Phase 2<br />Barangay Pinagsama, Taguig City, 1636</address></dd>
+                <dt className="text-sm font-semibold text-white/80">Company address</dt>
+                <dd className="mt-2"><address className="not-italic leading-relaxed">{companyContact.address}</address></dd>
               </div>
               <div>
                 <dt className="text-sm font-semibold text-white/80">Support hours</dt>
-                <dd className="mt-2 leading-relaxed">9 AM – 9 PM</dd>
+                <dd className="mt-2 leading-relaxed">{companyContact.supportHours}</dd>
               </div>
             </dl>
-            <a href="https://www.facebook.com/profile.php?id=61574092604052" target="_blank" rel="noopener noreferrer" className="cj-button mt-6">Chicken Joo on Facebook <ArrowRight size={18} className="shrink-0" aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a>
+            <a href={companyContact.facebook} target="_blank" rel="noopener noreferrer" className="cj-button mt-6">Chicken Joo on Facebook <ArrowRight size={18} className="shrink-0" aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a>
+            <p className="mt-5 text-sm leading-relaxed text-white/85">Looking for a store’s address or opening hours? <Link href="/branches" className="inline-flex min-h-11 items-center font-semibold text-white underline underline-offset-4">Find your branch</Link>.</p>
           </section>
 
           <section aria-labelledby="general-inquiry-heading" className="px-1">

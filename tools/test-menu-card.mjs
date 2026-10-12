@@ -60,6 +60,7 @@ test("meal panel opens and closes, validates distinct flavors, and preserves cen
   assert.equal(view.added[0].priceCentavos, 39550);
   assert.equal(view.added[0].quantity, 2);
   assert.equal(view.added[0].flavors.join(","), "Original,Yangnyeom");
+  assert.ok(view.render().some((e) => e.props.href === "/checkout" && e.props.children === "Order now"));
   view.render().find((e) => e.props["aria-label"] === "Close meal options").props.onClick();
   assert.equal(view.closes(), 1);
 });

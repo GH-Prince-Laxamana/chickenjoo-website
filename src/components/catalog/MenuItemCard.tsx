@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Utensils, X } from "lucide-react";
+import { ShoppingCart, Utensils, X } from "lucide-react";
 import { useId, useRef, useState } from "react";
 import { isLocalMenuImage } from "@/lib/public/assets";
 import { menuArtwork } from "@/lib/public/menu-artwork";
@@ -40,9 +40,9 @@ export default function MenuItemCard({ item, featured = false }: { item: PublicM
         <p className={`mt-2 text-xs ${item.isAvailable ? "text-cj-charcoal" : "font-semibold text-cj-red"}`}>{item.isAvailable ? "Available" : "Currently unavailable"}</p>
         <div className={featured ? "mt-4 flex flex-wrap items-center justify-between gap-3" : "mt-4 w-full"}>
           <p className="text-xl font-bold text-cj-red">{peso.format(item.priceCentavos / 100)}</p>
-          <button type="button" onClick={openOrder} aria-haspopup="dialog" aria-label={`View ${item.isAvailable ? "options" : "details"} for ${item.name}, ${peso.format(item.priceCentavos / 100)}`} className={featured ? "menu-choose" : "menu-choose mt-3 w-full"}>
-            {item.isAvailable ? "View options" : "View details"}
-            <ArrowRight aria-hidden="true" size={16} className="shrink-0" />
+          <button type="button" onClick={openOrder} aria-haspopup="dialog" aria-label={`${item.isAvailable ? "Choose & add" : "View details for"} ${item.name}, ${peso.format(item.priceCentavos / 100)}`} className={featured ? "menu-choose" : "menu-choose mt-3 w-full"}>
+            {item.isAvailable ? "Choose & add" : "View details"}
+            <ShoppingCart aria-hidden="true" size={18} className="shrink-0" />
           </button>
         </div>
       </div>
@@ -54,9 +54,9 @@ export default function MenuItemCard({ item, featured = false }: { item: PublicM
           <p className="mt-2 text-lg font-bold text-cj-red">{peso.format(item.priceCentavos / 100)}</p>
           {item.requiredFlavorCount > 0 && <fieldset className="mt-5"><legend className="font-semibold text-cj-navy">{item.requiredFlavorCount === 1 ? "Pick your flavor" : "Pick two different flavors"}</legend>{Array.from({ length: item.requiredFlavorCount }, (_, index) => <label key={index} className="mt-3 block text-sm">Flavor {index + 1}<select className="mt-1 min-h-12 w-full rounded-xl border border-cj-navy/20 bg-cj-cream px-3 text-base" disabled={!item.isAvailable} value={flavors[index] || ""} onChange={(event) => { setFlavors((previous) => Array.from({ length: item.requiredFlavorCount }, (_, i) => i === index ? event.target.value : previous[i] || "")); setMessage(""); }}><option value="">Choose a flavor</option>{item.flavorOptions.map((flavor) => <option key={flavor}>{flavor}</option>)}</select></label>)}</fieldset>}
           <label className="mt-5 block text-sm font-semibold text-cj-navy">Quantity<select className="mt-1 min-h-12 w-full rounded-xl border border-cj-navy/20 bg-cj-cream px-3 text-base font-normal" disabled={!item.isAvailable} value={quantity} onChange={(event) => { setQuantity(Number(event.target.value)); setMessage(""); }}>{Array.from({ length: 10 }, (_, index) => <option key={index + 1}>{index + 1}</option>)}</select></label>
-          <button type="button" onClick={add} disabled={!item.isAvailable} className="menu-choose mt-6 w-full disabled:cursor-not-allowed disabled:bg-cj-navy/10 disabled:text-cj-navy">{item.isAvailable ? `Add to cart · ${peso.format(item.priceCentavos * quantity / 100)}` : "Unavailable for ordering"}</button>
+          <button type="button" onClick={add} disabled={!item.isAvailable} className="menu-choose mt-6 min-h-12 w-full disabled:cursor-not-allowed disabled:bg-cj-navy/10 disabled:text-cj-navy">{item.isAvailable ? `Add to cart · ${peso.format(item.priceCentavos * quantity / 100)}` : "Unavailable for ordering"}</button>
           <p role="status" className="mt-3 text-sm font-semibold text-cj-navy">{message}</p>
-          {message === "Added to your cart." && <Link href="/cart" className="inline-flex min-h-11 items-center text-sm font-semibold text-cj-red underline underline-offset-4">View your cart</Link>}
+          {message === "Added to your cart." && <div className="mt-3 flex flex-wrap items-center gap-4"><Link href="/checkout" className="cj-button">Order now</Link><Link href="/cart" className="inline-flex min-h-11 items-center text-sm font-semibold text-cj-red underline underline-offset-4">View your cart</Link></div>}
           <p className="mt-4 text-xs leading-relaxed text-cj-charcoal">Current prices and availability are checked at checkout.</p>
         </div>
       </dialog>
