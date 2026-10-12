@@ -149,7 +149,7 @@ pagination bounds, literal search escaping, and safe local image paths offline.
 Home uses the supplied menu through direct server reads, replacing the previous
 unverified promotion and sample prices. Menu and Branches are API-backed and
 include search/filter and loading/empty/error states. Our Story introduces the
-brand using supplied copy and four strengths with image placeholders. Blog /
+brand using supplied copy and four strengths with image placeholders. News /
 Updates lists published articles and provides direct article pages. Contact
 reuses the branch records and accepts student-project inquiries. Demo cart and pickup checkout are available.
 The existing `public/email.html` mockup is retained for later review.
@@ -279,3 +279,7 @@ versioned. The entire `scripts/` directory is ignored for local scratch work.
 Package commands retain their names; run them through npm as before. Catalog
 checks were also moved from the ignored `tests/` folder so a clean clone contains
 all documented verification commands.
+
+## Menu visual checkpoint
+
+Shared tokens follow the supplied pale-blue, navy, red and yellow references. Menu uses a compact header, category pills, one presentation highlight and a flat two-column catalog on mobile. Desktop uses bounded three-column catalog sections. Seven confirmed items and their configured flavors remain driven by the existing API. Transparent food photos are missing; labeled spaces preserve their intended placement. Cart controls expand on demand; demo ordering behavior is unchanged. Other page redesigns and curated reviews are deferred to separate increments.

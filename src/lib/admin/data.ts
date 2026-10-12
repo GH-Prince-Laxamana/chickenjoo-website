@@ -33,7 +33,7 @@ async function validated(resource: Resource, input: Record<string, unknown>) {
   if (Object.keys(input).some((key) => key !== "expectedUpdatedAt" && !allowed.some((field) => field.key === key))) throw new AdminError("Unsupported record field.", 400);
   const data: Record<string, unknown> = {};
   for (const field of allowed) {
-    const value = input[field.key];
+    const value = resource === "blog-posts" && field.key === "isFeatured" && input[field.key] === undefined ? false : input[field.key];
     if (field.kind === "boolean") {
       if (typeof value !== "boolean") throw new AdminError(`${field.label} must be true or false.`, 400);
       data[field.key] = value;

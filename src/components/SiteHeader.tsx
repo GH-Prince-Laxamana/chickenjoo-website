@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { publicNavigation } from "@/lib/navigation";
@@ -13,20 +14,19 @@ export default function SiteHeader() {
   const cart = useCart();
 
   return (
-    <header className="border-b border-cj-navy/10 bg-white">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-8">
-        <Link href="/" aria-label="Chicken Joo home" onClick={() => setMenuOpen(false)}>
-          <Image src="/images/chicken-joo-logo.jpg" alt="Chicken Joo" width={140} height={80} className="h-16 w-auto" preload />
+    <header className="relative z-20 bg-white shadow-[0_2px_15px_-8px_#11144720]">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-4 py-2 sm:px-8 sm:py-3">
+        <Link href="/" aria-label="Chicken Joo home" onClick={() => setMenuOpen(false)} className="mr-auto">
+          <span className="relative block h-13 w-24 overflow-hidden"><Image src="/images/chicken-joo-logo.jpg" alt="Chicken Joo" width={1080} height={1080} className="absolute -left-3 -top-8 h-28 w-28 max-w-none" preload /></span>
         </Link>
-        <Link href="/cart" className="inline-flex min-h-11 items-center rounded-xl bg-cj-navy px-4 text-sm font-semibold text-white" aria-current={pathname === "/cart" ? "page" : undefined}>Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)})</Link>
         <button
           type="button"
           aria-expanded={menuOpen}
           aria-controls="public-navigation"
           onClick={() => setMenuOpen(!menuOpen)}
-          className="min-h-11 rounded-xl border border-cj-navy/20 px-4 font-semibold text-cj-navy lg:hidden"
+          className="flex min-h-11 min-w-11 items-center justify-center rounded-xl text-cj-red lg:hidden"
         >
-          {menuOpen ? "Close menu" : "Open menu"}
+          <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>{menuOpen ? <X aria-hidden="true" size={24} /> : <Menu aria-hidden="true" size={24} />}
         </button>
         <nav
           id="public-navigation"
@@ -50,6 +50,7 @@ export default function SiteHeader() {
               {label}
             </Link>
           ))}
+          <Link href="/cart" onClick={() => setMenuOpen(false)} className="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-cj-navy hover:bg-cj-cream" aria-current={pathname === "/cart" ? "page" : undefined}>Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)})</Link>
         </nav>
       </div>
     </header>

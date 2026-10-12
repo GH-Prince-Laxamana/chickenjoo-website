@@ -1,45 +1,9 @@
 "use client";
-
 import { useState } from "react";
-
-export default function CatalogControls({ kind, options, onApply }: {
-  kind: "menu" | "branches";
-  options: string[];
-  onApply: (q: string, filter: string) => void;
-}) {
-  const [q, setQ] = useState("");
-  const [filter, setFilter] = useState("");
-  const filterLabel = kind === "menu" ? "Category" : "City";
-  const fieldClass = "mt-2 min-h-11 w-full rounded-xl border border-cj-navy/25 bg-white px-3 py-2 text-base text-cj-charcoal";
-
-  return (
-    <form
-      role="search"
-      aria-label={kind === "menu" ? "Search menu" : "Search branches"}
-      onSubmit={(event) => { event.preventDefault(); onApply(q.trim(), filter); }}
-      className="mt-8 flex flex-col gap-4 rounded-2xl bg-white p-5 ring-1 ring-cj-navy/10 sm:flex-row sm:flex-wrap sm:items-end"
-    >
-      <label className="flex-1 text-sm font-semibold text-cj-navy">
-        {kind === "menu" ? "Search dishes" : "Search branches"}
-        <input
-          type="search" name="q" maxLength={80} value={q} onChange={(event) => setQ(event.target.value)}
-          placeholder={kind === "menu" ? "Name or description" : "Name, address, or city"}
-          className={fieldClass}
-        />
-      </label>
-      <label className="text-sm font-semibold text-cj-navy sm:min-w-48">
-        {filterLabel}
-        <select name={kind === "menu" ? "category" : "city"} value={filter} onChange={(event) => setFilter(event.target.value)} className={fieldClass}>
-          <option value="">{kind === "menu" ? "All categories" : "All cities"}</option>
-          {options.map((option) => <option key={option} value={option}>{option}</option>)}
-        </select>
-      </label>
-      <button type="submit" className="min-h-11 rounded-xl bg-cj-navy px-5 py-3 text-sm font-semibold text-white hover:bg-cj-navy/90">
-        Search
-      </button>
-      <button type="button" onClick={() => { setQ(""); setFilter(""); onApply("", ""); }} className="min-h-11 rounded-xl px-4 py-3 text-sm font-semibold text-cj-navy hover:bg-cj-cream">
-        Clear filters
-      </button>
-    </form>
-  );
+export default function CatalogControls({ kind, options, onApply, showFlavors = false }: { showFlavors?: boolean; kind: "menu" | "branches"; options: string[]; onApply: (q: string, filter: string) => void }) {
+  const [q, setQ] = useState(""), [filter, setFilter] = useState("");
+  return <form role="search" aria-label={kind === "menu" ? "Search menu" : "Search branches"} onSubmit={(event) => { event.preventDefault(); onApply(q.trim(), filter); }} className="mt-5 space-y-3">
+    <div role="group" aria-label={kind === "menu" ? "Menu categories" : "Branch cities"} className="flex flex-wrap gap-2">{["", ...options].map((option) => <button key={option} type="button" aria-pressed={filter === option} onClick={() => { setFilter(option); onApply(q.trim(), option); }} className={`min-h-11 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${filter === option ? "bg-cj-yellow text-cj-navy" : "border border-cj-navy/10 bg-white text-cj-charcoal hover:bg-cj-yellow/20"}`}>{kind === "menu" && option === "Chicken" ? "À la carte" : option || (kind === "menu" ? "Full menu" : "All locations")}</button>)}{kind === "menu" && showFlavors && <a href="#menu-flavors" className="inline-flex min-h-11 items-center rounded-full border border-cj-navy/10 bg-white px-4 py-2 text-sm font-semibold text-cj-charcoal hover:bg-cj-yellow/20">Flavors</a>}{(q || filter) && <button type="button" className="min-h-11 px-3 text-sm font-semibold text-cj-red underline" onClick={() => { setQ(""); setFilter(""); onApply("", ""); }}>Clear filters</button>}</div>
+    <div className="flex gap-2"><label className="min-w-0 flex-1"><span className="sr-only">{kind === "menu" ? "Search dishes" : "Search branches"}</span><input type="search" name="q" autoComplete="off" maxLength={80} value={q} onChange={(event) => setQ(event.target.value)} placeholder={kind === "menu" ? "Find your chicken fix…" : "Search a branch or city…"} className="min-h-11 w-full rounded-full border border-cj-navy/10 bg-white px-4 text-base" /></label><button type="submit" className="inline-flex min-h-11 items-center justify-center rounded-full bg-cj-navy px-5 text-sm font-semibold text-white hover:bg-cj-navy/90">Search</button></div>
+  </form>;
 }

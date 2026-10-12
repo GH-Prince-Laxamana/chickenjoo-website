@@ -22,6 +22,7 @@
     "test:orders:api": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/test-orders-api.mjs"
   },
   "dependencies": {
+    "lucide-react": "^1.55.0",
     "mongoose": "^9.11.1",
     "next": "^16.4.0",
     "react": "19.2.8",

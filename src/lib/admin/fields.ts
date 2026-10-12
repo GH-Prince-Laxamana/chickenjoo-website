@@ -40,6 +40,7 @@ export const fields: Record<Resource, Field[]> = {
     { key: "status", label: "Status", kind: "select", options: ["draft", "published"] },
     { key: "publishedDate", label: "Publication date", kind: "date", help: "Required when published. Future dates stay hidden until that calendar day (UTC)." },
     { key: "coverImage", label: "Cover image path", kind: "text", max: 300 },
+    { key: "isFeatured", label: "Feature on homepage", kind: "boolean", help: "Published posts with artwork can appear in the homepage carousel. Up to five are shown, newest first." },
     { key: "sourceUrl", label: "Original Facebook post URL", kind: "text", max: 1000 },
     { key: "ctaLabel", label: "CTA label", kind: "text", max: 80 },
     { key: "ctaHref", label: "CTA destination", kind: "select", options: ["", "/menu", "/branches"] },

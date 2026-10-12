@@ -3,6 +3,6 @@ export const publicNavigation = [
   { href: "/our-story", label: "Our Story" },
   { href: "/menu", label: "Menu" },
   { href: "/branches", label: "Branches" },
-  { href: "/blog", label: "Blog / Updates" },
+  { href: "/news", label: "News" },
   { href: "/contact", label: "Contact" },
 ] as const;

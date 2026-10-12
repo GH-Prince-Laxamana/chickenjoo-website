@@ -14,6 +14,7 @@ const postSchema = new Schema({
   status: { type: String, enum: ["draft", "published"], default: "draft", required: true },
   publishedDate: { type: String, default: null, validate: (value: string | null) => !value || isPublicationDate(value) },
   coverImage: { type: String, default: "", validate: (value: string) => !value || isLocalMenuImage(value) },
+  isFeatured: { type: Boolean, default: false },
   sourceUrl: { type: String, default: "", maxlength: 1000, validate: (value: string) => !value || isFacebookLink(value) },
   ctaLabel: { type: String, default: "", maxlength: 80 },
   ctaHref: { type: String, enum: ["", "/menu", "/branches"], default: "" },
