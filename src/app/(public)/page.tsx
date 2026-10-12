@@ -15,6 +15,7 @@ import {
   launchCampaign,
 } from "@/lib/orders/launch-campaign";
 import type { PublicMenuItem } from "@/lib/public/types";
+import HeroSlideshow from "@/components/HeroSlideshow";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -30,19 +31,19 @@ export default async function Home() {
     {
       title: "Joo time! Find your chicken fix",
       href: "/menu",
-      image: "/images/campaign-joo-time.webp",
+      image: "/images/campaigns/campaign-joo-time.webp",
       alt: "Joo time! Kwentuhan. Kainan. Chicken Joo. A sharing tray of yangnyeom boneless chicken. Find your chicken fix.",
     },
     {
       title: "Pick your flavor! Find your meal",
       href: "/menu",
-      image: "/images/campaign-flavors.webp",
+      image: "/images/campaigns/campaign-flavors.webp",
       alt: "Pick your flavor! Korean boneless chicken: Original, Yangnyeom, and Yangnyeom with Garlic. Find your meal.",
     },
     {
       title: "Sarap i-share! Chicken Joo muna",
       href: "/menu",
-      image: "/images/campaign-sharing.webp",
+      image: "/images/campaigns/campaign-sharing.webp",
       alt: "Sarap i-share! Kasama ang barkada. Sharing trays of original and yangnyeom chicken. Chicken Joo muna.",
     },
   ];
@@ -110,13 +111,21 @@ export default async function Home() {
               <br />
               time!
             </span>
-            <Image
-              src="/images/menu-chicken-two-flavors.webp"
-              alt="A Chicken Joo sharing box with original and yangnyeom boneless chicken"
-              fill
-              sizes="(min-width: 1024px) 560px, (min-width: 640px) 520px, 90vw"
-              className="object-contain"
-              preload
+            <HeroSlideshow
+              images={[
+                {
+                  src: "/images/hero/hero-image.png",
+                  alt: "Chicken Joo boneless fried chicken box",
+                },
+                {
+                  src: "/images/lifestyle/about-workday-break.webp",
+                  alt: "Chicken Joo combo flavors",
+                },
+                {
+                  src: "/images/lifestyle/eating-at-chickenjoo.jpg",
+                  alt: "Chicken Joo special promo",
+                },
+              ]}
             />
             <span className="home-hero-caption">
               Find your flavor <ArrowRight size={20} aria-hidden="true" />

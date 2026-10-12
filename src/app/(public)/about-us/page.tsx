@@ -22,7 +22,7 @@ export default function AboutPage() {
       <section aria-labelledby="break-heading" className="mt-9 grid overflow-hidden rounded-3xl bg-cj-navy shadow-xl shadow-cj-navy/10 md:grid-cols-2 sm:mt-12">
         <figure className="flex min-w-0 flex-col bg-white">
           <div className="relative aspect-[3/2] flex-1 md:aspect-auto md:min-h-96">
-            <Image src="/images/about-workday-break.webp" alt="Illustration of coworkers sharing a chicken meal during a break outside their workplace" fill sizes="(max-width: 767px) 100vw, 560px" className="object-cover" />
+            <Image src="/images/lifestyle/about-workday-break.webp" alt="Illustration of coworkers sharing a chicken meal during a break outside their workplace" fill sizes="(max-width: 767px) 100vw, 560px" className="object-cover" />
           </div>
           <figcaption className="p-4 text-sm leading-relaxed text-cj-charcoal">A little time away from work. A meal with your ka-work.</figcaption>
         </figure>

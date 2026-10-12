@@ -18,7 +18,7 @@ export default function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-cj-navy/10 bg-white shadow-[0_2px_15px_-8px_#11144720]">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2 px-4 py-3 sm:gap-4 sm:px-8">
         <Link href="/" aria-label="Chicken Joo home" onClick={() => setMenuOpen(false)} className="mr-auto">
-          <span className="relative block h-13 w-24 overflow-hidden"><Image src="/images/chicken-joo-logo.jpg" alt="Chicken Joo" width={1080} height={1080} className="absolute -left-3 -top-8 h-28 w-28 max-w-none" preload /></span>
+          <span className="relative block h-13 w-24 overflow-hidden"><Image src="/images/brand/chicken-joo-logo.jpg" alt="Chicken Joo" width={1080} height={1080} className="absolute -left-3 -top-8 h-28 w-28 max-w-none" preload /></span>
         </Link>
         <Link href="/cart" onClick={() => setMenuOpen(false)} className="relative inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-cj-navy/15 px-3 font-semibold text-cj-navy transition-colors hover:bg-cj-cream lg:order-3" aria-label={`Cart, ${itemCount} items`} aria-current={pathname === "/cart" ? "page" : undefined}>
           <ShoppingCart size={22} aria-hidden="true" /><span className="hidden sm:inline">Cart</span>
