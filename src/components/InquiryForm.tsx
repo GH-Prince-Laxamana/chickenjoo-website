@@ -37,11 +37,11 @@ export default function InquiryForm() {
     finally { inFlight.current = false; setPending(false); }
   }
   return <form onSubmit={submit} noValidate aria-labelledby="inquiry-heading" aria-describedby="inquiry-note" className="rounded-3xl bg-white p-6 ring-1 ring-cj-navy/10 sm:p-8">
-    <h2 id="inquiry-heading" className="font-display text-3xl font-semibold text-cj-navy">Leave a message</h2>
-    <p id="inquiry-note" className="mt-4 text-sm leading-relaxed">Student project inquiry form. Messages are saved for review in this project&apos;s dashboard and are not sent to Chicken Joo.</p>
+    <h2 id="inquiry-heading" className="font-display text-3xl font-bold tracking-tight text-cj-navy">Send us a message.</h2>
+    <p id="inquiry-note" className="mt-4 text-sm leading-relaxed">Tell us what’s on your mind. Your inquiry will be saved for review; this form does not place an order or reserve a pickup.</p>
     {(failure || Object.keys(errors).length > 0) && <div ref={summary} tabIndex={-1} role="alert" className="mt-6 rounded-xl border border-cj-red bg-cj-cream p-4"><h3 className="font-semibold text-cj-navy">{failure || "Check your inquiry"}</h3>{!!Object.keys(errors).length && <ul className="mt-2 space-y-2">{(Object.keys(errors) as InquiryField[]).map((field) => <li key={field}><a href={`#inquiry-${field}`} className="underline underline-offset-4">{labels[field]}: {errors[field]}</a></li>)}</ul>}</div>}
-    <div role="status" aria-live="polite">{saved && <p className="mt-6 rounded-xl bg-cj-cream p-4 font-semibold text-cj-navy">Your inquiry has been saved for review in this project&apos;s dashboard.</p>}</div>
-    <fieldset disabled={pending} className="mt-6 space-y-5"><legend className="sr-only">Inquiry details — all fields required</legend><p className="text-sm">All fields are required.</p>
+    <div role="status" aria-live="polite">{saved && <p className="mt-6 rounded-xl bg-cj-cream p-4 font-semibold text-cj-navy">Thanks for your message. It has been saved for review.</p>}</div>
+    <fieldset disabled={pending} className="mt-6 space-y-5"><legend className="sr-only">Message details, all fields required</legend><p className="text-sm">All fields are required.</p>
       {(Object.keys(labels) as InquiryField[]).map((field) => {
         const props = {
           id: `inquiry-${field}`, name: field, required: true, maxLength: inquiryLimits[field], value: values[field],
@@ -52,7 +52,7 @@ export default function InquiryForm() {
         return <div key={field}><label htmlFor={props.id} className="font-semibold text-cj-navy">{labels[field]}</label>{field === "message" ? <textarea {...props} rows={6} /> : <input {...props} type={field === "email" ? "email" : "text"} autoComplete={field === "name" ? "name" : field === "email" ? "email" : "off"} />}{errors[field] && <p id={`inquiry-${field}-error`} className="mt-2 text-sm font-semibold text-cj-navy">{errors[field]}</p>}</div>;
       })}
       <div hidden aria-hidden="true"><label htmlFor="inquiry-website">Leave this blank</label><input id="inquiry-website" name="website" tabIndex={-1} autoComplete="off" /></div>
-      <button type="submit" className="min-h-11 rounded-xl bg-cj-navy px-6 py-3 font-semibold text-white hover:bg-cj-navy/90 disabled:cursor-wait disabled:opacity-60">{pending ? "Saving inquiry…" : "Submit Inquiry"}</button>
-    </fieldset><p role="status" className="mt-3 text-sm">{pending ? "Saving your inquiry. Please wait." : ""}</p>
+      <button type="submit" className="min-h-11 w-full rounded-full bg-cj-red px-6 py-3 font-semibold text-white hover:bg-cj-red/90 disabled:cursor-wait disabled:opacity-60 sm:w-auto">{pending ? "Saving message…" : "Send message"}</button>
+    </fieldset><p role="status" className="mt-3 text-sm">{pending ? "Saving your message. Please wait." : ""}</p>
   </form>;
 }

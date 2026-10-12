@@ -3,7 +3,7 @@ import { getPublicBranches } from "@/lib/public/catalog";
 import type { PublicBranch } from "@/lib/public/types";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-export const metadata = { title: "Demo pickup checkout", robots: { index: false, follow: false } };
+export const metadata = { title: "Pickup order details", robots: { index: false, follow: false } };
 export default async function Page() {
   let branches: PublicBranch[] | undefined;
   try { branches = (await getPublicBranches({ q: "", filter: "", page: 1, limit: 12 })).data; }

@@ -11,6 +11,7 @@
     "test:catalog:api": "node --test tools/catalog-api.test.mjs",
     "seed:catalog": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/seed-catalog.mjs",
     "seed:posts": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/seed-posts.mjs",
+    "seed:campaign": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/seed-launch-campaign.mjs",
     "test:public": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tools/test-public-unit.mjs",
     "test:public:api": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tools/test-public-api.mjs",
     "typecheck": "next typegen && tsc --noEmit",

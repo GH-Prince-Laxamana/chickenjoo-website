@@ -7,7 +7,7 @@ export default function SiteFooter() {
       <div className="mx-auto max-w-6xl">
         <p className="font-display text-xl font-semibold">CHICKEN JOO</p>
         <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/85">
-          A student website demonstration. This site is not an official restaurant ordering channel.
+          Korean-style boneless chicken for your lunch break and your next barkada meal. Find your flavor at Chicken Joo.
         </p>
         <nav aria-label="Footer navigation" className="mt-5 flex flex-wrap gap-x-6 gap-y-1">
           {publicNavigation.map(({ href, label }) => (

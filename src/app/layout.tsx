@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Chicken Joo | Student Demonstration", template: "%s | Chicken Joo" },
-  description: "Browse Chicken Joo’s menu and Pampanga branches on a student demonstration website.",
+  title: { default: "Chicken Joo | Korean-style boneless chicken", template: "%s | Chicken Joo" },
+  description: "Korean-style boneless chicken for your lunch break or the whole barkada. Explore Chicken Joo meals, sharing boxes, and branches in Pampanga.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

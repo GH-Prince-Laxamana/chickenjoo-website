@@ -7,7 +7,7 @@ import { publicJson } from "@/lib/public/response";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-const success = { message: "Your inquiry has been saved for review in this project's dashboard." };
+const success = { message: "Thanks for your message. It has been saved for review." };
 export async function POST(request: Request) {
   if (request.headers.get("origin") !== new URL(request.url).origin) return publicJson({ error: { message: "Submit the form from this website." } }, 403);
   if (request.headers.get("content-type")?.split(";")[0].trim() !== "application/json") return publicJson({ error: { message: "Use a JSON submission." } }, 415);

@@ -21,12 +21,12 @@ try {
     { _id: fixtureIds[1], slug: `${marker}-future`, title: `${marker}-future-title`, status: "published", publishedDate: "2099-01-01", excerpt: "future", body: ["future"] },
   ]);
   const listing = await (await fetch(`${origin}/news`)).text();
-  assert.ok(listing.includes("Chicken Joo Muna, Adulting Ulit Pagkatapos"));
+  assert.ok(listing.includes("Chicken Joo muna, adulting ulit pagkatapos"));
   assert.ok(!listing.includes(marker));
   for (const suffix of ["draft", "future", "missing"]) {
     const response = await fetch(`${origin}/news/${marker}-${suffix}`);
     const html = await response.text();
-    assert.ok(html.includes("Update not found"));
+    assert.ok(html.includes("Story not found"));
     assert.ok(!html.includes(`${marker}-private-title`) && !html.includes(`${marker}-future-title`));
   }
   console.log("PASS: published listing; draft, future and missing slug privacy.");

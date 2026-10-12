@@ -60,6 +60,7 @@ test("news categories and pagination share the publication filter", async () => 
 test("news rejects invalid filters and preserves valid category in pagination", async () => {
   let received;
   const Page = load("../src/app/(public)/news/page.tsx", {
+    "@/lib/orders/launch-campaign": { isLaunchCampaignActive: () => false, launchCampaign: { slug: "website-launch-25-off" } },
     "next/link": { default: "a" }, "@/components/ContentImage": { default: "img" }, "@/components/PostDate": { default: "time" },
     "@/lib/public/posts": { getPublicPosts: async (...args) => { received = args; return { data: [], totalPages: 3 }; } },
   }).default;
@@ -76,4 +77,24 @@ test("news rejects invalid filters and preserves valid category in pagination", 
   visit(tree);
   assert.ok(hrefs.includes("/news?page=1&type=promotion"));
   assert.ok(hrefs.includes("/news?page=3&type=promotion"));
+});
+
+test("catalog clear action recovers a later page without a search or category", () => {
+  const Controls = load("../src/components/catalog/CatalogControls.tsx", {
+    react: { useState: initial => [initial, () => {}] },
+  }).default;
+  function clearButton(node) {
+    if (Array.isArray(node)) return node.map(clearButton).find(Boolean);
+    if (!node?.props) return undefined;
+    return node.type === "button" && node.props.children === "Clear filters" ? node : clearButton(node.props.children);
+  }
+  for (const kind of ["menu", "branches"]) {
+    let applied;
+    const props = { kind, options: [], onApply: (...args) => { applied = args; } };
+    assert.equal(clearButton(Controls(props)), undefined);
+    const clear = clearButton(Controls({ ...props, hasFilters: true }));
+    assert.ok(clear);
+    clear.props.onClick();
+    assert.deepEqual(applied, ["", ""]);
+  }
 });

@@ -36,7 +36,6 @@ export default function FeatureCarousel({ slides }: { slides: FeatureSlide[] }) 
 
   return (
     <section className="feature-carousel" aria-label="Chicken Joo highlights" aria-roledescription="carousel">
-      <h1 className="sr-only">Chicken Joo: chicken, meals, and moments to share</h1>
       <div
         ref={track}
         className="feature-track"

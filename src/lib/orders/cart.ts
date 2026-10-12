@@ -24,9 +24,9 @@ function subscribe(listener: () => void) {
 export function useCart() { return useSyncExternalStore(subscribe, snapshot, () => empty); }
 export function lineKey(item: OrderLine) { return JSON.stringify([item.menuItemId, [...item.flavors].sort()]); }
 function save(items: CartLine[]) {
-  if (items.length > 20 || items.reduce((sum, item) => sum + item.quantity, 0) > 50) throw new Error("The demo allows 20 cart lines and 50 items.");
+  if (items.length > 20 || items.reduce((sum, item) => sum + item.quantity, 0) > 50) throw new Error("Your cart can hold up to 20 different selections and 50 items in total.");
   try { localStorage.setItem(key, JSON.stringify(items)); cachedRaw = undefined; }
-  catch { throw new Error("Enable browser storage to use the demo cart."); }
+  catch { throw new Error("Enable browser storage to save your cart."); }
   listeners.forEach((listener) => listener());
 }
 export function addToCart(item: CartLine) {

@@ -7,6 +7,7 @@ export type Quote = {
   branch: { id: string; name: string; address: string };
   items: (OrderLine & { name: string; unitPriceCentavos: number; lineTotalCentavos: number })[];
   totalCentavos: number;
+  promotion?: { id: string; name: string; discountCentavos: number };
 };
 export type Receipt = Quote & { reference: string; status: OrderStatus; createdAt: string };
 export class OrderError extends Error {
@@ -18,6 +19,7 @@ export function onlyKeys(value: Record<string, unknown>, keys: string[]) {
   if (Object.keys(value).some((key) => !keys.includes(key))) throw new OrderError("Unexpected request fields.");
 }
 export function parseOrderInput(value: Record<string, unknown>): OrderInput {
+  if (value.launchVoucher !== undefined && typeof value.launchVoucher !== "boolean") throw new OrderError("Invalid launch voucher selection.");
   if (typeof value.branchId !== "string" || !/^[a-f0-9]{24}$/.test(value.branchId)) throw new OrderError("Choose a pickup branch.");
   if (!Array.isArray(value.items) || value.items.length < 1 || value.items.length > 20) throw new OrderError("Add between 1 and 20 cart items.");
   const items = value.items.map((line): OrderLine => {
@@ -27,7 +29,7 @@ export function parseOrderInput(value: Record<string, unknown>): OrderInput {
     if (!Array.isArray(line.flavors) || line.flavors.length > 2 || line.flavors.some((flavor: unknown) => typeof flavor !== "string" || flavor.length > 80) || new Set(line.flavors).size !== line.flavors.length) throw new OrderError("Select distinct flavors for each item.");
     return { menuItemId: line.menuItemId, quantity: line.quantity, flavors: [...line.flavors].sort() };
   });
-  if (items.reduce((sum, item) => sum + item.quantity, 0) > 50) throw new OrderError("The demo allows at most 50 items per order.");
+  if (items.reduce((sum, item) => sum + item.quantity, 0) > 50) throw new OrderError("Choose up to 50 items per order.");
   if (new Set(items.map((item) => JSON.stringify([item.menuItemId, item.flavors]))).size !== items.length) throw new OrderError("Combine matching cart items before checkout.");
   return { branchId: value.branchId, items };
 }

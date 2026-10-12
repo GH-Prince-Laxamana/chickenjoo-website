@@ -3,6 +3,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { Types } from "mongoose";
 import { connectDatabase } from "@/lib/db";
 import { onlyKeys, OrderError, parseGuest, parseOrderInput, type Quote, type Receipt, type OrderStatus } from "./domain";
+import { launchPromotion } from "./launch-campaign";
 
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 export type SavedOrder = {
@@ -28,11 +29,13 @@ export async function quoteOrder(body: Record<string, unknown>): Promise<Quote> 
     if (!Number.isSafeInteger(item.priceCentavos) || item.priceCentavos < 0 || item.priceCentavos > 100_000_000) throw new OrderError("An item price is unavailable. Please try again later.", 503);
     return { ...line, name: String(item.name), unitPriceCentavos: Number(item.priceCentavos), lineTotalCentavos: item.priceCentavos * line.quantity };
   });
-  const snapshot = { branch: { id: input.branchId, name: String(branch.name), address: String(branch.address) }, items, totalCentavos: items.reduce((sum, item) => sum + item.lineTotalCentavos, 0) };
+  const subtotalCentavos = items.reduce((sum, item) => sum + item.lineTotalCentavos, 0);
+  const promotion = body.launchVoucher === true ? launchPromotion(subtotalCentavos) : undefined;
+  const snapshot = { branch: { id: input.branchId, name: String(branch.name), address: String(branch.address) }, items, totalCentavos: subtotalCentavos - (promotion?.discountCentavos ?? 0), ...(promotion ? { promotion } : {}) };
   return { ...snapshot, hash: digest(JSON.stringify(snapshot)) };
 }
 export async function submitOrder(body: Record<string, unknown>) {
-  onlyKeys(body, ["branchId", "items", "guest", "quoteHash", "submissionId", "confirmationToken"]);
+  onlyKeys(body, ["branchId", "items", "guest", "quoteHash", "submissionId", "confirmationToken", "launchVoucher"]);
   const input = parseOrderInput(body), guest = parseGuest(body.guest);
   if (typeof body.submissionId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.submissionId) || typeof body.confirmationToken !== "string" || !/^[0-9a-f]{64}$/.test(body.confirmationToken) || typeof body.quoteHash !== "string" || !/^[0-9a-f]{64}$/.test(body.quoteHash)) throw new OrderError("Review your order before submitting.");
   const _id = new Types.ObjectId(digest(`order:${body.submissionId}`).slice(0, 24));
@@ -48,7 +51,7 @@ export async function submitOrder(body: Record<string, unknown>) {
   const bucket = Math.floor(now.getTime() / (15 * 60_000));
   const limits = connection.db!.collection<{ _id: string; count: number; expiresAt: Date }>("orderSubmissionLimits");
   const attempt = await limits.findOneAndUpdate({ _id: digest(`${guest.email}:${bucket}`) }, { $inc: { count: 1 }, $setOnInsert: { expiresAt: new Date((bucket + 2) * 15 * 60_000) } }, { upsert: true, returnDocument: "after" });
-  if (!attempt || attempt.count > 5) throw new OrderError("Too many demo orders. Please wait 15 minutes and try again.", 429);
+  if (!attempt || attempt.count > 5) throw new OrderError("You’ve reached the order limit. Please wait 15 minutes before placing another order.", 429);
   const order: SavedOrder = { _id, reference: `CJ-${randomBytes(8).toString("hex").toUpperCase()}`, guest, quote, status: "pending", fingerprint, confirmationHash, confirmationExpiresAt: new Date(now.getTime() + 24 * 60 * 60_000), createdAt: now, updatedAt: now };
   try { await orders.insertOne(order); return receipt(order); }
   catch (error) {

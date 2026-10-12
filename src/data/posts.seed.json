@@ -1,71 +1,71 @@
 [
   {
     "seedKey": "cravings-budget-2026-10-09",
-    "title": "Chicken Joo Muna, Adulting Ulit Pagkatapos",
+    "title": "Chicken Joo muna, adulting ulit pagkatapos",
     "slug": "chicken-joo-muna-adulting-ulit-pagkatapos",
     "publishedDate": "2026-10-09",
     "type": "article",
     "status": "published",
-    "excerpt": "May cravings? Make a little room for Chicken Joo, then get back to your day.",
+    "excerpt": "May cravings? Take a chicken break before getting back to your day.",
     "coverImage": "",
     "sourceUrl": "",
     "body": [
-      "Pag may cravings, biglang may “budget adjustment.” Deserve mo rin naman 'yan. Chicken Joo muna, adulting ulit pagkatapos.",
-      "Explore the menu and choose your next chicken meal or sharing box. Daan sa nearest Chicken Joo branch for your next chicken break."
+      "Pag may cravings, biglang may “budget adjustment.” Chicken Joo muna, adulting ulit pagkatapos.",
+      "Choose a chicken meal for yourself or a box to share. Find your nearest Chicken Joo branch and make a little time for lunch."
     ],
-    "ctaLabel": "Explore the Menu",
+    "ctaLabel": "Find your chicken meal",
     "ctaHref": "/menu"
   },
   {
     "seedKey": "teachers-day-2026-10-05",
-    "title": "A Little Joo Time for Our Teachers",
+    "title": "A little Joo time for our teachers",
     "slug": "a-little-joo-time-for-our-teachers",
     "publishedDate": "2026-10-05",
     "type": "article",
     "status": "published",
-    "excerpt": "A thank-you to the teachers who guide, encourage, and believe in their students every day.",
+    "excerpt": "After a day spent teaching, take a little time for yourself. Happy World Teachers’ Day from Chicken Joo.",
     "coverImage": "",
     "sourceUrl": "",
     "body": [
-      "To the teachers who give their time, patience, heart, and energy every day: thank you for showing up, guiding, encouraging, and believing in your students.",
-      "This World Teachers' Day, Chicken Joo celebrates the little things you do that make a big difference. After teaching all day, you deserve a little Joo time.",
-      "Happy World Teachers' Day from Chicken Joo."
+      "To the teachers who prepare lessons, answer questions, and keep showing up for their students: thank you.",
+      "This World Teachers’ Day, take a break from the lesson plan. Share a chicken meal with your fellow teachers or enjoy a little Joo time on your own.",
+      "Happy World Teachers’ Day from Chicken Joo. Find a branch near you for your next chicken break."
     ],
-    "ctaLabel": "Find a Branch",
+    "ctaLabel": "Find a branch near you",
     "ctaHref": "/branches"
   },
   {
     "seedKey": "kainang-mahalaga-2026-09-28",
-    "title": "Kainang Mahalaga, Moments na Masarap Balikan",
+    "title": "Kainang mahalaga, moments na masarap balikan",
     "slug": "kainang-mahalaga-moments-na-masarap-balikan",
     "publishedDate": "2026-09-28",
     "type": "article",
     "status": "published",
-    "excerpt": "Make room for food, conversation, and Chicken Joo na pinagsasaluhan.",
+    "excerpt": "Pass the chicken box around and catch up with the people at your table.",
     "coverImage": "",
     "sourceUrl": "",
     "body": [
       "Kainang mahalaga, moments na masarap balikan.",
-      "Celebrate the simple moments: masarap na food, kwentuhan, tawanan, at Chicken Joo na pinagsasaluhan. Choose a chicken box to share and make time for a meal with the people around you."
+      "Bring a chicken box to the table and give the kwentuhan a little more time. Choose your flavors together, add your favorite sides, and share a Chicken Joo meal."
     ],
-    "ctaLabel": "Explore Sharing Options",
+    "ctaLabel": "Choose a sharing box",
     "ctaHref": "/menu"
   },
   {
     "seedKey": "delivery-artwork-2026-10-12",
     "slug": "chicken-joo-delivery",
-    "title": "Your Chicken Joo cravings, delivered",
-    "excerpt": "Chicken and a movie, lunch at your desk, or a barkada catch-up at home. Find a delivery option for your next Joo moment.",
+    "title": "Chicken Joo for your stay-at-home plans",
+    "excerpt": "Movie night or lunch at your desk? Check delivery options for your nearest Chicken Joo branch.",
     "coverImage": "/images/blog-delivery.webp",
     "type": "article",
     "isFeatured": true,
-    "ctaLabel": "Find your Chicken Joo branch",
+    "ctaLabel": "Find your nearest branch",
     "ctaHref": "/branches",
     "body": [
-      "May cravings, pero stay-at-home ang plano? Make room for a Chicken Joo delivery. Boneless chicken, your chosen flavor, and a side to go with it can turn a regular afternoon into a little Joo time.",
-      "Find Chicken Joo on GrabFood or foodpanda at participating branches. Enter your address in the app to see the menu, delivery area, and fees for your location.",
-      "Ordering for yourself? Start with a chicken meal. May kasama? Explore the sharing boxes and let everyone make a case for their favorite flavor.",
-      "Delivery options vary by branch. Our branch page helps you find the location and contact details to check before ordering."
+      "May cravings, pero stay-at-home ang plano? A Chicken Joo meal fits right into lunch at your desk or a movie with the barkada.",
+      "Check GrabFood or foodpanda for participating branches at your address. The app shows the available menu, delivery area, and fees.",
+      "Choose a solo chicken meal for lunch. If everyone’s joining in, browse the sharing boxes and agree on your flavors before ordering.",
+      "Delivery availability and prices vary by branch and service. Use the branch page to find a nearby location; this website’s checkout saves pickup selections only."
     ],
     "publishedDate": "2026-10-12",
     "status": "published",
@@ -74,18 +74,18 @@
   {
     "seedKey": "work-break-artwork-2026-10-12",
     "slug": "busy-sa-work-we-got-joo",
-    "title": "Busy sa work? We got Joo.",
-    "excerpt": "The group chat can debate the deadline later. Make a little room on the desk for a two-flavor chicken break.",
+    "title": "Busy sa work? Take a Joo break.",
+    "excerpt": "Put lunch on the schedule. A two-flavor chicken box gives the team something to share.",
     "coverImage": "/images/blog-work-break.webp",
     "type": "article",
     "isFeatured": false,
-    "ctaLabel": "Explore sharing boxes",
+    "ctaLabel": "Choose a sharing box",
     "ctaHref": "/menu",
     "body": [
-      "May deadline, may meeting, may isa pang revision. Somewhere between all that work, lunch still deserves a spot on the schedule.",
-      "A two-flavor Chicken Joo box gives everyone something to reach for. Start with Original on one side and Yangnyeom on the other, then pass it around.",
-      "Browse the 14-piece two-flavor option, then choose from the flavors offered with that item. Add rice or sides separately if that is your kind of workday meal.",
-      "Take the break, pass the box, and catch up with your ka-work. For delivery, check your branch's available service and current prices."
+      "The meeting can run long, but lunch still needs a place on the schedule. Take a few minutes away from the screen for a Chicken Joo break.",
+      "Sharing with your ka-work? Choose a 14-piece two-flavor box so everyone gets a say. Original and Yangnyeom make one pair to try.",
+      "Each chicken box lists its available flavors on the menu. Add Japanese rice or Joomami Fries separately to build the meal you want.",
+      "Pass the box around and catch up over lunch. If you’re ordering through a delivery service, check the branch’s current menu and prices there."
     ],
     "publishedDate": "2026-10-12",
     "status": "published",
@@ -95,17 +95,17 @@
     "seedKey": "citrus-spicy-artwork-2026-10-12",
     "slug": "team-citrus-or-team-spicy",
     "title": "Team citrus or team spicy?",
-    "excerpt": "Yuja Orange and Yangnyeom Super Spicy share the spotlight. Two different ways to answer the same chicken craving.",
+    "excerpt": "Yuja Orange and Yangnyeom Super Spicy bring two different flavors to the chicken conversation.",
     "coverImage": "/images/blog-citrus-or-spicy.webp",
     "type": "promotion",
     "isFeatured": true,
-    "ctaLabel": "Explore the chicken menu",
+    "ctaLabel": "See the current menu",
     "ctaHref": "/menu",
     "body": [
-      "Some days call for a citrus twist. Other days, you want the heat. This Chicken Joo flavor spotlight puts Yuja Orange beside Yangnyeom Super Spicy so the debate can begin.",
-      "Go for Yuja Orange when a citrus twist sounds good. Bring on Yangnyeom Super Spicy when your chicken break needs a little more heat.",
-      "Send the photo to your usual food buddy and see which side they choose. Then browse the menu for a solo meal or a box to share.",
-      "Ask your branch about current flavor specials before ordering. Availability can vary by location."
+      "Yuja Orange brings a citrus twist. Yangnyeom Super Spicy brings the heat. This flavor spotlight gives you two ideas for your next chicken break.",
+      "Send the artwork to your usual food buddy and compare picks. You might agree on one flavor or each have a favorite to ask about.",
+      "Browse the current menu for solo meals and sharing boxes. The flavor choices listed with each dish show what you can select online.",
+      "These campaign flavors may differ from the current menu. Check with your branch for availability and prices before planning your order."
     ],
     "publishedDate": "2026-10-12",
     "status": "published",
@@ -115,17 +115,17 @@
     "seedKey": "customer-review-artwork-2026-10-12",
     "slug": "a-little-love-from-a-ka-joo",
     "title": "A little love from a ka-Joo",
-    "excerpt": "Lovely's featured review has plenty of love for the chicken, the flavors, and even the rice. Salamat for making us part of your lunch.",
+    "excerpt": "Lovely’s featured review gives the chicken and the rice a shout-out. Salamat for coming back for another Chicken Joo meal.",
     "coverImage": "/images/blog-customer-review.webp",
     "type": "article",
     "isFeatured": false,
-    "ctaLabel": "Find the San Fernando branch",
+    "ctaLabel": "Find a Chicken Joo branch",
     "ctaHref": "/branches",
     "body": [
-      "A repeat order is a lovely thing to hear about. Our ka-Joo Lovely keeps coming back for Yangnyeom, spicy chicken, garlic, and Korean barbecue.",
+      "Our ka-Joo Lovely has a few favorites, including Yangnyeom, spicy chicken, garlic, and Korean barbecue. Her featured review gives the rice some love, too.",
       "“kahit rice nila super sarap! worth your money talaga.” — Lovely, from the foodpanda review featured above.",
-      "Sending some love to our San Fernando Downtown ka-Joos. We love seeing a chicken lunch become something you look forward to again.",
-      "Salamat, Lovely. If you have found your own go-to flavor, share your experience with the branch you visited. Your feedback helps the next ka-Joo choose their first box."
+      "Salamat, Lovely, and our San Fernando Downtown ka-Joos. We’re glad Chicken Joo has a place in your lunch plans.",
+      "Have a favorite flavor of your own? Share your experience with the branch you visited. Your next ka-Joo might find their first chicken meal through your recommendation."
     ],
     "publishedDate": "2026-10-12",
     "status": "published",
@@ -134,18 +134,18 @@
   {
     "seedKey": "lunch-break-artwork-2026-10-12",
     "slug": "hit-pause-have-a-chicken-joo-break",
-    "title": "Hit pause. Have a Chicken Joo break.",
-    "excerpt": "Step away from the keyboard for boneless chicken and rice. Your lunch break deserves a little Joo time.",
+    "title": "Hit pause for a Chicken Joo break",
+    "excerpt": "Step away from the keyboard for boneless chicken and rice. Choose your flavor and make time for lunch.",
     "coverImage": "/images/blog-lunch-break.webp",
     "type": "article",
     "isFeatured": false,
-    "ctaLabel": "Choose your chicken meal",
+    "ctaLabel": "Choose your lunch",
     "ctaHref": "/menu",
     "body": [
-      "If only every keyboard came with this break button. Until then, give yourself a reason to step away from the screen: Chicken Joo boneless chicken with rice.",
-      "Keep the lunch decision simple. Choose a chicken meal, pick your flavor, and make a little space in your day to enjoy it.",
-      "Original, Yangnyeom, Extra Spicy, or Garlic? The menu shows the choices available for each meal, so you can keep your usual order or try something different.",
-      "Save the photo for your next lunch reminder. Work can have the next hour; this break can have a little Joo."
+      "That keyboard break button would come in handy. Until then, step away from the screen and make lunch a Chicken Joo break.",
+      "Start with a chicken-and-rice meal, then choose your flavor. Each dish lists its choices so you can find your usual pick or try another.",
+      "Keep it Original, go with Yangnyeom, or try the spicy or garlic option when available. Your meal options show the current selection.",
+      "Find a branch near your next lunch stop. A little time for chicken and rice makes a welcome pause between the morning’s work and the afternoon’s plans."
     ],
     "publishedDate": "2026-10-12",
     "status": "published",
@@ -154,18 +154,18 @@
   {
     "seedKey": "bestsellers-artwork-2026-10-12",
     "slug": "meet-the-chicken-joo-bestseller-lineup",
-    "title": "Meet the Chicken Joo bestseller lineup",
-    "excerpt": "Yangnyeom, Korean Barbecue, and Snow Cheese take their turn in the spotlight. Start here for your next flavor conversation.",
+    "title": "Yangnyeom, Korean Barbecue, or Snow Cheese?",
+    "excerpt": "Three flavors from the Chicken Joo spotlight. Pick the one you’d ask about on your next branch visit.",
     "coverImage": "/images/blog-bestsellers.webp",
     "type": "promotion",
     "isFeatured": false,
-    "ctaLabel": "Find your flavor",
+    "ctaLabel": "Explore the chicken menu",
     "ctaHref": "/menu",
     "body": [
-      "Three trays, three different cravings. Meet the Chicken Joo bestseller lineup: Yangnyeom, Korean Barbecue, and Snow Cheese.",
-      "Yangnyeom shows off its red glaze. Korean Barbecue brings a darker, sesame-topped finish. Snow Cheese takes a different direction with its generous pale coating.",
-      "Picking for a group? Share the lineup in the barkada chat before deciding on your chicken box. Everyone has a favorite worth defending.",
-      "Explore the flavor gallery, then check the options offered with your chosen meal. For flavors outside the current online selection, ask your branch about availability."
+      "Yangnyeom, Korean Barbecue, and Snow Cheese take a turn in the spotlight. Share the artwork with the barkada and compare your picks.",
+      "Yangnyeom has its red glaze. Korean Barbecue has a darker finish with sesame, while Snow Cheese has a pale coating. Each tray brings a different look to the table.",
+      "Planning a meal together? Browse the chicken boxes and choose a portion for your group. Add rice or fries separately if you want sides.",
+      "The gallery includes flavors beyond the current online selection. Check each dish’s choices on the menu, and ask your branch about other flavors and prices."
     ],
     "publishedDate": "2026-10-12",
     "status": "published",
@@ -174,18 +174,18 @@
   {
     "seedKey": "new-flavors-artwork-2026-10-12",
     "slug": "flavor-spotlight-salted-egg-spicy-yuja",
-    "title": "Meet your next flavor craving",
-    "excerpt": "Salted Egg, Yangnyeom Super Spicy, and Yuja Orange. Get to know the trio from Chicken Joo's flavor campaign.",
+    "title": "Get to know the campaign flavors",
+    "excerpt": "Salted Egg, Yangnyeom Super Spicy, and Yuja Orange take their turn in the Chicken Joo spotlight.",
     "coverImage": "/images/blog-new-flavors.webp",
     "type": "promotion",
     "isFeatured": true,
-    "ctaLabel": "Explore the current menu",
+    "ctaLabel": "See the current menu",
     "ctaHref": "/menu",
     "body": [
-      "Give your usual chicken order a new twist with Salted Egg, Yangnyeom Super Spicy, or Yuja Orange.",
-      "Salted Egg is the golden-coated tray in the spotlight. Yangnyeom Super Spicy brings the glossy red finish. Yuja Orange pairs its chicken with an orange-inspired twist.",
-      "The artwork shows rice meals and sharing portions, so there is inspiration here for a solo chicken break or a barkada meal. Pick the flavor that catches your eye and make it the next one you ask about.",
-      "These flavors were featured in a limited-time campaign. Check with your branch for current specials and prices before ordering."
+      "Salted Egg, Yangnyeom Super Spicy, and Yuja Orange bring three choices to this Chicken Joo campaign. Which one would you ask about first?",
+      "Salted Egg is the golden-coated tray in the artwork. Yangnyeom Super Spicy has the glossy red finish, and Yuja Orange brings the citrus-inspired option.",
+      "The artwork features rice meals and sharing portions. Use it as inspiration for your next branch visit, then check the current menu for dishes you can order.",
+      "These flavors appeared in a limited-time campaign. Ask your branch about current availability and prices before choosing a special."
     ],
     "publishedDate": "2026-10-12",
     "status": "published",

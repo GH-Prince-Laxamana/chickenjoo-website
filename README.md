@@ -225,6 +225,16 @@ calendar dates, and supplied seed content.
 
 ## Simulated pickup ordering
 
+The website-launch campaign is maintained in `src/data/launch-campaign.json`.
+Run `npm run seed:campaign` to publish it on a new database; reruns preserve
+existing content. During September 15–October 15, 2026 (Philippine time),
+checkout requests a server-calculated 25% total-order discount when the
+browser-local voucher has not been redeemed. Discount snapshots appear in
+checkout, receipts, and admin order review. Base catalog prices are unchanged.
+The marker is consumed after a successful save and recovered from a receipt.
+This is one-use-per-browser simulation: clearing storage, switching browser,
+or simultaneous tabs can bypass it. It is not customer identity enforcement.
+
 `/cart`, `/checkout`, and `/confirmation` implement guest pickup simulation only.
 No payment, delivery, customer accounts, food preparation, pickup reservation or
 confirmation email is provided. Use test guest details. Cart storage contains

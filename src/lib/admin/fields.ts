@@ -11,7 +11,7 @@ export const fields: Record<Resource, Field[]> = {
     { key: "image", label: "Image path", kind: "text", max: 300, help: "Optional supplied asset: /images/filename.webp (jpg, png, avif also supported)." },
     { key: "flavorOptions", label: "Flavor options", kind: "lines", help: "One flavor per line; leave blank for sides." },
     { key: "requiredFlavorCount", label: "Required flavors", kind: "select", options: ["0", "1", "2"] },
-    { key: "isAvailable", label: "Available for the demonstration", kind: "boolean" },
+    { key: "isAvailable", label: "Available to order", kind: "boolean" },
     { key: "isFeatured", label: "Featured", kind: "boolean" },
     { key: "isArchived", label: "Archived (hidden publicly)", kind: "boolean" },
   ],
