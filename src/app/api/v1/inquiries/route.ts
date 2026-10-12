@@ -4,12 +4,13 @@ import { connectDatabase } from "@/lib/db";
 import { getContentModels } from "@/lib/models/content";
 import { validateInquiry } from "@/lib/public/content-validation";
 import { publicJson } from "@/lib/public/response";
+import { isSameOrigin } from "@/lib/http/origin";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const success = { message: "Thanks for your message. It has been saved for review." };
 export async function POST(request: Request) {
-  if (request.headers.get("origin") !== new URL(request.url).origin) return publicJson({ error: { message: "Submit the form from this website." } }, 403);
+  if (!isSameOrigin(request)) return publicJson({ error: { message: "Submit the form from this website." } }, 403);
   if (request.headers.get("content-type")?.split(";")[0].trim() !== "application/json") return publicJson({ error: { message: "Use a JSON submission." } }, 415);
   let input: Record<string, unknown>;
   try {

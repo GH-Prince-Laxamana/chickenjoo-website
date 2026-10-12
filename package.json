@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:network": "next dev --hostname 0.0.0.0",
+    "dev:test": "next dev --port=3100",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

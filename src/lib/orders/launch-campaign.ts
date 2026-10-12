@@ -8,6 +8,9 @@ export const launchCampaign = {
 export function isLaunchCampaignActive(now = Date.now()) {
   return now >= launchCampaign.startsAt && now < launchCampaign.endsAt;
 }
+export function isLaunchCampaignEnded(now = Date.now()) {
+  return now >= launchCampaign.endsAt;
+}
 export function launchPromotion(subtotalCentavos: number, now = Date.now()) {
   return isLaunchCampaignActive(now)
     ? { id: launchCampaign.id, name: launchCampaign.name, discountCentavos: Math.round(subtotalCentavos / 4) }

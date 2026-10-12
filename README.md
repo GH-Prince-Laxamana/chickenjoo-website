@@ -32,6 +32,22 @@ Open http://localhost:3000. The informational pages can run without MongoDB;
 database configuration is validated when the connection helper is called.
 Restart the development server after changing environment variables.
 
+To let another device on the same network open the development site, start it
+with the LAN binding instead:
+
+```bash
+npm run dev:network
+```
+
+Find the host computer's private IPv4 address with `ipconfig`, then have the
+other device open `http://<host-ip>:3000`. Windows Firewall must allow inbound
+TCP traffic for Node.js on the selected network profile. The other device does
+not need your `.env.local`: browser requests go to the host computer, and only
+the host's server process connects to MongoDB. If the page opens but Menu,
+Branches, Contact, or checkout requests return 503, run `npm run db:check` on
+the host computer; that is a server/database configuration problem, not a
+browser-device problem.
+
 ### Sharing the project and diagnosing local 503 errors
 
 Real `.env` files stay ignored; `.env.example`, `package-lock.json`, source,

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import ContentImage from "@/components/ContentImage";
 import FeaturedVideo from "@/components/FeaturedVideo";

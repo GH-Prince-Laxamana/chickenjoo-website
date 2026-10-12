@@ -6,7 +6,7 @@ import { cache } from "react";
 import ContentImage from "@/components/ContentImage";
 import PostDate from "@/components/PostDate";
 import { getPublicPost } from "@/lib/public/posts";
-import { launchCampaign } from "@/lib/orders/launch-campaign";
+import { isLaunchCampaignEnded, launchCampaign } from "@/lib/orders/launch-campaign";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const readPost = cache(getPublicPost);
@@ -20,8 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ArticlePage({ params }: Props) {
   const post = await readPost((await params).slug);
   if (!post) notFound();
-  const launchOfferEnded =
-    post.slug === launchCampaign.slug && Date.now() >= launchCampaign.endsAt;
+  const launchOfferEnded = post.slug === launchCampaign.slug && isLaunchCampaignEnded();
   return (
     <article className="mx-auto max-w-6xl px-4 py-8 sm:px-8 sm:py-12">
       <Link

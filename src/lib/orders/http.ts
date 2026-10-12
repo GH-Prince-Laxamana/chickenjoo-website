@@ -1,8 +1,9 @@
 import "server-only";
 import { readJson, adminFailure, adminJson } from "@/lib/admin/http";
+import { isSameOrigin } from "@/lib/http/origin";
 import { OrderError } from "./domain";
 export async function orderBody(request: Request) {
-  if (request.headers.get("origin") !== new URL(request.url).origin) throw new OrderError("Submit this request from the website.", 403);
+  if (!isSameOrigin(request)) throw new OrderError("Submit this request from the website.", 403);
   return readJson(request);
 }
 export { adminJson as orderJson };

@@ -1,5 +1,6 @@
 import "server-only";
 import { getAdmin } from "@/lib/auth/session";
+import { isSameOrigin } from "@/lib/http/origin";
 
 export class AdminError extends Error {
   status: number;
@@ -13,7 +14,7 @@ export function adminFailure(error: unknown) {
     : adminJson({ error: { message: "The request could not be completed. Please try again shortly." } }, 503);
 }
 export function sameOrigin(request: Request) {
-  if (request.headers.get("origin") !== new URL(request.url).origin) throw new AdminError("Submit this request from the admin website.", 403);
+  if (!isSameOrigin(request)) throw new AdminError("Submit this request from the admin website.", 403);
 }
 export async function authorize(request?: Request) {
   const admin = await getAdmin();
