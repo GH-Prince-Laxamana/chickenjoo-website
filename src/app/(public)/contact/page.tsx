@@ -1,58 +1,38 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, Mail, MessageCircle, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import InquiryForm from "@/components/InquiryForm";
 import { companyContact } from "@/lib/contact";
 export const metadata: Metadata = {
   title: "Contact Us",
-  description: "Contact Chicken Joo for general questions, campaign inquiries, and feedback. Reach us by email, phone, Facebook, or our inquiry form.",
+  description: "Contact Chicken Joo for general questions, campaign inquiries, and feedback. Reach us by email, phone, or our inquiry form.",
 };
 export default function ContactPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 pb-16 pt-9 sm:px-8 sm:py-16">
-      <header className="max-w-3xl">
-        <p className="text-sm font-semibold text-cj-red">Contact us</p>
-        <h1 className="mt-3 font-display text-4xl font-extrabold leading-[1.1] tracking-tight text-cj-navy sm:text-6xl">Let’s talk Chicken Joo.</h1>
-        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-cj-charcoal">Have a question, an idea, or feedback on your Chicken Joo experience? Get in touch using the details below or leave us a message.</p>
-      </header>
-
-      <div className="mt-9 grid items-start gap-7 sm:mt-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
-        <div className="space-y-7">
-          <section aria-labelledby="direct-contact-heading" className="rounded-3xl bg-cj-navy p-6 text-white sm:p-8">
-            <MessageCircle size={28} className="text-cj-yellow" aria-hidden="true" />
-            <h2 id="direct-contact-heading" className="mt-4 font-display text-2xl font-bold tracking-tight sm:text-3xl">We’re here to help.</h2>
-            <p className="mt-4 leading-relaxed text-white/90">Ask about Chicken Joo, our campaigns, or share something you’d like us to hear.</p>
-            <dl className="mt-6 space-y-4">
-              <div>
-                <dt className="text-sm font-semibold text-white/80">Email</dt>
-                <dd><a href={`mailto:${companyContact.email}`} className="inline-flex min-h-11 items-center gap-2 break-all font-semibold underline underline-offset-4"><Mail size={18} className="shrink-0" aria-hidden="true" />{companyContact.email}</a></dd>
+    <div className="mx-auto w-full max-w-7xl px-4 pb-16 pt-9 sm:px-8 sm:py-16">
+      <div className="grid items-start gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
+        <section aria-labelledby="contact-heading" className="text-cj-navy lg:self-center lg:pr-8">
+          <h1 id="contact-heading" className="font-display text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl">We’re here to help.</h1>
+          <p className="mt-4 max-w-lg leading-relaxed text-cj-charcoal">Ask about Chicken Joo, our campaigns, or share something you’d like us to hear.</p>
+          <ul className="mt-7 divide-y divide-cj-navy/10 border-t border-cj-navy/10">
+            <li className="flex items-center gap-4 py-5">
+              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-cj-cream text-cj-red"><Mail size={21} aria-hidden="true" /></span>
+              <a href={`mailto:${companyContact.email}`} className="min-w-0 break-all font-semibold leading-relaxed transition-colors hover:text-cj-red">{companyContact.email}</a>
+            </li>
+            <li className="flex items-center gap-4 py-5">
+              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-cj-cream text-cj-red"><Phone size={21} aria-hidden="true" /></span>
+              <div className="min-w-0">
+                <a href={companyContact.phoneHref} className="font-semibold transition-colors hover:text-cj-red">{companyContact.phone}</a>
+                <p className="mt-1 text-sm text-cj-charcoal">Available {companyContact.supportHours}</p>
               </div>
-              <div>
-                <dt className="text-sm font-semibold text-white/80">Phone</dt>
-                <dd><a href={companyContact.phoneHref} className="inline-flex min-h-11 items-center gap-2 font-semibold underline underline-offset-4"><Phone size={18} aria-hidden="true" />{companyContact.phone}</a></dd>
-              </div>
-              <div>
-                <dt className="text-sm font-semibold text-white/80">Company address</dt>
-                <dd className="mt-2"><address className="not-italic leading-relaxed">{companyContact.address}</address></dd>
-              </div>
-              <div>
-                <dt className="text-sm font-semibold text-white/80">Support hours</dt>
-                <dd className="mt-2 leading-relaxed">{companyContact.supportHours}</dd>
-              </div>
-            </dl>
-            <a href={companyContact.facebook} target="_blank" rel="noopener noreferrer" className="cj-button mt-6">Chicken Joo on Facebook <ArrowRight size={18} className="shrink-0" aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a>
-            <p className="mt-5 text-sm leading-relaxed text-white/85">Looking for a store’s address or opening hours? <Link href="/branches" className="inline-flex min-h-11 items-center font-semibold text-white underline underline-offset-4">Find your branch</Link>.</p>
-          </section>
-
-          <section aria-labelledby="general-inquiry-heading" className="px-1">
-            <h2 id="general-inquiry-heading" className="mt-3 text-xl font-bold text-cj-navy">We’d like to hear from you.</h2>
-            <p className="mt-3 leading-relaxed text-cj-charcoal">Tell us about your experience or ask a general question. Add a short subject so we can understand what your message is about.</p>
-            <p className="mt-3 text-sm leading-relaxed text-cj-charcoal">Messages sent through the form are saved privately for the admin to review.</p>
-          </section>
-        </div>
+            </li>
+            <li className="flex items-center gap-4 py-5">
+              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-cj-cream text-cj-red"><MapPin size={21} aria-hidden="true" /></span>
+              <address className="min-w-0 not-italic leading-relaxed">{companyContact.address}</address>
+            </li>
+          </ul>
+        </section>
         <InquiryForm />
       </div>
-
     </div>
   );
 }

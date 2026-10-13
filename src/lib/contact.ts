@@ -4,7 +4,7 @@ export const companyContact = {
   phone: "0976 200 2000",
   phoneHref: "tel:+639762002000",
   address: "Lot 5 Blk 7 Japan Street Phase 2, Barangay Pinagsama, Taguig City, 1636",
-  supportHours: "9 AM – 9 PM",
+  supportHours: "9:00 AM to 9:00 PM",
   facebook: "https://www.facebook.com/profile.php?id=61574092604052",
   instagram: "https://www.instagram.com/chickenjoo.sfdo/",
 };
