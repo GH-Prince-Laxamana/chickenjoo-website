@@ -22,18 +22,18 @@ export default async function ArticlePage({ params }: Props) {
   if (!post) notFound();
   const launchOfferEnded = post.slug === launchCampaign.slug && isLaunchCampaignEnded();
   return (
-    <article className="mx-auto max-w-6xl px-4 py-8 sm:px-8 sm:py-12">
+    <article className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-8 sm:py-12">
       <Link
         href="/news"
         className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-cj-navy hover:text-cj-red"
       >
         <ArrowLeft size={18} aria-hidden="true" /> Back to news
       </Link>
-      <header className="mx-auto mb-8 mt-5 max-w-3xl sm:mb-12">
+      <header className="mb-8 mt-5 sm:mb-12">
         <p className="cj-eyebrow">
           {post.type === "promotion" ? "CAMPAIGN SPOTLIGHT" : "JOO MOMENTS"}
         </p>
-        <h1 className="mt-3 break-words font-display text-4xl font-extrabold leading-[1.1] tracking-tight text-cj-navy sm:text-5xl">
+        <h1 className="mt-3 wrap-break-word font-display text-4xl font-extrabold leading-[1.1] tracking-tight text-cj-navy sm:text-5xl">
           {post.title}
         </h1>
         <p className="mt-5 text-lg leading-relaxed">{post.excerpt}</p>
@@ -46,7 +46,7 @@ export default async function ArticlePage({ params }: Props) {
         </p>
       </header>
       <div
-        className={`grid items-start gap-8 lg:gap-12 ${post.coverImage ? "md:grid-cols-2" : "mx-auto max-w-3xl"}`}
+        className={`grid items-start gap-8 lg:gap-12 ${post.coverImage ? "md:grid-cols-2" : "max-w-3xl"}`}
       >
         {post.coverImage && (
           <figure className="min-w-0">
@@ -60,15 +60,7 @@ export default async function ArticlePage({ params }: Props) {
               {post.type === "promotion" &&
                 "Read the campaign details for availability, dates, and applicable terms."}
             </figcaption>
-            <a
-              href={post.coverImage}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center text-xs font-semibold text-cj-navy underline underline-offset-4"
-            >
-              View full-size artwork
-              <span className="sr-only"> (opens in a new tab)</span>
-            </a>
+            
           </figure>
         )}
         <div>
@@ -80,14 +72,14 @@ export default async function ArticlePage({ params }: Props) {
           )}
           <div className="space-y-6 text-base leading-[1.85] sm:text-lg">
             {post.body.map((paragraph, index) => (
-              <p className="whitespace-pre-line break-words" key={index}>
+              <p className="whitespace-pre-line text-justify" key={index}>
                 {paragraph}
               </p>
             ))}
           </div>
           {post.ctaHref && post.ctaLabel && (
-            <div className="mt-8 rounded-2xl bg-white p-6 shadow-sm">
-              <p className="mb-4 text-xl font-bold text-cj-navy">
+            <div className="mt-8 rounded-2xl bg-cj-navy p-6 shadow-sm">
+              <p className="mb-4 text-xl font-bold text-white">
                 Plan your next chicken break.
               </p>
               <Link
@@ -112,24 +104,7 @@ export default async function ArticlePage({ params }: Props) {
           )}
         </div>
       </div>
-      <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-cj-navy/10 pt-6">
-        <Link
-          href="/news"
-          className="inline-flex min-h-11 items-center gap-2 font-bold text-cj-red"
-        >
-          Read more Chicken Joo stories{" "}
-          <ArrowRight size={18} aria-hidden="true" />
-        </Link>
-        <a
-          href="https://www.facebook.com/profile.php?id=61574092604052"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex min-h-11 items-center text-sm font-semibold text-cj-navy underline underline-offset-4"
-        >
-          Follow Chicken Joo on Facebook
-          <span className="sr-only"> (opens in a new tab)</span>
-        </a>
-      </div>
+      
     </article>
   );
 }

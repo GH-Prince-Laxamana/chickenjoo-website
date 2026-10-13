@@ -8,17 +8,19 @@ export default function ContentImage({
   poster = false,
   card = false,
   landscape = false,
+  banner = false,
 }: {
   src?: string | null;
   label: string;
   poster?: boolean;
   card?: boolean;
   landscape?: boolean;
+  banner?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
   return (
     <div
-      className={`relative flex ${landscape ? "aspect-[6/5]" : poster || card ? "aspect-square" : "aspect-[16/9]"} ${card ? "bg-cj-cream" : poster ? "bg-white" : "bg-cj-navy/5"} items-center justify-center overflow-hidden ${card ? "" : ""} p-6 text-center`}
+      className={`relative flex ${banner ? "h-60 sm:h-72 md:h-[340px] lg:h-[370px]" : landscape ? "aspect-[6/5]" : poster || card ? "aspect-square" : "aspect-[16/9]"} ${banner ? "bg-cj-yellow" : card ? "bg-cj-cream" : poster ? "bg-white" : "bg-cj-navy/5"} items-center justify-center overflow-hidden p-6 text-center`}
     >
       {src && !failed ? (
         <Image
@@ -26,7 +28,7 @@ export default function ContentImage({
           alt={label}
           fill
           sizes="(max-width: 640px) 100vw, 50vw"
-          className="object-cover object-top"
+          className={banner ? "object-contain object-left" : "object-cover object-top"}
           onError={() => setFailed(true)}
         />
       ) : card ? (

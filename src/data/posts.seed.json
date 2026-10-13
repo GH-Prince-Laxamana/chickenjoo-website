@@ -190,5 +190,100 @@
     "publishedDate": "2026-10-12",
     "status": "published",
     "sourceUrl": ""
+  },
+  {
+    "seedKey": "yangnyeom-spotlight-2026-10-13",
+    "slug": "yangnyeom-in-the-spotlight",
+    "title": "Yangnyeom in the spotlight",
+    "excerpt": "Take a closer look at the glossy chicken behind one of Chicken Joo’s familiar flavor picks.",
+    "coverImage": "/images/blog/blog-yangnyeom-best-seller.jpg",
+    "type": "article",
+    "isFeatured": false,
+    "ctaLabel": "Explore the menu",
+    "ctaHref": "/menu",
+    "body": [
+      "The Yangnyeom artwork gets right to the good part: a close-up of sauced boneless chicken, ready for the next bite. Chicken Joo calls it one of its best sellers in the image.",
+      "Try Yangnyeom with a solo meal or choose it for a sharing box. If you are picking two flavors for the table, compare it with Original or another option listed for your box.",
+      "Browse the menu to see which meals and flavor choices are currently available for pickup."
+    ],
+    "publishedDate": "2026-10-13",
+    "status": "published",
+    "sourceUrl": ""
+  },
+  {
+    "seedKey": "weekend-treats-2026-10-13",
+    "slug": "weekend-treats-to-share",
+    "title": "Weekend treats to share",
+    "excerpt": "Chicken, Joomami Fries, and a little time around the table make an easy weekend plan.",
+    "coverImage": "/images/blog/blog-weekend-treats.jpg",
+    "type": "article",
+    "isFeatured": false,
+    "ctaLabel": "Find a branch",
+    "ctaHref": "/branches",
+    "body": [
+      "The weekend artwork brings together chicken and Joomami Fries for a meal that is easy to share. Pick a chicken portion for your group, then add a side if everyone wants fries at the table.",
+      "Choosing flavors can be part of the plan. A two-flavor box lets the barkada make two picks, while a smaller meal works for a solo break.",
+      "Find a nearby branch and check its hours before you head out. If you prefer delivery, check the available menu and service area in your delivery app."
+    ],
+    "publishedDate": "2026-10-13",
+    "status": "published",
+    "sourceUrl": ""
+  },
+  {
+    "seedKey": "joo-date-study-break-2026-10-13",
+    "slug": "a-joo-date-between-deadlines",
+    "title": "A Joo date between deadlines",
+    "excerpt": "Make room for a chicken break when the to-do list starts filling up.",
+    "coverImage": "/images/blog/blog-school-due-joo-dates.jpg",
+    "type": "article",
+    "isFeatured": false,
+    "ctaLabel": "Find your meal",
+    "ctaHref": "/menu",
+    "body": [
+      "The school-day artwork puts a tray of chicken in the middle of a desk full of notes and due dates. It is a reminder to make time for lunch between classes and tasks.",
+      "Take a short break on your own or bring a friend along. Choose a chicken meal, pick a flavor, and save the rest of the to-do list for after you eat.",
+      "Browse the current menu for meal choices and check branch details before planning your stop."
+    ],
+    "publishedDate": "2026-10-13",
+    "status": "published",
+    "sourceUrl": ""
+  },
+  {
+    "seedKey": "payday-mood-2026-10-13",
+    "slug": "payday-mood-chicken-and-fries",
+    "title": "Payday mood: chicken and fries",
+    "excerpt": "Pair boneless chicken with Joomami Fries for the lunch break you have been planning.",
+    "coverImage": "/images/blog/blog-payday-mood.jpg",
+    "type": "article",
+    "isFeatured": false,
+    "ctaLabel": "See chicken meals",
+    "ctaHref": "/menu",
+    "body": [
+      "The payday artwork pairs sauced boneless chicken with Joomami Fries. It is a good starting point when you want to make lunch feel like a treat.",
+      "Choose a chicken-and-fries meal if you are eating solo, or put together a larger chicken box and a side for the group. The menu lists the portions, prices, and flavors available online.",
+      "Check your chosen branch for current availability. Delivery options, prices, and service areas depend on the app and location."
+    ],
+    "publishedDate": "2026-10-13",
+    "status": "published",
+    "sourceUrl": ""
+  },
+  {
+    "seedKey": "bati-na-chicken-break-2026-10-13",
+    "slug": "bati-na-over-chicken-joo",
+    "title": "Bati na over Chicken Joo",
+    "excerpt": "A shared chicken break gives the kwentuhan somewhere to start.",
+    "coverImage": "/images/blog/blog-bati-na.jpg",
+    "type": "article",
+    "isFeatured": false,
+    "ctaLabel": "Choose a sharing box",
+    "ctaHref": "/menu",
+    "body": [
+      "The ‘Bati na’ artwork has a simple idea: put something good on the table and make time to talk. A box of Chicken Joo can be part of that moment.",
+      "Pick a sharing portion, choose the flavors together, and let the conversation take its own pace. Rice and sides can be added separately if you want to make it a full meal.",
+      "Browse the menu for current portions and flavor choices, then decide where to meet for your chicken break."
+    ],
+    "publishedDate": "2026-10-13",
+    "status": "published",
+    "sourceUrl": ""
   }
 ]

@@ -15,6 +15,7 @@ export type PublicPost = {
 export function todayDate() { return new Date().toISOString().slice(0, 10); }
 function visible() { return { status: "published" as const, publishedDate: { $type: "string" as const, $lte: todayDate(), $regex: /^\d{4}-\d{2}-\d{2}$/ } }; }
 const selection = "title slug excerpt body type publishedDate coverImage isFeatured sourceUrl ctaLabel ctaHref";
+const postsPerPage = 6;
 type PostProjection = { title: string; slug: string; excerpt: string; body: string[]; type?: string; publishedDate?: string | null; coverImage?: string; isFeatured?: boolean; sourceUrl?: string; ctaLabel?: string; ctaHref?: string };
 function publicPost(post: PostProjection): PublicPost {
   return {
@@ -28,14 +29,14 @@ function publicPost(post: PostProjection): PublicPost {
     ctaHref: post.ctaHref === "/menu" || post.ctaHref === "/branches" ? post.ctaHref : null,
   };
 }
-export async function getPublicPosts(page = 1, type?: "article" | "promotion") {
+export async function getPublicPosts(page = 1, type?: "article" | "promotion", excludeSlug?: string) {
   const { posts } = getContentModels(await connectDatabase());
-  const filter = { ...visible(), ...(type ? { type } : {}) };
+  const filter = { ...visible(), ...(type ? { type } : {}), ...(excludeSlug ? { slug: { $ne: excludeSlug } } : {}) };
   const [records, total] = await Promise.all([
-    posts.find(filter).select(selection).sort({ publishedDate: -1, slug: 1 }).skip((page - 1) * 12).limit(12).maxTimeMS(5000).lean().exec(),
+    posts.find(filter).select(selection).sort({ type: -1, publishedDate: -1, slug: 1 }).skip((page - 1) * postsPerPage).limit(postsPerPage).maxTimeMS(5000).lean().exec(),
     posts.countDocuments(filter).maxTimeMS(5000).exec(),
   ]);
-  return { data: records.map(publicPost), page, totalPages: Math.ceil(total / 12) };
+  return { data: records.map(publicPost), page, totalPages: Math.ceil(total / postsPerPage) };
 }
 export async function getFeaturedPosts() {
   const { posts } = getContentModels(await connectDatabase());
