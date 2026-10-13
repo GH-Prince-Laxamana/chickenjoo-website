@@ -31,7 +31,7 @@ input:not([type="checkbox"]), textarea, select { min-width: 0; }
   .cj-title { @apply font-display text-[32px] font-bold leading-[1.1] tracking-tight text-cj-navy sm:text-5xl; }
   .cj-button { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-cj-yellow px-6 py-3 text-sm font-semibold text-cj-navy transition-colors hover:bg-cj-yellow/80 disabled:cursor-not-allowed disabled:opacity-50; }
   .cj-button-order { @apply min-h-12 bg-cj-red font-bold text-white hover:bg-[#cb1024] active:bg-cj-navy; }
-  .footer-social { @apply inline-flex h-12 w-12 items-center justify-center rounded-full border border-cj-navy/15 bg-white text-cj-navy transition-colors hover:border-cj-red hover:bg-cj-red hover:text-white; }
+  .footer-social { @apply inline-flex h-11 w-11 items-center justify-center rounded-full border border-cj-navy/15 bg-white text-cj-navy transition-colors hover:border-cj-red hover:bg-cj-red hover:text-white; }
   .cj-surface { @apply rounded-2xl bg-white shadow-[0_8px_20px_-10px_#11144730]; }
 }
 
