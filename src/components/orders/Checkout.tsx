@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { ArrowRight, ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { clearCart, useCart } from "@/lib/orders/cart";
@@ -54,19 +55,25 @@ export default function Checkout({ branches }: { branches: PublicBranch[] }) {
     } catch (error) { setError(error instanceof Error ? error.message : "Unable to submit. Your cart is preserved."); requestAnimationFrame(() => feedback.current?.focus()); }
     finally { busy.current = false; setPending(false); }
   }
-  return <div className="mx-auto w-full max-w-5xl px-4 py-12 sm:px-8"><h1 className="font-display text-4xl font-semibold text-cj-navy">Pickup order details</h1><div className="mt-5"><DemoNotice /></div>
-    <LaunchOffer />
-    {cart.length ? <form onSubmit={(event) => { event.preventDefault(); void handle(Boolean(quote)); }} className="mt-7 grid items-start gap-7 lg:grid-cols-2">
-      <div className="space-y-5 rounded-3xl bg-white p-6 ring-1 ring-cj-navy/10"><h2 className="font-display text-2xl font-semibold">Pickup details</h2><p className="text-sm leading-relaxed">Your name and email are saved with your order details. Keep this tab open to view your receipt; a confirmation email is not sent.</p>
-        <label className="block font-semibold">Name<input required maxLength={100} autoComplete="name" disabled={pending} value={name} onChange={(event) => setName(event.target.value)} className="mt-2 min-h-11 w-full rounded-xl border border-cj-navy/25 px-3 py-2" /></label>
-        <label className="block font-semibold">Email<input required type="email" maxLength={254} autoComplete="email" disabled={pending} value={email} onChange={(event) => setEmail(event.target.value)} className="mt-2 min-h-11 w-full rounded-xl border border-cj-navy/25 px-3 py-2" /></label>
-        <label className="block font-semibold">Pickup branch<select required disabled={pending} value={branchId} onChange={(event) => { setBranchId(event.target.value); setReview(null); }} className="mt-2 min-h-11 w-full rounded-xl border border-cj-navy/25 bg-white px-3 py-2"><option value="">Choose a branch</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label>
-        {!branches.length && <p role="alert">No pickup branches are currently available.</p>}
-        {!quote && <button disabled={pending || !branches.length} className="cj-button cj-button-order w-full">{pending ? "Please wait…" : "Review current prices"}</button>}
-        <p className="text-sm leading-relaxed">Your receipt is available in this tab for 24 hours. Keep the tab open to return to it.</p>
-        {error && <p ref={feedback} tabIndex={-1} role="alert" className="rounded-xl bg-cj-red/10 p-4">{error}</p>}
-        <Link href="/cart" className="inline-flex min-h-11 items-center text-cj-navy underline">Edit cart</Link>
-      </div><div ref={summary} tabIndex={-1} aria-label="Order review">{quote ? <><OrderSummary quote={quote} /><button disabled={pending} className="cj-button cj-button-order mt-5 w-full">{pending ? "Please wait…" : "Save pickup order"}</button></> : <p className="rounded-3xl bg-cj-navy/5 p-6 leading-relaxed">Choose a pickup branch and review the current menu prices before submitting.</p>}</div>
-    </form> : <p className="mt-8">Your cart is empty. <Link className="text-cj-navy underline" href="/menu">Browse the menu</Link>.</p>}
-    <Link href="/confirmation" className="mt-6 inline-flex min-h-11 items-center text-sm text-cj-navy underline">View your latest receipt</Link></div>;
+  return <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-8 sm:py-14">
+    <header className="max-w-3xl"><p className="text-sm font-semibold text-cj-red">Complete your order</p><h1 className="mt-2 font-display text-4xl font-bold tracking-tight text-cj-navy sm:text-5xl">Pickup Order Details</h1><p className="mt-3 text-base text-cj-charcoal">Enter your details and choose where you&apos;d like to pick up your order.</p></header>
+    <div className="mt-7"><DemoNotice /><LaunchOffer /></div>
+    {cart.length ? <form onSubmit={(event) => { event.preventDefault(); void handle(Boolean(quote)); }} className="mt-8 grid items-start gap-6 lg:grid-cols-[minmax(0,1.75fr)_minmax(300px,1fr)] lg:gap-8">
+      <section aria-labelledby="pickup-details-title" className="min-w-0 rounded-3xl border border-cj-navy/10 bg-white shadow-sm">
+        <div className="border-b border-cj-navy/10 px-5 py-5 sm:px-7"><h2 id="pickup-details-title" className="font-display text-xl font-bold text-cj-navy">Pickup details</h2><p className="mt-2 text-sm leading-relaxed text-cj-charcoal">Your name and email are saved with your order details. A confirmation email is not sent.</p></div>
+        <div className="space-y-5 p-5 sm:p-7">
+          <label className="block text-sm font-bold text-cj-navy">Name<input required maxLength={100} autoComplete="name" disabled={pending} value={name} onChange={(event) => setName(event.target.value)} className="mt-2 min-h-12 w-full rounded-xl border border-cj-navy/20 bg-white px-4 py-3 text-base font-normal text-cj-navy placeholder:text-cj-charcoal/60" /></label>
+          <label className="block text-sm font-bold text-cj-navy">Email address<input required type="email" maxLength={254} autoComplete="email" disabled={pending} value={email} onChange={(event) => setEmail(event.target.value)} className="mt-2 min-h-12 w-full rounded-xl border border-cj-navy/20 bg-white px-4 py-3 text-base font-normal text-cj-navy placeholder:text-cj-charcoal/60" /></label>
+          <label className="block text-sm font-bold text-cj-navy">Pickup branch<select required disabled={pending} value={branchId} onChange={(event) => { setBranchId(event.target.value); setReview(null); }} className="mt-2 min-h-12 w-full rounded-xl border border-cj-navy/20 bg-white px-4 py-3 text-base font-normal text-cj-navy"><option value="">Choose a branch</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label>
+          {!branches.length && <p role="alert" className="text-sm text-cj-red">No pickup branches are currently available.</p>}
+          {!quote && <button disabled={pending || !branches.length} className="cj-button cj-button-order w-full sm:w-auto">{pending ? "Please wait…" : "Review current prices"} {!pending && <ArrowRight size={18} aria-hidden="true" />}</button>}
+          <p className="border-t border-cj-navy/10 pt-5 text-sm leading-relaxed text-cj-charcoal">Your receipt is available in this tab for 24 hours. Keep the tab open to return to it.</p>
+          {error && <p ref={feedback} tabIndex={-1} role="alert" className="rounded-xl bg-cj-red/10 p-4 text-sm text-cj-red">{error}</p>}
+          <Link href="/cart" className="inline-flex min-h-11 items-center text-sm font-semibold text-cj-navy underline underline-offset-4">Edit cart</Link>
+        </div>
+      </section>
+      <div ref={summary} tabIndex={-1} aria-label="Order review" className="min-w-0 lg:sticky lg:top-28">{quote ? <><OrderSummary quote={quote} /><button disabled={pending} className="cj-button cj-button-order mt-5 w-full">{pending ? "Please wait…" : "Save Pickup Order"} {!pending && <ArrowRight size={18} aria-hidden="true" />}</button></> : <div className="rounded-3xl border border-cj-navy/10 bg-white p-6 shadow-sm sm:p-7"><h2 className="font-display text-xl font-bold text-cj-navy">Your pickup order details</h2><p className="mt-4 text-sm leading-relaxed text-cj-charcoal">Choose a pickup branch and review the current menu prices before saving your order.</p></div>}</div>
+    </form> : <div className="mx-auto mt-8 flex max-w-xl flex-col items-center rounded-3xl border border-cj-navy/10 bg-white px-6 py-12 text-center shadow-sm sm:py-16"><span className="flex h-20 w-20 items-center justify-center rounded-full bg-cj-cream text-cj-navy"><ShoppingCart size={36} strokeWidth={1.6} aria-hidden="true" /></span><h2 className="mt-6 font-display text-2xl font-bold text-cj-navy">Your cart is empty.</h2><p className="mt-2 text-sm text-cj-charcoal">Choose a meal from the menu before adding pickup details.</p><Link href="/menu" className="cj-button cj-button-order mt-7">Browse Menu <ArrowRight size={18} aria-hidden="true" /></Link></div>}
+    <Link href="/confirmation" className="mt-7 inline-flex min-h-11 items-center text-sm font-semibold text-cj-navy underline underline-offset-4">View your latest receipt</Link>
+  </div>;
 }

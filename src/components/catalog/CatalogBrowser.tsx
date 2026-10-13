@@ -1,10 +1,7 @@
 "use client";
-
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { flavorArtwork } from "@/lib/public/menu-artwork";
 import type { PublicBranch, PublicMenuItem } from "@/lib/public/types";
 import CatalogControls from "./CatalogControls";
 import MenuItemCard from "./MenuItemCard";
@@ -20,21 +17,19 @@ export default function CatalogBrowser({ kind }: { kind: "menu" | "branches" }) 
   const { data, loading, error, retry } = usePublicList<PublicMenuItem | PublicBranch>(`/api/v1/${endpoint}?${params}`);
   const hasFilters = Boolean(query.q || query.filter || query.page > 1);
   const dishes = (data?.data ?? []).filter((item): item is PublicMenuItem => "priceCentavos" in item);
-  const flavors = [...new Set(dishes.flatMap((item) => item.flavorOptions))];
-  const galleryFlavors = [...new Set([...Object.keys(flavorArtwork), ...flavors])];
   const resultLabel = kind === "menu"
     ? data?.meta.total === 1 ? "dish" : "dishes"
     : data?.meta.total === 1 ? "branch" : "branches";
 
   return (
     <div>
-      <CatalogControls kind={kind} hasFilters={hasFilters} showFlavors={!hasFilters && flavors.length > 0} options={data?.options ?? []} onApply={(q, filter) => setQuery({ q, filter, page: 1 })} />
+      <CatalogControls kind={kind} hasFilters={hasFilters} options={data?.options ?? []} onApply={(q, filter) => setQuery({ q, filter, page: 1 })} />
       <div aria-busy={loading} className="mt-5">
         <p role="status" className={kind === "menu" && !loading ? "sr-only" : "mb-3 text-xs text-cj-charcoal"}>
           {loading ? `Loading ${kind === "menu" ? "menu" : "branches"}…` : error ? "" : `${data?.meta.total ?? 0} ${resultLabel} found`}
         </p>
         {loading ? (
-          <div aria-hidden="true" className={kind === "menu" ? "grid grid-cols-2 gap-6 lg:grid-cols-3" : "grid gap-6 sm:grid-cols-2 lg:grid-cols-3"}>
+          <div aria-hidden="true" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((key) => <div key={key} className="h-64 rounded-3xl bg-cj-navy/5 motion-safe:animate-pulse" />)}
           </div>
         ) : error ? (
@@ -51,9 +46,8 @@ export default function CatalogBrowser({ kind }: { kind: "menu" | "branches" }) 
               return (order.includes(a) ? order.indexOf(a) : 3) - (order.includes(b) ? order.indexOf(b) : 3);
             }).map((group) => <section key={group} className="menu-section">
               <div className="mb-4"><h2 className="text-xl font-bold tracking-tight text-cj-navy sm:text-2xl">{group === "Chicken" ? "Chicken à la carte" : group === "Meals" ? "Chicken Joo meals" : group === "Sides" ? "A little something on the side" : group}</h2><p className="mt-1 text-sm text-cj-charcoal">{group === "Chicken" ? "Choose a chicken box and add your favorite sides." : group === "Meals" ? "Choose a chicken meal with rice or Joomami Fries." : group === "Sides" ? "Add rice or Joomami Fries to round out your meal." : "Browse the dishes in this category."}</p></div>
-              <div className="grid grid-cols-2 items-stretch gap-x-4 gap-y-7 sm:gap-x-6 md:grid-cols-3">{dishes.filter((item) => item.category === group).map((item, index, list) => <div key={item.id} className={list.length % 2 === 1 && index === list.length - 1 ? "col-span-2 mx-auto w-[calc(50%-8px)] sm:w-[calc(50%-12px)] md:col-span-1 md:w-full" : ""}><MenuItemCard item={item} /></div>)}</div>
+              <div className="grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 md:grid-cols-3">{dishes.filter((item) => item.category === group).map((item, index, list) => <div key={item.id} className={list.length % 2 === 1 && index === list.length - 1 ? "sm:col-span-2 sm:mx-auto sm:w-[calc(50%-12px)] md:col-span-1 md:w-full" : ""}><MenuItemCard item={item} /></div>)}</div>
             </section>)}
-            {!hasFilters && flavors.length > 0 && <section className="menu-section scroll-mt-6" id="menu-flavors" aria-labelledby="menu-flavors-heading"><h2 id="menu-flavors-heading" className="text-xl font-bold tracking-tight text-cj-navy sm:text-2xl">Find your flavor</h2><p className="mb-5 mt-1 text-sm leading-relaxed">Find a flavor for your next chicken break. Each meal lists the choices available to order.</p><ul className="grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-4">{galleryFlavors.map((flavor) => <li key={flavor} className="text-center">{Object.hasOwn(flavorArtwork, flavor) && <div className="relative aspect-[4/3]"><Image src={flavorArtwork[flavor]} alt={`${flavor} boneless chicken`} fill sizes="(max-width: 639px) 45vw, 240px" className="object-contain mix-blend-multiply" /></div>}<h3 className="mt-2 text-sm font-bold text-cj-navy">{flavor}</h3>{!flavors.includes(flavor) && <p className="mt-1 text-xs text-cj-charcoal">Check with your branch</p>}</li>)}</ul></section>}
 
           </> : <div className="grid gap-4 md:grid-cols-2">{data.data.map((item) => "priceCentavos" in item ? null : <BranchCard key={item.id} branch={item} />)}</div>
         ) : (

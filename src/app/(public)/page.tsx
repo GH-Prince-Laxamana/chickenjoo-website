@@ -55,6 +55,7 @@ export default async function Home() {
         image: post.coverImage!,
         alt: post.excerpt,
         square: true,
+        landscape: post.slug === launchCampaign.slug,
       }));
     const promotions = posts.filter(
       (post) => post.type === "promotion" && post.coverImage,
@@ -115,14 +116,6 @@ export default async function Home() {
                 {
                   src: "/images/hero/hero-image.png",
                   alt: "Chicken Joo boneless fried chicken box",
-                },
-                {
-                  src: "/images/lifestyle/about-workday-break.webp",
-                  alt: "Chicken Joo combo flavors",
-                },
-                {
-                  src: "/images/lifestyle/eating-at-chickenjoo.jpg",
-                  alt: "Chicken Joo special promo",
                 },
               ]}
             />
@@ -218,6 +211,7 @@ export default async function Home() {
                 src={featured.coverImage}
                 label={featured.title}
                 poster
+                landscape
               />
             </Link>
             <div className="flex flex-col justify-center p-6 text-white sm:p-9">

@@ -4,7 +4,7 @@
       "seedKey": "chicken-3-rice", "name": "3-Piece Chicken with Rice",
       "description": "Three pieces of boneless chicken (150g) served with rice. Pick your flavor for a chicken lunch that’s all yours.", "category": "Meals", "priceCentavos": 9900,
       "image": "", "isAvailable": true, "isArchived": false, "isFeatured": false,
-      "requiredFlavorCount": 1, "flavorOptions": ["Original", "Yangnyeom", "Yangnyeom Extra Spicy", "Yangnyeom with Garlic"]
+      "requiredFlavorCount": 1, "flavorOptions": "all"
     },
     {
       "seedKey": "joomami-fries", "name": "Joomami Fries",
@@ -16,7 +16,7 @@
       "seedKey": "chicken-3-fries", "name": "3-Piece Chicken with Joomami Fries",
       "description": "Three pieces of boneless chicken with Joomami Fries. Choose your flavor and make it your kind of chicken break.", "category": "Meals", "priceCentavos": 13500,
       "image": "", "isAvailable": true, "isArchived": false, "isFeatured": false,
-      "requiredFlavorCount": 1, "flavorOptions": ["Original", "Yangnyeom", "Yangnyeom Extra Spicy", "Yangnyeom with Garlic"]
+      "requiredFlavorCount": 1, "flavorOptions": "all"
     },
     {
       "seedKey": "japanese-rice", "name": "Japanese Rice",
@@ -28,19 +28,19 @@
       "seedKey": "chicken-7", "name": "7-Piece Chicken",
       "description": "Seven pieces of boneless chicken (350g) in your chosen flavor. Rice is not included; add it or other sides separately.", "category": "Chicken", "priceCentavos": 19900,
       "image": "", "isAvailable": true, "isArchived": false, "isFeatured": false,
-      "requiredFlavorCount": 1, "flavorOptions": ["Original", "Yangnyeom", "Yangnyeom Extra Spicy", "Yangnyeom with Garlic"]
+      "requiredFlavorCount": 1, "flavorOptions": "all"
     },
     {
       "seedKey": "chicken-14-one-flavor", "name": "14-Piece Chicken, One Flavor",
       "description": "Fourteen pieces of boneless chicken (700g) in one flavor for the whole box. Rice is not included; add it or other sides separately.", "category": "Chicken", "priceCentavos": 38800,
       "image": "", "isAvailable": true, "isArchived": false, "isFeatured": false,
-      "requiredFlavorCount": 1, "flavorOptions": ["Original", "Yangnyeom", "Yangnyeom Extra Spicy", "Yangnyeom with Garlic"]
+      "requiredFlavorCount": 1, "flavorOptions": "all"
     },
     {
       "seedKey": "chicken-14-two-flavors", "name": "14-Piece Chicken, Two Flavors",
       "description": "Fourteen pieces of boneless chicken (700g) with two different flavors. Rice is not included; add it or other sides separately.", "category": "Chicken", "priceCentavos": 39500,
       "image": "", "isAvailable": true, "isArchived": false, "isFeatured": false,
-      "requiredFlavorCount": 2, "flavorOptions": ["Original", "Yangnyeom", "Yangnyeom Extra Spicy", "Yangnyeom with Garlic"]
+      "requiredFlavorCount": 2, "flavorOptions": "all"
     }
   ],
   "branches": [

@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import mongoose from "mongoose";
 import nextEnv from "@next/env";
 import { connectDatabase, DatabaseConfigurationError } from "../src/lib/db/connection.ts";
+import { flavorArtwork } from "../src/lib/public/menu-artwork.ts";
 
 nextEnv.loadEnvConfig(process.cwd(), true, { info() {}, error() {} });
 
@@ -11,6 +12,10 @@ let connection;
 try {
   if (process.argv.slice(2).some((argument) => argument !== "--dry-run")) throw new Error("Unsupported seed argument.");
   const data = JSON.parse(await readFile(new URL("../src/data/catalog.seed.json", import.meta.url), "utf8"));
+  // Seeded chicken products share the gallery's ordered flavor list.
+  for (const item of data.menuItems) {
+    if (item.flavorOptions === "all") item.flavorOptions = Object.keys(flavorArtwork);
+  }
   // This command accepts only the maintained, reviewed seed file, not user input.
   for (const records of [data.menuItems, data.branches]) {
     if (!Array.isArray(records) || new Set(records.map((record) => record.seedKey)).size !== records.length) {

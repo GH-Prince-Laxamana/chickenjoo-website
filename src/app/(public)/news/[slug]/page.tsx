@@ -50,7 +50,7 @@ export default async function ArticlePage({ params }: Props) {
       >
         {post.coverImage && (
           <figure className="min-w-0">
-            <ContentImage src={post.coverImage} label={post.title} poster />
+            <ContentImage src={post.coverImage} label={post.title} poster landscape={post.slug === launchCampaign.slug} />
             <figcaption className="mt-3 text-xs leading-relaxed text-cj-charcoal">
               Chicken Joo{" "}
               {post.type === "promotion"

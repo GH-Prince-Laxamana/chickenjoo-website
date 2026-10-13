@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 import { isMapsLink, isFacebookLink } from "../src/lib/public/links.ts";
+import { flavorArtwork } from "../src/lib/public/menu-artwork.ts";
 
 const data = JSON.parse(await readFile(new URL("../src/data/catalog.seed.json", import.meta.url), "utf8"));
 const menu = new Map(data.menuItems.map((item) => [item.seedKey, item]));
@@ -27,10 +28,14 @@ test("flavors remain product choices rather than extra products", () => {
       assert.equal(item.requiredFlavorCount, 0);
       assert.deepEqual(item.flavorOptions, []);
     } else {
-      assert.deepEqual(item.flavorOptions, ["Original", "Yangnyeom", "Yangnyeom Extra Spicy", "Yangnyeom with Garlic"]);
+      assert.equal(item.flavorOptions, "all");
       assert.equal(item.requiredFlavorCount, item.seedKey === "chicken-14-two-flavors" ? 2 : 1);
     }
   }
+});
+
+test("the shared flavor gallery provides all eight choices in order", () => {
+  assert.deepEqual(Object.keys(flavorArtwork), ["Original", "Yangnyeom", "Yangnyeom Extra Spicy", "Yangnyeom with Garlic", "Lemon Glaze", "Bulgogi", "Korean Barbecue", "Snow Cheese"]);
 });
 
 test("midnight closing and missing branch contacts are preserved", () => {

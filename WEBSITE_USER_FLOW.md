@@ -104,15 +104,15 @@ Menu now provides the requested information across its cards, category sections,
 | Category | Products are grouped beneath headings derived from their stored category, with category filters. | Retain clear category sections; the grouping identifies each product’s category without repeating a badge on every card. Show its category in the dialog as context. Preserve admin-defined categories beyond the supplied ones. |
 | Price | Current PHP price is separate from the card CTA and remains in the dialog; quantity changes update the dialog total. | Retain accurate PHP formatting and quantity totals using `priceCentavos`. |
 | Availability | Unavailable products show “Currently unavailable,” remain viewable, and cannot be added. Archived products are excluded by the public API. | Show concise availability based on `isAvailable`, retain details access for unavailable dishes, and disable adding them. Do not imply live stock counts or availability at every branch. |
-| Call-to-action | “View options” or “View details” opens the dialog; “Add to cart” saves the configured selection. | Keep the calculated total beside the dialog add action, and preserve details access for unavailable dishes. |
+| Call-to-action | “Add to Cart” opens the flavor and quantity dialog for available products; “View details” opens unavailable products. The dialog action saves the configured selection. | Keep the calculated total in the dialog add action, and preserve details access for unavailable dishes. |
 
 ### Product card and detail responsibilities
 
 The card should let a visitor answer “What is it, what comes with it, what does it cost, and can I select it?” A chicken-and-rice meal, for example, should show the supplied piece count and rice inclusion before the visitor opens its flavor choices. Sharing-box descriptions should clearly indicate that sides are separate. Use the existing product descriptions rather than inferring weights, servings per person, or ingredients from photographs.
 
-The dialog should help them configure the choice: full description, category, current unit price, exact required flavor selections, quantity, calculated total, availability, and add-to-cart feedback. Sides with no flavor requirement retain their simpler quantity selection. Two-flavor products require two distinct flavors; selections come from that product’s `flavorOptions`.
+The dialog should help them configure the choice: full description, category, current unit price, photo previews that update with radio-selected flavors, quantity controls, calculated total, availability, and add-to-cart feedback. Missing and duplicate choices receive specific inline errors. Sides with no flavor requirement retain their simpler quantity selection. Two-flavor products require two distinct flavors; selections come from that product’s `flavorOptions`.
 
-Treat the existing flavor gallery as inspiration after the product catalog. Its additional artwork must remain distinguished from the flavors selectable for each dish. A promoted flavor in News does not automatically become a menu option.
+The separate flavor gallery was removed so visitors choose flavors in the product dialog itself. The eight supplied chicken flavors share the same ordered artwork mapping used by seeded chicken products and the existing catalog records. A promoted flavor in News does not automatically become a menu option.
 
 These changes use fields already returned by the public catalog API: `name`, `description`, `category`, `priceCentavos`, `image`, `isAvailable`, `flavorOptions`, and `requiredFlavorCount`. Keep repository-stored artwork. There is no need for new product-detail routes, schema fields, an image-upload service, stock counters, or an additional ordering system to satisfy C.
 
@@ -124,8 +124,7 @@ Page order:
 2. The existing search control, with less visual emphasis than browsing the small catalog.
 3. Clear category sections using MenuItemCard. Every card shows a relevant photo, name, useful description, standalone current price, availability, and a clearly labeled options/details action as specified in C.
 4. The existing options dialog for flavors and quantity. Keep detailed controls inside the dialog rather than expanding every card.
-5. The flavor gallery as supporting inspiration. Distinguish flavors offered with current dishes from flavors that require checking with a branch.
-6. An easy “View cart” route when selections exist, plus a “Find a branch” route for visitors planning a visit.
+5. An easy “View cart” route when selections exist, plus a “Find a branch” route for visitors planning a visit.
 
 Show what is included with a meal and what must be added separately. Preserve filters, loading, empty, retry, and unavailable states.
 
@@ -141,6 +140,8 @@ Within the marketing flow, Menu turns campaign interest into a concrete choice. 
 - Menu leads naturally to a branch visit or optional cart review, with the existing checkout price/availability checks preserved.
 
 Implementation checkpoint, 2026-10-12: Menu has a clearer introduction, full product descriptions, separate prices, explicit availability, and options/details CTAs. The dialog now shows its category while retaining flavor validation, quantity selection, totals, and cart actions. A branch invitation connects meal discovery to a visit. MenuItemCard is shared with the Home menu preview, so these product-information improvements also reach that preview. No database fields or ordering logic changed. Browser review and broader checks are deferred to the user/final audit as requested.
+
+Revision, 2026-10-13: Menu and Home use the same left-aligned meal card with price beside an Add to Cart action. The standalone flavor gallery has been removed; each chicken product dialog uses radio choices, changing flavor photos, a quantity stepper, and inline selection errors. The five seeded chicken products now offer all eight mapped flavors in the catalog, including on existing records. Cart and pickup retain the selected flavor names.
 
 ## Branches: make the visit practical
 
@@ -337,20 +338,20 @@ Place the one-redemption wording and other confirmed terms beside the CTA or in 
 | Strength | Convenient branches that fit a break from work or campus routines, based on the user's supplied positioning. |
 | Visitor benefit | Make time for a chicken meal with coworkers and find a branch that works for the day. |
 | Description direction | Explain how Chicken Joo fits lunch or an after-work catch-up, then guide visitors to actual branch locations. |
-| Visual | Generated marketing illustration `/images/about-workday-break.webp` shows coworkers sharing chicken outside their workplace. Its purpose is to visualize the break occasion; it is not documentation of a real branch or actual customers. |
+| Visual | User-supplied photo `/images/lifestyle/about-friends-chicken-joo.png` shows a group sharing chicken and rice. It visualizes the shared-meal occasion without claiming a specific branch or customer identity. |
 | Presentation | A prominent image-and-description section inspired by the News spotlight, side-by-side on desktop and stacked on mobile, with a “Find your Chicken Joo” CTA to Branches. |
 | Data alignment | Branches provides current stored locations, hours, and directions. Avoid literal nationwide “anywhere” coverage or guaranteed proximity to every workplace. |
 
 Use the existing artwork mapping rather than duplicating the image path in multiple places during implementation. Preserve the current product-selection dialog for interactive flavor choice on Menu. No new flavor-selection widget or animation is needed to satisfy B.
 
-The user's other supplied strengths are generous, quality servings at affordable prices, and in-person ordering, pickup, or online ordering through GrabFood/foodpanda. Present them explicitly as supporting reasons to choose Chicken Joo. The existing sharing-box photo supports portion/value messaging; labeled ordering-method icons explain the available paths. Phrase value as “affordable” rather than an unverified cheapest-in-market ranking. Each image has a defined communication purpose.
+The user's other supplied strengths are generous, quality servings at affordable prices, and in-person ordering, pickup, or online ordering through GrabFood/foodpanda. Present them explicitly as supporting reasons to choose Chicken Joo. The benefit cards introduce these strengths, the sharing-box photo supports portion/value messaging, and labeled ordering-method icons explain the available paths. Phrase value as “affordable” rather than an unverified cheapest-in-market ranking.
 
 ### Feature Page acceptance checklist
 
 - About Us visibly highlights at least one concrete Chicken Joo strength.
 - Feature 1 has a heading, a benefit-led description, and an actual relevant image with useful alternative text.
 - Visitors can understand the strength on the page without opening a News article or operating an interactive control.
-- Its CTA takes the visitor to branch information, while the value section links to current menu choices, supporting the campaign → meal → branch journey.
+- Its CTA takes the visitor to branch information, while the portion/value section links to current menu choices.
 - The feature remains present when News filters, pagination, or featured-post selections change.
 - The existing News layout and landing-page swipeable component remain preserved.
 
@@ -358,11 +359,15 @@ The user's other supplied strengths are generous, quality servings at affordable
 
 Visitor question: “Is this food for the kind of meal I have in mind?”
 
-Page order: concise brand introduction, Feature 1 convenience/workday-break illustration and description, portion/value section with the real sharing-box photo, three clear ordering methods, then a branch invitation. The page is named About Us at `/about-us`; legacy `/our-story` links redirect there, and shared navigation uses About Us.
+Page order: concise brand introduction, Feature 1 convenience/workday-break illustration and description, three reasons to choose Chicken Joo, the portion/value section with its sharing-box photo, three clear ordering methods, then a branch invitation. The page is named About Us at `/about-us`; legacy `/our-story` links redirect there, and shared navigation uses About Us.
 
 Use the image-led composition and spacing that work in News. Draft everyday scenarios and purposeful illustrations to complete the experience. The user has deferred content verification to the end of the increments; record supplied positioning and generated imagery for that final pass. Do not invent historical facts, awards, customer testimonials, or actual branch photographs.
 
 Implementation checkpoint, 2026-10-12: About Us has been built around the three supplied strengths with one generated contextual illustration, one existing product photograph, Menu/Branches actions, updated shared navigation, and a legacy-route redirect. Homepage carousel and News layout are unchanged. Final business-claim verification remains deferred as requested.
+
+Revision, 2026-10-13: The user removed the product showcase from About Us and restored the separate portion/value section. The page now moves from its image-led introduction to the three benefit cards, the sharing-box value section, ordering methods, and branch CTA. The menu catalog and its product images remain available on Menu.
+
+Image revision, 2026-10-13: About Us now uses the supplied group photo. Home's hero keeps only the chicken product image; the other hero slideshow images and the old illustration used as the video fallback were removed.
 
 ## Contact: general company inquiries
 
@@ -436,7 +441,7 @@ Use food photography and large images for discovery; use clear rows, restrained 
 2. News article next steps: retain the successful layout and connect stories to Menu or Branches according to their subject.
 3. Products Page requirement C on Menu: show complete, scannable product information on cards and retain the existing flavor/quantity dialog with accurate actions.
 4. Branches: strengthen the route from campaign interest to a visit or direct contact.
-5. Feature Page requirement B on About Us: present Feature 1 with a description and real product photo using the News visual language. Refine Contact for requirement D as a general-inquiry page with company contact details and the existing admin inbox.
+5. Feature Page requirement B on About Us: present Feature 1 with its contextual workday-break illustration and description using the News visual language. Refine Contact for requirement D as a general-inquiry page with company contact details and the existing admin inbox.
 6. Part II Social Media Marketing Campaign A: integrate the prepared 25%-off artwork into Home/News and prepare the Facebook post/link plan. Before activating the offer, align Cart, checkout, receipts, and admin summaries with the confirmed server-calculated discount and redemption terms.
 7. Part III Email Marketing Campaign A / B.1–B.6: align the existing email.html with the same launch campaign and expose its rendered mockup through admin navigation, with visible subject and complete supplied company information.
 

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -19,7 +18,6 @@ export default function FeaturedVideo() {
     <div className="min-w-0">
       <div className="relative aspect-video overflow-hidden rounded-3xl bg-cj-navy">
         {status !== "ready" && <div className="absolute inset-0 flex items-center justify-center">
-          <Image src="/images/lifestyle/about-workday-break.webp" alt="" fill sizes="(max-width: 767px) 100vw, 700px" className="object-cover opacity-25" />
           <div className="relative px-5 text-center text-white">
             <p role="status" className="font-semibold">{status === "loading" ? "Loading your Joo moment…" : "Watch this Joo moment on YouTube."}</p>
             <a href={videoUrl} target="_blank" rel="noopener noreferrer" className="cj-button mt-4">Open YouTube <ExternalLink size={16} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a>

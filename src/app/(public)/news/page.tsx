@@ -34,7 +34,7 @@ export default async function NewsPage({ searchParams }: { searchParams: Promise
       : !result.data.length ? <div className="cj-surface p-6"><p>{page > 1 ? "No updates on this page." : "More Joo moments are on the way. Check back soon."}</p>{page > 1 && <Link href={pageHref(1)} className="mt-3 inline-flex min-h-11 items-center font-semibold text-cj-red underline">Back to the latest updates</Link>}</div>
       : <>
         {featured && <article className="mb-12 grid overflow-hidden rounded-3xl bg-cj-navy shadow-xl shadow-cj-navy/10 md:grid-cols-2">
-          <Link href={`/news/${featured.slug}`} className="block bg-white" aria-label={`Read: ${featured.title}`}><ContentImage src={featured.coverImage} label={featured.title} poster /></Link>
+          <Link href={`/news/${featured.slug}`} className="block bg-white" aria-label={`Read: ${featured.title}`}><ContentImage src={featured.coverImage} label={featured.title} poster landscape /></Link>
           <div className="flex flex-col justify-center p-6 text-white sm:p-9">
             <p className="text-xs font-bold tracking-widest text-cj-yellow">IN THE SPOTLIGHT</p>
             <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl"><Link href={`/news/${featured.slug}`} className="hover:underline">{featured.title}</Link></h2>
@@ -44,7 +44,7 @@ export default async function NewsPage({ searchParams }: { searchParams: Promise
         </article>}
         <div className="mb-5 flex items-baseline justify-between gap-4"><h2 className="text-2xl font-bold tracking-tight text-cj-navy">{type === "promotion" ? "Campaigns and offers" : type === "article" ? "A little Joo time" : "Fresh from Chicken Joo"}</h2><span className="text-xs font-semibold text-cj-red">MADE TO SHARE</span></div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{updates.map((post) => <article key={post.slug} className="cj-surface flex min-w-0 flex-col overflow-hidden">
-          {post.coverImage && <Link href={`/news/${post.slug}`} className="block" aria-label={`Read: ${post.title}`}><ContentImage src={post.coverImage} label={post.title} poster /></Link>}
+          <Link href={`/news/${post.slug}`} className="block" aria-label={`Read: ${post.title}`}><ContentImage src={post.coverImage} label={post.title} card /></Link>
           <div className="flex flex-1 flex-col p-5 sm:p-6">
             <p className="text-xs font-semibold text-cj-red">{post.type === "promotion" ? "Campaign" : "Joo moments"}<span className="mx-2 text-cj-navy/30">/</span><span className="font-normal text-cj-charcoal"><PostDate value={post.publishedDate} /></span></p>
             <h3 className="mt-3 text-xl font-bold leading-tight tracking-tight text-cj-navy"><Link href={`/news/${post.slug}`} className="hover:text-cj-red">{post.title}</Link></h3>

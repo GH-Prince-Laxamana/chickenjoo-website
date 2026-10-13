@@ -29,8 +29,8 @@ export default function SiteFooter() {
               <a href={`mailto:${companyContact.email}`} aria-label="Email Chicken Joo" className="footer-social"><Mail size={20} aria-hidden="true" /></a>
             </div>
           </div>
-          <Link href="/" aria-label="Chicken Joo home" className="relative mx-auto block h-44 w-64 max-w-full overflow-hidden md:w-full">
-            <Image src="/images/brand/chicken-joo-logo.jpg" alt="Chicken Joo Korean Boneless Fried Chicken with mascot" fill sizes="(max-width: 767px) 256px, 320px" className="object-cover mix-blend-multiply" />
+          <Link href="/" aria-label="Chicken Joo home" className="relative mx-auto block h-32 w-48 max-w-full overflow-hidden md:h-36 md:w-60">
+            <Image src="/images/brand/chicken-joo-logo.jpg" alt="Chicken Joo Korean Boneless Fried Chicken with mascot" fill sizes="(max-width: 767px) 192px, 240px" className="object-cover mix-blend-multiply" />
           </Link>
         </div>
         <hr className="mb-6 mt-12 border-cj-navy/15" />

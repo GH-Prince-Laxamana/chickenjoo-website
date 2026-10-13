@@ -24,14 +24,15 @@ function setup(item = meal, fail = false) {
   const context = {
     exports: {},
     Error,
+    requestAnimationFrame: (callback) => callback(),
     require: (name) => {
       if (name === "react") return {
         useState: (initial) => { const index = cursor++; if (!(index in state)) state[index] = initial; return [state[index], (value) => { state[index] = typeof value === "function" ? value(state[index]) : value; }]; },
         useId: () => "test-meal-title",
-        useRef: () => ({ current: { showModal: () => opens++, close: () => closes++ } }),
+        useRef: () => ({ current: { showModal: () => opens++, close: () => closes++, querySelector: () => null } }),
       };
       if (name === "@/lib/orders/cart") return { addToCart: (line) => { if (fail) throw Error("Storage is unavailable."); added.push(line); } };
-      if (name === "@/lib/public/menu-artwork") return { menuArtwork };
+      if (name === "@/lib/public/menu-artwork") return { menuArtwork, flavorArtwork };
       if (name === "@/lib/public/assets") return { isLocalMenuImage };
       if (name === "next/link" || name === "next/image") return { default: name };
       return require(name);
@@ -47,14 +48,17 @@ test("meal panel opens and closes, validates distinct flavors, and preserves cen
   view.render().find((e) => e.props["aria-haspopup"] === "dialog").props.onClick();
   assert.equal(view.opens(), 1);
   const add = () => view.render().find((e) => e.type === "button" && String(e.props.children).startsWith("Add to cart")).props.onClick();
+  const pick = (index, flavor) => view.render().find((e) => e.type === "input" && e.props.type === "radio" && e.props.name.endsWith(`-${index}`) && e.props.value === flavor).props.onChange();
   add();
   assert.equal(view.added.length, 0);
-  for (const select of view.render().filter((e) => e.type === "select").slice(0, 2)) select.props.onChange({ target: { value: "Original" } });
+  assert.ok(view.render().some((e) => e.props.role === "alert" && e.props.children === "Choose Flavor 1 to continue."));
+  pick(0, "Original");
+  pick(1, "Original");
   add();
   assert.equal(view.added.length, 0);
-  const selects = view.render().filter((e) => e.type === "select");
-  selects[1].props.onChange({ target: { value: "Yangnyeom" } });
-  selects[2].props.onChange({ target: { value: "2" } });
+  assert.ok(view.render().some((e) => e.props.role === "alert" && e.props.children === "Choose a different flavor for this box."));
+  pick(1, "Yangnyeom");
+  view.render().find((e) => e.props["aria-label"] === "Increase quantity of 14-Piece Chicken, Two Flavors").props.onClick();
   assert.ok(view.render().some((e) => e.props.children === "Add to cart · ₱791"));
   add();
   assert.equal(view.added[0].priceCentavos, 39550);
@@ -67,11 +71,21 @@ test("meal panel opens and closes, validates distinct flavors, and preserves cen
 
 test("unavailable items disable ordering and storage failures remain visible", () => {
   const unavailable = setup({ ...meal, isAvailable: false }).render();
-  assert.ok(unavailable.filter((e) => e.type === "select").every((e) => e.props.disabled));
+  assert.ok(unavailable.filter((e) => e.type === "input" && e.props.type === "radio").every((e) => e.props.disabled));
   assert.equal(unavailable.find((e) => e.props.children === "Unavailable for ordering").props.disabled, true);
   const view = setup({ ...meal, requiredFlavorCount: 0 }, true);
   view.render().find((e) => e.type === "button" && String(e.props.children).startsWith("Add to cart")).props.onClick();
-  assert.equal(view.render().find((e) => e.props.role === "status").props.children, "Storage is unavailable.");
+  assert.equal(view.render().find((e) => e.props.role === "alert").props.children, "Storage is unavailable.");
+});
+
+test("both flavor choices expose all eight gallery flavors and save the chosen names", () => {
+  const view = setup({ ...meal, flavorOptions: Object.keys(flavorArtwork) });
+  const radios = view.render().filter((e) => e.type === "input" && e.props.type === "radio");
+  assert.equal(radios.length, 16);
+  radios.find((e) => e.props.name.endsWith("-0") && e.props.value === "Snow Cheese").props.onChange();
+  view.render().find((e) => e.type === "input" && e.props.type === "radio" && e.props.name.endsWith("-1") && e.props.value === "Lemon Glaze").props.onChange();
+  view.render().find((e) => e.type === "button" && String(e.props.children).startsWith("Add to cart")).props.onClick();
+  assert.deepEqual(Array.from(view.added[0].flavors), ["Snow Cheese", "Lemon Glaze"]);
 });
 
 test("all supplied artwork exists, rice uses the supplied photo, and uploaded photos win", () => {

@@ -1,19 +1,9 @@
-"use client";
-import { useState } from "react";
-
 export default function EmailCampaignPreview() {
-  const [mobile, setMobile] = useState(false);
-  return <section aria-labelledby="email-preview-heading" className="mt-8">
-    <div className="flex flex-wrap items-center justify-between gap-4">
-      <h2 id="email-preview-heading" className="text-xl font-bold text-cj-navy">Email preview</h2>
-      <div role="group" aria-label="Email preview size" className="flex gap-2">
-        <button type="button" aria-pressed={!mobile} onClick={() => setMobile(false)} className={`min-h-11 rounded-full px-5 text-sm font-semibold ${!mobile ? "bg-cj-navy text-white" : "bg-white text-cj-navy ring-1 ring-cj-navy/15"}`}>Desktop</button>
-        <button type="button" aria-pressed={mobile} onClick={() => setMobile(true)} className={`min-h-11 rounded-full px-5 text-sm font-semibold ${mobile ? "bg-cj-navy text-white" : "bg-white text-cj-navy ring-1 ring-cj-navy/15"}`}>Mobile</button>
-      </div>
-    </div>
-    <div className="mt-5 rounded-3xl bg-cj-navy/5 p-2 sm:p-5">
-      <iframe src="/email.html" title="Chicken Joo website launch promotional email" sandbox="allow-popups allow-popups-to-escape-sandbox" className="mx-auto block h-[1500px] w-full rounded-2xl border-0 bg-white" style={{ maxWidth: mobile ? 390 : 680 }} />
-    </div>
-    <p className="mt-3 text-sm text-cj-charcoal">Scroll inside the preview to see the full email. Campaign links open the website; this preview does not send email.</p>
+  return <section aria-label="Website launch email" className="admin-panel mt-8 overflow-hidden">
+    <dl className="divide-y divide-cj-navy/10 border-b border-cj-navy/10 bg-[#f7f8fc]">
+      <div className="grid grid-cols-[72px_minmax(0,1fr)] items-baseline gap-3 px-5 py-4 sm:grid-cols-[88px_minmax(0,1fr)] sm:px-6"><dt className="text-xs font-bold uppercase tracking-wide text-cj-charcoal">From</dt><dd className="min-w-0 truncate text-sm font-semibold text-cj-navy" title="Chicken Joo <jooservice@chickenjoo.com>">Chicken Joo &lt;jooservice@chickenjoo.com&gt;</dd></div>
+      <div className="grid grid-cols-[72px_minmax(0,1fr)] items-baseline gap-3 px-5 py-4 sm:grid-cols-[88px_minmax(0,1fr)] sm:px-6"><dt className="text-xs font-bold uppercase tracking-wide text-cj-charcoal">Subject</dt><dd className="min-w-0 truncate text-sm font-semibold text-cj-navy" title="Chicken Joo is online: get 25% off your website order">Chicken Joo is online: get 25% off your website order</dd></div>
+    </dl>
+    <iframe src="/email.html" title="Full Chicken Joo website launch email" sandbox="allow-popups allow-popups-to-escape-sandbox" className="block h-[75dvh] min-h-[600px] w-full border-0 bg-[#fff8ef]" />
   </section>;
 }

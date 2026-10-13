@@ -11,6 +11,7 @@ export type FeatureSlide = {
   image: string;
   alt: string;
   square?: boolean;
+  landscape?: boolean;
 };
 
 export default function FeatureCarousel({ slides }: { slides: FeatureSlide[] }) {
@@ -63,8 +64,8 @@ export default function FeatureCarousel({ slides }: { slides: FeatureSlide[] }) 
       >
         {slides.map((slide, index) => (
           <article key={slide.image} className="feature-slide" data-position={index === active ? "active" : index < active ? "before" : "after"} role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${slides.length}`}>
-            <Link href={slide.href} className="feature-poster" style={slide.square ? { aspectRatio: "1" } : undefined} aria-label={slide.title}>
-              <Image src={slide.image} alt={slide.alt} fill sizes="(min-width: 1024px) 380px, (max-width: 540px) 74vw, 400px" className="object-contain" draggable={false} />
+            <Link href={slide.href} className="feature-poster" style={slide.landscape ? { aspectRatio: "6 / 5" } : slide.square ? { aspectRatio: "1" } : undefined} aria-label={slide.title}>
+              <Image src={slide.image} alt={slide.alt} fill sizes="(min-width: 1024px) 380px, (max-width: 540px) 74vw, 400px" className="object-cover object-top" draggable={false} />
             </Link>
           </article>
         ))}
