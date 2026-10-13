@@ -108,6 +108,7 @@ input:not([type="checkbox"]), textarea, select { min-width: 0; }
 }
 
 .menu-section { margin-block: 36px; }
+.menu-results .menu-section:first-of-type { margin-top: 0; }
 .menu-dish { display: flex; min-width: 0; height: 100%; flex-direction: column; overflow: hidden; border: 1px solid #11144712; border-radius: 24px; background: white; box-shadow: 0 8px 24px -20px #11144755; transition: box-shadow 150ms ease, transform 150ms ease; }
 .menu-dish:hover { transform: translateY(-3px); box-shadow: 0 16px 30px -20px #11144755; }
 .menu-dish-art { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 4 / 3; background: #f6f8fc; }
