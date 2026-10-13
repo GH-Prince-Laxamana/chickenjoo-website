@@ -54,8 +54,6 @@ export default async function Home() {
         href: `/news/${post.slug}`,
         image: post.coverImage!,
         alt: post.excerpt,
-        square: true,
-        landscape: post.slug === launchCampaign.slug,
       }));
     const promotions = posts.filter(
       (post) => post.type === "promotion" && post.coverImage,
@@ -90,7 +88,7 @@ export default async function Home() {
               something to crave.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link href="/menu" className="cj-button px-8 text-base">
+              <Link href="/menu" className="cj-button bg-cj-red px-8 text-base text-white hover:bg-cj-red/90">
                 Find your meal <ArrowRight size={20} aria-hidden="true" />
               </Link>
               <Link
@@ -125,49 +123,25 @@ export default async function Home() {
           </Link>
         </div>
       </header>
-      <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-3 px-5 pb-2 pt-12 sm:px-8 lg:pt-16">
-        <h2 className="font-display text-3xl font-bold tracking-tight text-cj-navy sm:text-4xl">
-          The latest Joo moments.
-        </h2>
-        <Link
-          href="/news"
-          className="inline-flex min-h-11 items-center font-semibold text-cj-navy underline underline-offset-4"
-        >
-          Explore news & offers
-        </Link>
-      </div>
-      <FeatureCarousel slides={slides} />
-      <section className="mx-auto w-full max-w-6xl px-5 pb-12 pt-10 sm:px-8 sm:pb-16 sm:pt-14">
-        <div className="flex flex-col gap-6 border-t border-cj-navy/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-cj-navy sm:text-4xl">
-              Good food for your everyday break.
-            </h2>
-            <p className="mt-3 max-w-xl leading-relaxed">
-              Chicken Joo serves Korean-style boneless chicken, solo meals, and
-              sharing boxes. We make room for a satisfying lunch between busy
-              hours and a generous box to share after the day is done.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/about-us"
-              className="inline-flex min-h-11 items-center font-semibold text-cj-navy underline underline-offset-4"
-            >
-              Get to know Chicken Joo
+      <section className="pt-12 sm:pt-16" aria-label="The latest Joo moments">
+        <div className="mx-auto mb-4 max-w-7xl px-4 sm:mb-6 sm:px-8">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-cj-navy sm:text-4xl">
+            <Link href="/news" className="inline-flex items-center gap-3 hover:text-cj-red">
+              The latest Joo moments. <ArrowRight size={28} aria-hidden="true" />
             </Link>
-          </div>
+          </h2>
         </div>
+        <FeatureCarousel slides={slides} />
       </section>
       <section
-        className="bg-cj-navy px-5 py-12 text-white sm:px-8 sm:py-20"
+        className="pt-12 text-cj-navy sm:pt-16"
         aria-labelledby="video-heading"
       >
-        <div className="mx-auto grid max-w-7xl items-center gap-8 md:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-          <div className="max-w-lg">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-8">
+          <div className="max-w-3xl">
             <h2
               id="video-heading"
-              className="font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl"
+              className="font-display text-3xl font-bold tracking-tight sm:text-4xl"
             >
               Take a little Joo time.
             </h2>
@@ -175,30 +149,23 @@ export default async function Home() {
               Watch our featured video, then explore the meals and flavors for
               your next Chicken Joo break.
             </p>
-            <Link href="/menu" className="cj-button mt-6">
-              Find your meal <ArrowRight size={18} aria-hidden="true" />
-            </Link>
           </div>
-          <FeaturedVideo />
+          <div className="mt-8 sm:mt-10"><FeaturedVideo /></div>
         </div>
       </section>
       <section
-        className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-20"
+        className="mx-auto max-w-7xl px-4 pt-12 sm:px-8 sm:pt-16"
         aria-labelledby="home-news-heading"
       >
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div className="mb-6">
           <h2
             id="home-news-heading"
-            className="font-display text-3xl font-bold tracking-tight text-cj-navy"
+            className="font-display text-3xl font-bold tracking-tight text-cj-navy sm:text-4xl"
           >
-            A reason to make it Chicken Joo
+            <Link href="/news" className="inline-flex items-center gap-3 hover:text-cj-red">
+              A reason to make it Chicken Joo <ArrowRight size={28} aria-hidden="true" />
+            </Link>
           </h2>
-          <Link
-            href="/news"
-            className="inline-flex min-h-11 items-center text-sm font-semibold text-cj-navy underline underline-offset-4"
-          >
-            See all news
-          </Link>
         </div>
         {featured ? (
           <article className="grid overflow-hidden rounded-3xl bg-cj-navy shadow-xl shadow-cj-navy/10 md:grid-cols-2">
@@ -215,7 +182,7 @@ export default async function Home() {
               />
             </Link>
             <div className="flex flex-col justify-center p-6 text-white sm:p-9">
-              <p className="text-sm font-semibold text-cj-yellow">
+              <p className="text-sm font-semibold text-white">
                 In the spotlight
               </p>
               <h3 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
@@ -231,18 +198,10 @@ export default async function Home() {
               </p>
               <Link
                 href={`/news/${featured.slug}`}
-                className="cj-button mt-6 self-start"
+                className="cj-button bg-cj-red text-white mt-6 self-start"
               >
                 Explore the campaign <ArrowRight size={18} aria-hidden="true" />
               </Link>
-              <a
-                href="https://www.facebook.com/profile.php?id=61574092604052"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 inline-flex min-h-11 items-center self-start text-sm font-semibold text-white underline underline-offset-4"
-              >
-                Follow Chicken Joo on Facebook
-              </a>
             </div>
           </article>
         ) : (
@@ -258,22 +217,18 @@ export default async function Home() {
         )}
       </section>
       <section
-        className="mx-auto w-full max-w-7xl px-5 pb-16 sm:px-8 sm:pb-24"
+        className="mx-auto w-full max-w-7xl px-4 pb-16 pt-12 sm:px-8 sm:pb-20 sm:pt-16"
         aria-labelledby="menu-preview-heading"
       >
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div className="mb-6">
           <h2
             id="menu-preview-heading"
-            className="font-display text-3xl font-bold tracking-tight text-cj-navy"
+            className="font-display text-3xl font-bold tracking-tight text-cj-navy sm:text-4xl"
           >
-            Menu picks for your next break
+            <Link href="/menu" className="inline-flex items-center gap-3 hover:text-cj-red">
+              Menu picks for your next break <ArrowRight size={28} aria-hidden="true" />
+            </Link>
           </h2>
-          <Link
-            href="/menu"
-            className="inline-flex min-h-11 items-center text-sm font-semibold text-cj-navy underline underline-offset-4"
-          >
-            See the full menu
-          </Link>
         </div>
         <p className="mb-6 text-sm leading-relaxed text-cj-charcoal/85">
           Choose your portion, pick your flavor, and add your favorites to the
@@ -292,25 +247,6 @@ export default async function Home() {
               : "We’re updating the menu. Check back soon for meals and prices."}
           </p>
         )}
-      </section>
-      <section className="bg-cj-yellow px-5 py-10 sm:px-8 sm:py-14">
-        <div className="mx-auto flex max-w-6xl flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="font-display text-2xl font-bold text-cj-navy">
-              Make your next break a Chicken Joo visit.
-            </h2>
-            <p className="mt-2 max-w-xl leading-relaxed">
-              Find a branch, check its hours, and get directions. Your chicken
-              break is one step closer.
-            </p>
-          </div>
-          <Link
-            href="/branches"
-            className="cj-button shrink-0 bg-cj-navy text-white hover:bg-cj-navy/90"
-          >
-            Find a branch <ArrowRight size={18} aria-hidden="true" />
-          </Link>
-        </div>
       </section>
     </div>
   );

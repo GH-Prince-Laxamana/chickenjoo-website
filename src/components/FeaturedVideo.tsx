@@ -36,7 +36,7 @@ export default function FeaturedVideo() {
           className={`absolute inset-0 h-full w-full border-0 ${status === "ready" ? "" : "invisible"}`}
         />
       </div>
-      <p className="mt-3 text-sm leading-relaxed text-white/85">Player unavailable? <a href={videoUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 font-semibold text-white underline underline-offset-4">Watch on YouTube <ExternalLink size={15} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a></p>
+      <p className="mt-3 text-sm leading-relaxed text-cj-charcoal">Player unavailable? <a href={videoUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 font-semibold text-cj-navy underline underline-offset-4">Watch on YouTube <ExternalLink size={15} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a></p>
     </div>
   );
 }

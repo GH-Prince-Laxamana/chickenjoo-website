@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Bike, BadgeCheck, MapPin, ShoppingBag, Store, UtensilsCrossed } from "lucide-react";
-import ContentImage from "@/components/ContentImage";
-import { menuArtwork } from "@/lib/public/menu-artwork";
+import { ArrowRight, Bike, ShoppingBag, Store, } from "lucide-react";
+// import { BadgeCheck, MapPin, UtensilsCrossed } from "lucide-react";
+// import ContentImage from "@/components/ContentImage";
+// import { menuArtwork } from "@/lib/public/menu-artwork";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -51,7 +52,7 @@ export default function AboutPage() {
         </div>
       </section> */}
 
-     
+
 
       <section aria-labelledby="order-heading" className="mt-12 sm:mt-16">
         <h2 id="order-heading" className="font-display text-3xl font-bold tracking-tight text-cj-navy sm:text-4xl">Get your Chicken Joo your way.</h2>
