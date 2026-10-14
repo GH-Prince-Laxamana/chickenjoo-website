@@ -2,6 +2,7 @@ import nextEnv from "@next/env";
 import { Types } from "mongoose";
 import { connectDatabase } from "../src/lib/db/connection.ts";
 import { hashPassword } from "../src/lib/auth/password.ts";
+import { ensureAccountIndexes } from "../src/lib/db/account-indexes.ts";
 nextEnv.loadEnvConfig(process.cwd(), true, { info() {}, error() {} });
 let connection;
 try {
@@ -9,6 +10,7 @@ try {
   const password = process.env.ADMIN_SEED_PASSWORD;
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254 || !password || password.length < 16 || password.length > 256) throw new Error("Set ADMIN_SEED_EMAIL and ADMIN_SEED_PASSWORD (16–256 characters) locally.");
   connection = await connectDatabase();
+  await ensureAccountIndexes(connection);
   // Create only declared indexes; never drop records/indexes or reset an admin.
   const indexes = [
     ["admins", { email: 1 }, { unique: true }],

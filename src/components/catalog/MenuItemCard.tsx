@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Minus, Plus, ShoppingCart, Utensils, X } from "lucide-react";
 import { useId, useRef, useState } from "react";
 import { isLocalMenuImage } from "@/lib/public/assets";
@@ -12,16 +13,20 @@ import { addToCart } from "@/lib/orders/cart";
 const peso = new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP", minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
 export default function MenuItemCard({ item, featured = false }: { item: PublicMenuItem; featured?: boolean }) {
+  const router = useRouter();
   const [imageFailed, setImageFailed] = useState(false);
   const [flavors, setFlavors] = useState<string[]>([]);
   const [message, setMessage] = useState("");
   const [flavorErrors, setFlavorErrors] = useState<string[]>([]);
   const [quantity, setQuantity] = useState(1);
+  const [adding, setAdding] = useState(false);
+  const addingRef = useRef(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const suppliedImage = item.image && isLocalMenuImage(item.image) ? item.image : null;
   const image = !imageFailed ? suppliedImage || (Object.hasOwn(menuArtwork, item.name) ? menuArtwork[item.name] : null) : null;
-  function add() {
+  async function add() {
+    if (addingRef.current) return;
     const errors = Array.from({ length: item.requiredFlavorCount }, (_, index) => !flavors[index]
       ? `Choose Flavor ${index + 1} to continue.`
       : flavors.slice(0, index).includes(flavors[index]) ? "Choose a different flavor for this box." : "");
@@ -32,8 +37,13 @@ export default function MenuItemCard({ item, featured = false }: { item: PublicM
       return;
     }
     setFlavorErrors([]);
-    try { addToCart({ menuItemId: item.id, name: item.name, priceCentavos: item.priceCentavos, quantity, flavors }); setMessage("Added to your cart."); }
+    addingRef.current = true; setAdding(true);
+    try {
+      if (await addToCart({ menuItemId: item.id, name: item.name, priceCentavos: item.priceCentavos, quantity, flavors })) setMessage("Added to your cart.");
+      else { dialog.current?.close(); router.push(`/register?next=${encodeURIComponent(`/menu#dish-${item.id}`)}`); }
+    }
     catch (error) { setMessage(error instanceof Error ? error.message : "Unable to add this item."); }
+    finally { addingRef.current = false; setAdding(false); }
   }
   function openOrder() { setMessage(""); setFlavorErrors([]); dialog.current?.showModal(); }
 
@@ -88,11 +98,10 @@ export default function MenuItemCard({ item, featured = false }: { item: PublicM
           </>}
           <div className="menu-dialog-footer">
             <div className="flex items-center justify-between"><span className="text-sm font-bold text-cj-navy">Quantity</span><div className="flex items-center rounded-full border border-cj-navy/20 bg-white"><button type="button" aria-label={`Decrease quantity of ${item.name}`} disabled={!item.isAvailable || quantity <= 1} onClick={() => { setQuantity((value) => Math.max(1, value - 1)); setMessage(""); }} className="flex h-11 w-11 items-center justify-center text-cj-navy disabled:opacity-35"><Minus size={17} aria-hidden="true" /></button><output aria-label="Quantity" className="min-w-7 text-center text-sm font-bold text-cj-navy">{quantity}</output><button type="button" aria-label={`Increase quantity of ${item.name}`} disabled={!item.isAvailable || quantity >= 10} onClick={() => { setQuantity((value) => Math.min(10, value + 1)); setMessage(""); }} className="flex h-11 w-11 items-center justify-center text-cj-navy disabled:opacity-35"><Plus size={17} aria-hidden="true" /></button></div></div>
-            <button type="button" onClick={add} disabled={!item.isAvailable} className="menu-choose mt-3 min-h-12 w-full disabled:cursor-not-allowed disabled:bg-cj-navy/10 disabled:text-cj-navy">{item.isAvailable ? `Add to cart · ${peso.format(item.priceCentavos * quantity / 100)}` : "Unavailable for ordering"}</button>
+            <button type="button" onClick={add} disabled={!item.isAvailable || adding} className="menu-choose mt-3 min-h-12 w-full disabled:cursor-not-allowed disabled:bg-cj-navy/10 disabled:text-cj-navy">{adding ? "Checking your account…" : item.isAvailable ? `Add to cart · ${peso.format(item.priceCentavos * quantity / 100)}` : "Unavailable for ordering"}</button>
             <p role={message && message !== "Added to your cart." ? "alert" : "status"} className={`mt-2 text-sm font-semibold ${message && message !== "Added to your cart." ? "text-cj-red" : "text-cj-navy"}`}>{message}</p>
             {message === "Added to your cart." && <div className="mt-2 flex flex-wrap items-center gap-4"><Link href="/checkout" className="cj-button">Order now</Link><Link href="/cart" className="inline-flex min-h-11 items-center text-sm font-semibold text-cj-red underline underline-offset-4">View your cart</Link></div>}
           </div>
-          <p className="mt-4 text-xs leading-relaxed text-cj-charcoal">Current prices and availability are checked at checkout.</p>
         </div>
       </dialog>
     </article>

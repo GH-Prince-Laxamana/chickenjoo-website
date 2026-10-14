@@ -9,8 +9,8 @@ export default function LaunchOffer() {
   const status = useLaunchVoucher();
   if (status === "inactive") return null;
 
-  const statusLabel = status === "redeemed" ? "Already Redeemed" : status === "available" ? "Ready to use" : status === "checking" ? "Checking voucher" : "Voucher unavailable";
-  const statusDetail = status === "redeemed" ? "This voucher has already been used in this browser." : status === "available" ? "Applies automatically at checkout. One redemption per browser." : status === "checking" ? "Checking your voucher status…" : "Enable browser storage to use this voucher.";
+  const statusLabel = status === "redeemed" ? "Already redeemed" : status === "available" ? "Ready to use" : status === "checking" ? "Checking voucher" : status === "signin" ? "Sign in to use" : "Voucher unavailable";
+  const statusDetail = status === "redeemed" ? "This voucher has already been used by your account." : status === "available" ? "Applies automatically at checkout. One redemption per customer account." : status === "checking" ? "Checking your voucher status…" : status === "signin" ? "Create an account or sign in to claim your discount." : "Unable to check your voucher. Refresh to try again.";
   const StatusIcon = status === "redeemed" || status === "available" ? CircleCheck : Info;
 
   return <aside aria-label="Website launch offer" className="relative isolate mt-4 overflow-hidden rounded-3xl bg-cj-red text-white shadow-sm">

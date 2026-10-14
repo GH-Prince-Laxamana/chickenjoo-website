@@ -1,25 +1,32 @@
 "use client";
-import { useSyncExternalStore } from "react";
-import type { Receipt } from "./domain";
-import { isLaunchCampaignActive, launchCampaign } from "./launch-campaign";
-const key = "cj-website-launch-2026-redeemed";
-const listeners = new Set<() => void>();
-type VoucherStatus = "checking" | "available" | "redeemed" | "unavailable" | "inactive";
-// shortcut: browser storage can be cleared and cannot prevent simultaneous redemptions; use server-side identity for real single-use vouchers.
-export function launchVoucherStatus(): VoucherStatus {
-  if (!isLaunchCampaignActive()) return "inactive";
-  try { return localStorage.getItem(key) ? "redeemed" : "available"; }
-  catch { return "unavailable"; }
-}
-function subscribe(listener: () => void) {
-  listeners.add(listener); window.addEventListener("storage", listener);
-  return () => { listeners.delete(listener); window.removeEventListener("storage", listener); };
-}
+import { useEffect, useState } from "react";
+import { useUser } from "@/components/auth/UserProvider";
+import { isLaunchCampaignActive } from "./launch-campaign";
+type VoucherStatus = "checking" | "available" | "redeemed" | "unavailable" | "inactive" | "signin";
 export function useLaunchVoucher() {
-  return useSyncExternalStore<VoucherStatus>(subscribe, launchVoucherStatus, () => "checking");
+  const { user, loading, error } = useUser();
+  const userId = user?.id;
+  const [result, setResult] = useState<{ userId: string; status: VoucherStatus } | null>(null);
+  useEffect(() => {
+    if (!userId) return;
+    let controller: AbortController;
+    const refresh = async () => {
+      controller?.abort(); controller = new AbortController();
+      const current = controller;
+      try {
+        const response = await fetch("/api/v1/user/voucher", { cache: "no-store", signal: current.signal });
+        if (!response.ok) throw new Error();
+        const payload = await response.json();
+        if (!current.signal.aborted) setResult({ userId, status: payload.data });
+      } catch { if (!current.signal.aborted) setResult({ userId, status: "unavailable" }); }
+    };
+    void refresh();
+    window.addEventListener("focus", refresh); window.addEventListener("cj-voucher-changed", refresh);
+    return () => { controller?.abort(); window.removeEventListener("focus", refresh); window.removeEventListener("cj-voucher-changed", refresh); };
+  }, [userId]);
+  if (!isLaunchCampaignActive()) return "inactive";
+  if (loading) return "checking";
+  if (!user) return error ? "unavailable" : "signin";
+  return result?.userId === user.id ? result.status : "checking";
 }
-export function markLaunchVoucherRedeemed(receipt: Receipt) {
-  if (receipt.promotion?.id !== launchCampaign.id) return true;
-  try { localStorage.setItem(key, "1"); listeners.forEach(listener => listener()); return true; }
-  catch { return false; }
-}
+export function refreshVoucher() { window.dispatchEvent(new Event("cj-voucher-changed")); }

@@ -26,6 +26,44 @@ button:not(:disabled), select:not(:disabled) { cursor: pointer; }
 h1, h2, h3 { text-wrap: balance; }
 input:not([type="checkbox"]), textarea, select { min-width: 0; }
 
+.auth-screen { --auth-text: var(--color-cj-navy); --auth-muted: var(--color-cj-charcoal); --auth-border: #11144725; --auth-surface: #fff; min-height: 75vh; color: var(--auth-text); background: white; }
+.auth-admin { min-height: 100dvh; }
+.auth-admin .auth-card { --auth-text: #fff; --auth-muted: #cbd0e4; --auth-border: #ffffff35; --auth-surface: var(--color-cj-navy); color: var(--auth-text); }
+.auth-shell { width: 100%; max-width: 1280px; margin-inline: auto; padding: 40px 16px 64px; }
+.auth-back { display: inline-flex; min-height: 44px; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
+.auth-back:hover { text-decoration: underline; }
+.auth-layout { display: grid; align-items: start; gap: 36px; padding-top: 28px; }
+.auth-eyebrow { font-size: 11px; font-weight: 750; letter-spacing: .14em; color: var(--auth-muted); }
+.auth-intro h1 { margin-top: 0; font-size: clamp(32px, 5.75vw, 72px); font-weight: 750; line-height: 1.1; letter-spacing: -.04em; }
+.auth-description { max-width: 370px; margin-top: 20px; color: var(--auth-muted); line-height: 1.75; }
+.auth-note { display: flex; max-width: 380px; align-items: flex-start; gap: 12px; margin-top: 32px; border-top: 1px solid var(--auth-border); padding-top: 24px; color: var(--auth-muted); font-size: 14px; line-height: 1.6; }
+.auth-note svg { flex-shrink: 0; margin-top: 2px; }
+.auth-card { min-width: 0; padding: 28px; border: 1px solid var(--auth-border); border-radius: 24px; background: var(--auth-surface); }
+.auth-card h2 { margin-top: 12px; font-size: 28px; font-weight: 700; letter-spacing: -.03em; }
+.auth-card-description { margin-top: 8px; color: var(--auth-muted); font-size: 14px; line-height: 1.6; }
+.auth-form { margin-top: 28px; }
+.auth-form fieldset { display: grid; gap: 20px; }
+.auth-form label { display: block; font-size: 14px; font-weight: 650; }
+.auth-form input { display: block; width: 100%; min-height: 48px; margin-top: 8px; border: 1px solid var(--auth-border); border-radius: 10px; background: transparent; padding: 12px 14px; font-size: 16px; color: var(--auth-text); }
+.auth-form input[aria-invalid="true"] { border-color: var(--color-cj-red); }
+.auth-form input:autofill { color: var(--color-cj-navy); }
+.auth-password { position: relative; }
+.auth-password input { padding-right: 52px; }
+.auth-password button { position: absolute; inset: 2px 3px 2px auto; display: flex; width: 44px; align-items: center; justify-content: center; color: var(--auth-muted); border-radius: 8px; }
+.auth-help { margin-top: 8px; color: var(--auth-muted); font-size: 12px; line-height: 1.6; }
+.auth-submit { display: flex; min-height: 48px; width: 100%; align-items: center; justify-content: center; gap: 12px; padding: 12px 20px; border-radius: 10px; background: var(--color-cj-navy); color: white; font-weight: 650; transition: opacity 150ms ease; }
+.auth-admin .auth-submit { background: white; color: var(--color-cj-navy); }
+.auth-submit:hover { opacity: .85; }
+.auth-form fieldset:disabled { opacity: .65; }
+.auth-error { margin-bottom: 20px; border: 1px solid var(--color-cj-red); border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.6; }
+.auth-field-error { margin-top: 8px; color: #b51024; font-size: 13px; }
+.auth-admin .auth-field-error { color: #ffb0ba; }
+.auth-switch { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--auth-border); color: var(--auth-muted); font-size: 14px; line-height: 1.8; }
+.auth-switch a { display: inline-flex; min-height: 44px; align-items: center; margin-left: 5px; color: var(--auth-text); font-weight: 650; text-decoration: underline; text-underline-offset: 4px; }
+@media (min-width: 768px) { .auth-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding-top: 56px; } .auth-card { padding: 36px; } }
+@media (min-width: 640px) { .auth-shell { padding: 56px 32px 64px; } }
+@media (max-width: 767px) { .auth-note { display: none; } .auth-description { margin-top: 12px; } }
+
 @layer components {
   .cj-eyebrow { @apply text-xs font-bold tracking-wide text-cj-red; }
   .cj-title { @apply font-display text-[32px] font-bold leading-[1.1] tracking-tight text-cj-navy sm:text-5xl; }

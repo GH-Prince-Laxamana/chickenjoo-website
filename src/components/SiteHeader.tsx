@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { publicNavigation } from "@/lib/navigation";
 import { useCart } from "@/lib/orders/cart";
+import AccountLink from "@/components/auth/AccountLink";
 
 export default function SiteHeader() {
   const pathname = usePathname();
@@ -24,6 +25,7 @@ export default function SiteHeader() {
           <ShoppingCart size={22} aria-hidden="true" /><span className="hidden sm:inline">Cart</span>
           {itemCount > 0 && <span aria-hidden="true" className="absolute -right-1 -top-2 flex h-6 min-w-6 items-center justify-center rounded-full bg-cj-red px-1 text-xs font-bold text-white ring-2 ring-white">{itemCount}</span>}
         </Link>
+        <AccountLink />
         <span className="sr-only" role="status" aria-atomic="true">{itemCount} items in your cart</span>
         <Link href="/checkout" onClick={() => setMenuOpen(false)} className="cj-button cj-button-order hidden sm:inline-flex lg:order-4">Order now</Link>
         <button

@@ -18,7 +18,13 @@ try {
   const existing = await posts.findOne({ $or: [{ seedKey: post.seedKey }, { slug: post.slug }] });
   if (existing) {
     assert.equal(existing.status, "published", "An existing campaign draft needs publishing through the admin dashboard.");
-    console.log("Existing published campaign preserved.");
+    const legacy = "The launch voucher allows one redemption per browser. Its use is recorded after an eligible order is successfully saved.";
+    if (existing.body?.includes(legacy)) {
+      const terms = post.body.find(paragraph => paragraph.startsWith("The launch voucher allows one redemption per customer account."));
+      assert.ok(terms);
+      await posts.updateOne({ _id: existing._id, body: existing.body }, { $set: { body: existing.body.map(paragraph => paragraph === legacy ? terms : paragraph), updatedAt: new Date() } });
+      console.log("Legacy voucher terms updated to one redemption per customer account; other campaign content preserved.");
+    } else console.log("Existing published campaign preserved.");
   } else {
     const _id = new mongoose.Types.ObjectId(createHash("sha256").update(`chickenjoo:blogPosts:${post.seedKey}`).digest("hex").slice(0, 24));
     const now = new Date();

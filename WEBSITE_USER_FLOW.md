@@ -456,3 +456,13 @@ Final audit checkpoint, 2026-10-12: see `WEBSITE_AUDIT.md` for source/data align
 Clear labels and accurate previews help visitors predict where a link leads: [Nielsen Norman Group, Information Scent](https://www.nngroup.com/articles/information-scent/).
 
 Visible totals and an unambiguous review/final-action distinction inform the transaction guidance: [Baymard Institute, Checkout UX Guide](https://baymard.com/blog/checkout-flow-ux-optimization). Apply those principles to the website’s actual saved-selection flow rather than importing payment features it does not have.
+
+## Account and voucher update — October 14, 2026
+
+This update supersedes the earlier browser-only voucher simulation. Public browsing remains open. Adding a meal requires a customer account; registration/login restores the pending meal selection. Carts are scoped per account in browser storage. Orders and private receipts require the owning account, and name/email come from the server session.
+
+Vouchers now permit one redemption per customer account. MongoDB enforces this atomically when the order is inserted, including simultaneous submissions from multiple tabs or devices. Cancellation does not reset redemption. Existing anonymous orders remain labeled Guest in admin and are not linked using unverified email addresses.
+
+Admin registration is removed. The existing local setup command provisions administrators. Customer forms are white; only the admin sign-in card is navy, on a white page. The new admin Customers dashboard provides searchable accounts, customer profiles, voucher status, and order history. A link icon beside the customer in Orders opens that exact customer profile.
+
+Sessions are hashed server-side, expire after eight hours, use HttpOnly/SameSite cookies, rotate at login, and revoke at logout. Production cookies are Secure. Same-origin checks, persistent authentication throttling, active-account checks, and explicit private-data projections protect the APIs. See README for APP_ORIGIN and trusted-IP-header deployment configuration. Email verification, password recovery, and MFA are outside this implementation.

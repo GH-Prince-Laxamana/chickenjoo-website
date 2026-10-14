@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useRef, useState, type ReactNode } from "react";
-import { ArrowUpRight, ClipboardList, LayoutDashboard, LogOut, Mail, MapPin, Menu, MessageSquare, Newspaper, UtensilsCrossed, X } from "lucide-react";
+import { ArrowUpRight, ClipboardList, LayoutDashboard, LogOut, Mail, MapPin, Menu, MessageSquare, Newspaper, Users, UtensilsCrossed, X } from "lucide-react";
 
 const links = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
@@ -13,6 +13,7 @@ const links = [
   { href: "/admin/blog-posts", label: "Posts", icon: Newspaper },
   { href: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },
   { href: "/admin/orders", label: "Orders", icon: ClipboardList },
+  { href: "/admin/customers", label: "Customers", icon: Users },
   { href: "/admin/email-campaign", label: "Email campaign", icon: Mail },
 ];
 
@@ -20,7 +21,7 @@ export default function AdminNavigation({ email, children }: { email: string; ch
   const pathname = usePathname(), router = useRouter();
   const [open, setOpen] = useState(false), [pending, setPending] = useState(false), [error, setError] = useState("");
   const busy = useRef(false);
-  const current = links.find((link) => link.href === pathname)?.label ?? "Admin";
+  const current = links.find((link) => link.href === pathname || (link.href !== "/admin" && pathname.startsWith(link.href + "/")))?.label ?? "Admin";
 
   async function logout() {
     if (busy.current) return;

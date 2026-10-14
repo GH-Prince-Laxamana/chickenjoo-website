@@ -1,10 +1,14 @@
 import Checkout from "@/components/orders/Checkout";
 import { getPublicBranches } from "@/lib/public/catalog";
 import type { PublicBranch } from "@/lib/public/types";
+import { redirect } from "next/navigation";
+import { getUser } from "@/lib/auth/user-session";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 export const metadata = { title: "Pickup order details", robots: { index: false, follow: false } };
 export default async function Page() {
+  const user = await getUser();
+  if (!user) redirect("/login?next=%2Fcheckout");
   let branches: PublicBranch[] | undefined;
   try { branches = (await getPublicBranches({ q: "", filter: "", page: 1, limit: 12 })).data; }
   catch { /* Preserve the cart while the database is unavailable. */ }

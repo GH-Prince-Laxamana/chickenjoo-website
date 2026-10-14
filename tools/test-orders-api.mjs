@@ -8,18 +8,18 @@ nextEnv.loadEnvConfig(process.cwd(), true, { info() {}, error() {} });
 const origin = process.env.ORDERS_TEST_ORIGIN || "http://localhost:3100";
 if (!/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) throw new Error("Use a local test origin.");
 const marker = `qa-${randomUUID()}`, email = `${marker}@example.invalid`, password = randomBytes(32).toString("hex");
-const menuId = new Types.ObjectId(), branchId = new Types.ObjectId(), adminId = new Types.ObjectId(), orderIds = [], hashes = [];
-let connection, cookie = "";
+const menuId = new Types.ObjectId(), branchId = new Types.ObjectId(), adminId = new Types.ObjectId(), userId = new Types.ObjectId(), orderIds = [], hashes = [];
+let connection, cookie = "", userCookie = "";
 const hash = (value) => createHash("sha256").update(value).digest("hex");
 async function request(path, body, options = {}) {
-  return fetch(`${origin}${path}`, { method: options.method || (body ? "POST" : "GET"), headers: { Origin: options.origin || origin, ...(body ? { "Content-Type": "application/json" } : {}), ...(options.admin ? { Cookie: cookie } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}), redirect: "manual" });
+  return fetch(`${origin}${path}`, { method: options.method || (body ? "POST" : "GET"), headers: { Origin: options.origin || origin, ...(body ? { "Content-Type": "application/json" } : {}), Cookie: options.admin ? cookie : options.anonymous ? "" : userCookie }, ...(body ? { body: JSON.stringify(body) } : {}), redirect: "manual" });
 }
 const input = { branchId: branchId.toHexString(), items: [{ menuItemId: menuId.toHexString(), quantity: 2, flavors: ["Original", "Spicy"] }] };
 async function quote() { const response = await request("/api/v1/orders/quote", input); assert.equal(response.status, 200); return (await response.json()).data; }
 function submission(quoteHash) {
   const submissionId = randomUUID(), confirmationToken = randomBytes(32).toString("hex");
-  orderIds.push(new Types.ObjectId(hash(`order:${submissionId}`).slice(0, 24)));
-  return { ...input, guest: { name: marker, email }, submissionId, confirmationToken, quoteHash };
+  orderIds.push(new Types.ObjectId(hash(`order:${userId}:${submissionId}`).slice(0, 24)));
+  return { ...input, submissionId, confirmationToken, quoteHash };
 }
 try {
   connection = await connectDatabase();
@@ -27,6 +27,10 @@ try {
   await connection.collection("menuItems").insertOne({ _id: menuId, name: marker, description: "Temporary ordering fixture", category: marker, priceCentavos: 12345, isAvailable: true, isArchived: false, isFeatured: false, image: "", flavorOptions: ["Original", "Spicy"], requiredFlavorCount: 2, createdAt: now, updatedAt: now });
   await connection.collection("branches").insertOne({ _id: branchId, name: marker, address: "Temporary pickup address", city: marker, isActive: true, isArchived: false, createdAt: now, updatedAt: now });
   await connection.collection("admins").insertOne({ _id: adminId, email, passwordHash: await hashPassword(password), isActive: true, createdAt: now, updatedAt: now });
+  await connection.collection("users").insertOne({ _id: userId, name: marker, email, passwordHash: await hashPassword(password), isActive: true, createdAt: now, updatedAt: now });
+  assert.equal((await request("/api/v1/orders/quote", input, { anonymous: true })).status, 401);
+  const userLogin = await request("/api/v1/user/login", { email, password }); assert.equal(userLogin.status, 200);
+  userCookie = userLogin.headers.get("set-cookie").split(";")[0]; hashes.push(hash(userCookie.slice(userCookie.indexOf("=") + 1)));
   assert.equal((await request("/api/v1/orders")).status, 405);
   assert.equal((await request("/api/v1/orders/confirmation")).status, 405);
   assert.equal((await request("/api/v1/admin/orders")).status, 401);
@@ -54,7 +58,8 @@ try {
   assert.equal(saved.totalCentavos, 30000); assert.equal(saved.status, "pending"); assert.ok(!("guest" in saved));
   assert.equal((await concurrent[1].json()).data.reference, saved.reference);
   assert.equal(await connection.collection("orders").countDocuments({ _id: { $in: orderIds } }), 1);
-  assert.equal((await request("/api/v1/orders", { ...payload, guest: { name: "changed", email } })).status, 409);
+  assert.equal((await request("/api/v1/orders", { ...payload, guest: { name: "changed", email } })).status, 400);
+  assert.equal((await request("/api/v1/orders", { ...payload, items: [{ ...input.items[0], quantity: 1 }] })).status, 409);
   assert.equal((await request("/api/v1/orders/confirmation", { token: randomBytes(32).toString("hex") })).status, 404);
   assert.equal((await request("/api/v1/orders/confirmation", { reference: saved.reference })).status, 400);
   const receipt = await request("/api/v1/orders/confirmation", { token: payload.confirmationToken });
@@ -87,7 +92,7 @@ try {
   await connection.collection("menuItems").updateOne({ _id: menuId }, { $set: { isArchived: false } });
   await connection.collection("branches").updateOne({ _id: branchId }, { $set: { isActive: true } });
   const freshQuote = await quote();
-  const limitId = hash(`${email}:${Math.floor(Date.now() / (15 * 60_000))}`);
+  const limitId = hash(`${userId}:${Math.floor(Date.now() / (15 * 60_000))}`);
   await connection.db.collection("orderSubmissionLimits").updateOne({ _id: limitId }, { $set: { count: 5, expiresAt: new Date(Date.now() + 30 * 60_000) } }, { upsert: true });
   assert.equal((await request("/api/v1/orders", submission(freshQuote.hash))).status, 429);
   // Cancellation is tested without consuming submission limits or touching existing orders.
@@ -101,9 +106,12 @@ try {
     await connection.collection("menuItems").deleteOne({ _id: menuId });
     await connection.collection("branches").deleteOne({ _id: branchId });
     await connection.collection("admins").deleteOne({ _id: adminId });
+    await connection.collection("users").deleteOne({ _id: userId });
     await connection.db.collection("adminSessions").deleteMany({ _id: { $in: hashes } });
+    await connection.db.collection("userSessions").deleteMany({ _id: { $in: hashes } });
     const bucket = Math.floor(Date.now() / (15 * 60_000));
-    await connection.db.collection("orderSubmissionLimits").deleteMany({ _id: { $in: [bucket - 1, bucket, bucket + 1].map((value) => hash(`${email}:${value}`)) } });
+    await connection.db.collection("orderSubmissionLimits").deleteMany({ _id: { $in: [bucket - 1, bucket, bucket + 1].map((value) => hash(`${userId}:${value}`)) } });
+    await connection.db.collection("authAttempts").deleteMany({ _id: { $in: ["admin-login", "user-login"].flatMap(scope => [bucket - 1, bucket, bucket + 1].map(value => hash(`${scope}:email:${email}:${value}`))) } });
     await connection.db.collection("adminLoginAttempts").deleteMany({ _id: { $in: [bucket - 1, bucket, bucket + 1].map((value) => hash(`${email}:${value}`)) } });
     await connection.close();
   }

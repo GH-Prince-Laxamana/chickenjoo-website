@@ -2,14 +2,9 @@ export function isSameOrigin(request: Request): boolean {
   const origin = request.headers.get("origin");
   if (!origin) return false;
 
-  const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim();
-  const host = forwardedHost || request.headers.get("host");
-  if (!host) return false;
-
-  const forwardedProtocol = request.headers.get("x-forwarded-proto")?.split(",")[0]?.trim();
-  const protocol = forwardedProtocol || new URL(request.url).protocol.replace(":", "");
+  if (request.headers.get("sec-fetch-site") === "cross-site") return false;
   try {
-    return new URL(origin).origin === new URL(`${protocol}://${host}`).origin;
+    return new URL(origin).origin === new URL(process.env.APP_ORIGIN || request.url).origin;
   } catch {
     return false;
   }

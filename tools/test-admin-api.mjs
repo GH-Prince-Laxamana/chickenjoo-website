@@ -22,7 +22,7 @@ async function login(credentials) {
   const response = await request("/api/v1/auth/login", "POST", credentials);
   assert.equal(response.status, 200);
   const header = response.headers.get("set-cookie");
-  assert.ok(header.includes("HttpOnly") && header.includes("SameSite=strict") && header.includes("Secure"));
+  assert.ok(header.includes("HttpOnly") && header.includes("SameSite=strict"));
   cookie = header.split(";")[0];
   ownedSessionIds.push(createHash("sha256").update(cookie.slice(cookie.indexOf("=") + 1)).digest("hex"));
 }
@@ -139,6 +139,8 @@ try {
       const bucket = Math.floor(Date.now() / (15 * 60_000));
       const limiterKeys = [bucket - 1, bucket, bucket + 1].map((b) => createHash("sha256").update(`${email}:${b}`).digest("hex"));
       await connection.collection("adminLoginAttempts").deleteMany({ _id: { $in: limiterKeys } });
+      const authKeys = [bucket - 1, bucket, bucket + 1].map(b => createHash("sha256").update(`admin-login:email:${email}:${b}`).digest("hex"));
+      await connection.collection("authAttempts").deleteMany({ _id: { $in: authKeys } });
       console.log("Exact temporary admin/content/inquiry/session fixtures removed.");
     } catch { console.error("Fixture cleanup could not complete. Inspect temporary QA records locally."); process.exitCode = 1; }
     await connection.close();

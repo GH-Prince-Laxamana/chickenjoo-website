@@ -4,8 +4,9 @@ import { ArrowRight, ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { clearCart, useCart } from "@/lib/orders/cart";
-import type { Quote, Receipt } from "@/lib/orders/domain";
-import { launchVoucherStatus, markLaunchVoucherRedeemed, useLaunchVoucher } from "@/lib/orders/voucher";
+import type { Quote } from "@/lib/orders/domain";
+import { refreshVoucher, useLaunchVoucher } from "@/lib/orders/voucher";
+import { useUser } from "@/components/auth/UserProvider";
 import type { PublicBranch } from "@/lib/public/types";
 import DemoNotice from "./DemoNotice";
 import OrderSummary from "./OrderSummary";
@@ -13,16 +14,18 @@ import LaunchOffer from "./LaunchOffer";
 
 export default function Checkout({ branches }: { branches: PublicBranch[] }) {
   const cart = useCart(), router = useRouter();
+  const { user } = useUser();
   const voucherStatus = useLaunchVoucher(), launchVoucher = voucherStatus === "available";
-  const [branchId, setBranchId] = useState(""), [name, setName] = useState(""), [email, setEmail] = useState("");
+  const [branchId, setBranchId] = useState("");
   const [review, setReview] = useState<{ quote: Quote; cartKey: string } | null>(null), [pending, setPending] = useState(false), [error, setError] = useState("");
   const busy = useRef(false), feedback = useRef<HTMLParagraphElement>(null), summary = useRef<HTMLDivElement>(null);
   const items = cart.map(({ menuItemId, quantity, flavors }) => ({ menuItemId, quantity, flavors }));
-  const cartKey = JSON.stringify({ branchId, items, launchVoucher }), quote = review?.cartKey === cartKey ? review.quote : null;
+  const cartKey = JSON.stringify({ userId: user?.id, branchId, items, launchVoucher }), quote = review?.cartKey === cartKey ? review.quote : null;
   async function request(path: string, body: unknown) {
     const response = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     const result = await response.json();
     if (!response.ok) {
+      if (response.status === 401) router.push("/login?next=%2Fcheckout");
       if (result.quote) setReview({ quote: result.quote, cartKey });
       throw new Error(result.error?.message || "Unable to complete this request.");
     }
@@ -32,23 +35,24 @@ export default function Checkout({ branches }: { branches: PublicBranch[] }) {
     if (busy.current) return;
     busy.current = true; setPending(true); setError("");
     try {
-      if (launchVoucher && launchVoucherStatus() !== "available") { setReview(null); throw new Error("Your voucher availability changed. Review current prices again."); }
+      if (!user) { router.push("/login?next=%2Fcheckout"); throw new Error("Sign in to continue with your order."); }
+      if (voucherStatus === "checking" || voucherStatus === "unavailable") throw new Error("Voucher status could not be confirmed. Refresh the page before continuing.");
       if (!submit || !quote) {
         const nextQuote = await request("/api/v1/orders/quote", { branchId, items, launchVoucher });
         setReview({ quote: nextQuote, cartKey });
         requestAnimationFrame(() => summary.current?.focus());
       } else {
-        const payload = { branchId, items, launchVoucher, guest: { name: name.trim(), email: email.trim().toLowerCase() }, quoteHash: quote.hash };
+        const payload = { branchId, items, launchVoucher, quoteHash: quote.hash };
         const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(payload)));
-        const fingerprint = Array.from(new Uint8Array(bytes), (byte) => byte.toString(16).padStart(2, "0")).join("");
+        const fingerprint = user.id + ":" + Array.from(new Uint8Array(bytes), (byte) => byte.toString(16).padStart(2, "0")).join("");
         let attempt: { fingerprint: string; submissionId: string; confirmationToken: string } | null = null;
         try { attempt = JSON.parse(sessionStorage.getItem("cj-order-attempt") || "null"); } catch { /* Replace a malformed local attempt. */ }
         if (attempt?.fingerprint !== fingerprint) attempt = { fingerprint, submissionId: crypto.randomUUID(), confirmationToken: Array.from(crypto.getRandomValues(new Uint8Array(32)), (byte) => byte.toString(16).padStart(2, "0")).join("") };
         // Save the capability before submitting so a lost response still has a private receipt.
         sessionStorage.setItem("cj-order-attempt", JSON.stringify(attempt));
         sessionStorage.setItem("cj-order-token", attempt!.confirmationToken);
-        const saved: Receipt = await request("/api/v1/orders", { ...payload, submissionId: attempt!.submissionId, confirmationToken: attempt!.confirmationToken });
-        markLaunchVoucherRedeemed(saved);
+        await request("/api/v1/orders", { ...payload, submissionId: attempt!.submissionId, confirmationToken: attempt!.confirmationToken });
+        refreshVoucher();
         try { clearCart(); } catch { /* A saved order must still reach its receipt if cart storage fails. */ }
         router.push("/confirmation");
       }
@@ -56,14 +60,14 @@ export default function Checkout({ branches }: { branches: PublicBranch[] }) {
     finally { busy.current = false; setPending(false); }
   }
   return <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-8 sm:py-14">
-    <header className="max-w-3xl"><p className="text-sm font-semibold text-cj-red">Complete your order</p><h1 className="mt-2 font-display text-4xl font-bold tracking-tight text-cj-navy sm:text-5xl">Pickup Order Details</h1><p className="mt-3 text-base text-cj-charcoal">Enter your details and choose where you&apos;d like to pick up your order.</p></header>
+    <header className="max-w-3xl"><p className="text-sm font-semibold text-cj-red">Complete your order</p><h1 className="mt-2 font-display text-4xl font-bold tracking-tight text-cj-navy sm:text-5xl">Pickup Order Details</h1><p className="mt-3 text-base text-cj-charcoal">Confirm your account details and choose where you&apos;d like to pick up your order.</p></header>
     <div className="mt-7"><DemoNotice /><LaunchOffer /></div>
     {cart.length ? <form onSubmit={(event) => { event.preventDefault(); void handle(Boolean(quote)); }} className="mt-8 grid items-start gap-6 lg:grid-cols-[minmax(0,1.75fr)_minmax(300px,1fr)] lg:gap-8">
       <section aria-labelledby="pickup-details-title" className="min-w-0 rounded-3xl border border-cj-navy/10 bg-white shadow-sm">
         <div className="border-b border-cj-navy/10 px-5 py-5 sm:px-7"><h2 id="pickup-details-title" className="font-display text-xl font-bold text-cj-navy">Pickup details</h2><p className="mt-2 text-sm leading-relaxed text-cj-charcoal">Your name and email are saved with your order details. A confirmation email is not sent.</p></div>
         <div className="space-y-5 p-5 sm:p-7">
-          <label className="block text-sm font-bold text-cj-navy">Name<input required maxLength={100} autoComplete="name" disabled={pending} value={name} onChange={(event) => setName(event.target.value)} className="mt-2 min-h-12 w-full rounded-xl border border-cj-navy/20 bg-white px-4 py-3 text-base font-normal text-cj-navy placeholder:text-cj-charcoal/60" /></label>
-          <label className="block text-sm font-bold text-cj-navy">Email address<input required type="email" maxLength={254} autoComplete="email" disabled={pending} value={email} onChange={(event) => setEmail(event.target.value)} className="mt-2 min-h-12 w-full rounded-xl border border-cj-navy/20 bg-white px-4 py-3 text-base font-normal text-cj-navy placeholder:text-cj-charcoal/60" /></label>
+          <label className="block text-sm font-bold text-cj-navy">Name<input required maxLength={100} autoComplete="name" disabled={pending} readOnly value={user?.name || ""} className="mt-2 min-h-12 w-full rounded-xl border border-cj-navy/20 bg-white px-4 py-3 text-base font-normal text-cj-navy placeholder:text-cj-charcoal/60" /></label>
+          <label className="block text-sm font-bold text-cj-navy">Email address<input required type="email" maxLength={254} autoComplete="email" disabled={pending} readOnly value={user?.email || ""} className="mt-2 min-h-12 w-full rounded-xl border border-cj-navy/20 bg-white px-4 py-3 text-base font-normal text-cj-navy placeholder:text-cj-charcoal/60" /></label>
           <label className="block text-sm font-bold text-cj-navy">Pickup branch<select required disabled={pending} value={branchId} onChange={(event) => { setBranchId(event.target.value); setReview(null); }} className="mt-2 min-h-12 w-full rounded-xl border border-cj-navy/20 bg-white px-4 py-3 text-base font-normal text-cj-navy"><option value="">Choose a branch</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label>
           {!branches.length && <p role="alert" className="text-sm text-cj-red">No pickup branches are currently available.</p>}
           {!quote && <button disabled={pending || !branches.length} className="cj-button cj-button-order w-full sm:w-auto">{pending ? "Please wait…" : "Review current prices"} {!pending && <ArrowRight size={18} aria-hidden="true" />}</button>}

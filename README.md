@@ -205,7 +205,7 @@ The existing `public/email.html` mockup is retained for later review.
 Admin sign-in and content management are implemented at `/admin/login` and
 `/admin`, with menu/branch/post editing and inquiry review/resolution. Simulated
 pickup ordering and admin order statuses are implemented. Private confirmation
-uses a browser-tab capability token. Inquiry details are collected
+uses an account session and a browser-tab receipt token. Inquiry details are collected
 only when someone submits the Contact form. No customer-order data is seeded.
 See [content inputs](docs/content-inputs.md) for the content checklist.
 
@@ -285,36 +285,39 @@ calendar dates, and supplied seed content.
 ## Simulated pickup ordering
 
 The website-launch campaign is maintained in `src/data/launch-campaign.json`.
-Run `npm run seed:campaign` to publish it on a new database; reruns preserve
-existing content. During September 15–October 15, 2026 (Philippine time),
-checkout requests a server-calculated 25% total-order discount when the
-browser-local voucher has not been redeemed. Discount snapshots appear in
-checkout, receipts, and admin order review. Base catalog prices are unchanged.
-The marker is consumed after a successful save and recovered from a receipt.
-This is one-use-per-browser simulation: clearing storage, switching browser,
-or simultaneous tabs can bypass it. It is not customer identity enforcement.
+Run `npm run seed:campaign` to publish it on a new database or update its exact
+legacy browser-voucher terms. During September 15–October 15, 2026 (Philippine
+time), checkout requests a server-calculated 25% total-order discount for eligible
+customer accounts. A unique partial MongoDB index on customer and campaign makes
+the successful order insert the redemption, including under concurrent requests.
+Changing browsers or clearing storage does not reset it. Cancellation does not
+restore a redeemed voucher. Other accounts have independent voucher eligibility.
 
-`/cart`, `/checkout`, and `/confirmation` implement guest pickup simulation only.
-No payment, delivery, customer accounts, food preparation, pickup reservation or
-confirmation email is provided. Use test guest details. Cart storage contains
-menu snapshots and flavor selections, without guest information. Checkout saves
-only the submitted name/email to the private `orders` collection.
+Public browsing remains open. Adding a meal requires registration or login at
+`/register` or `/login`; the chosen meal, flavors, and quantity are restored after
+sign-in. `/cart`, `/checkout`, `/confirmation`, and `/account` require a customer
+session. Carts use separate browser-storage keys per account. Checkout takes the
+customer name/email from the server session, rejecting client-supplied identity.
+No payment, delivery, food preparation, pickup reservation, or confirmation email
+is provided. Existing guest orders remain visible to administrators and are not
+assigned to new accounts based on an unverified email match.
 
 Checkout first fetches a current server quote. The server validates active,
 unarchived branches and available, unarchived dishes; exact distinct flavor
 counts; positive integer quantities (1–10 per line, at most 20 lines/50 items);
-and guest field bounds. Totals are computed in integer centavos from MongoDB.
+and account authorization. Totals are computed in integer centavos from MongoDB.
 Changed prices or branch details return a fresh quote with HTTP 409 and require
 another explicit submit. Availability failures preserve the cart for editing.
 Saved menu/branch snapshots preserve order history after content edits/archive.
 
 A UUID submission key, payload fingerprint and MongoDB `_id` uniqueness make
 unchanged repeated/concurrent submissions return the same order. Retry metadata
-contains a payload hash, not guest details, in sessionStorage. An opaque 256-bit
+contains a payload hash, not customer details, in sessionStorage. An opaque 256-bit
 receipt capability is stored in the browser tab before submitting; only its hash
-is saved in MongoDB. Receipt lookup requires a same-origin POST with that token,
-expires after 24 hours, and excludes guest name/email. There is no public order
-list or lookup by reference. Tokens are never placed in URLs. The latest private
+is saved in MongoDB. Receipt lookup requires the owning account and a same-origin
+POST with that token, expires after 24 hours, and excludes customer name/email.
+There is no public order list or lookup by reference. Tokens are never placed in
+URLs. The latest private
 receipt can be recovered from checkout after a lost response. Receipt expiration
 does not delete the saved order. Preserve the tab to retain receipt access.
 
@@ -327,10 +330,54 @@ No create/delete actions are exposed through admin order management.
 Run `npm run setup:admin` to create the declared order/reference/token/status
 indexes and the submission-limit TTL index. Existing MongoDB and admin seed
 configuration is sufficient. Setup preserves the existing account/password.
-The persistent limit permits at most five new submissions per normalized email
-per 15-minute window; unchanged saved-order retries bypass it. Before public
-hosting, choose edge/request throttling to bound anonymous quote traffic; the
-email limit is a basic demonstration control rather than identity verification.
+The persistent limit permits at most five new submissions per customer account
+per 15-minute window; unchanged saved-order retries bypass it.
+
+## Customer accounts and security
+
+Customer records contain name, normalized unique email, a hidden salted scrypt
+password hash, active status, and timestamps. Passwords require 16–256 characters.
+Customer and admin sessions are separate opaque 256-bit tokens; only hashes are
+stored in MongoDB. Cookies are HttpOnly, SameSite=Strict, and Secure with __Host-
+names in production. Sessions expire after eight hours, rotate at login, revoke
+at logout, and check account active status on every protected request.
+
+Authentication requests have persistent per-email throttling and an additional
+trusted-IP limit. Set `AUTH_TRUSTED_IP_HEADER` only to a header your hosting proxy
+overwrites. Without it, a conservative shared limit of 100 authentication attempts
+per endpoint per 15 minutes also applies. Set `APP_ORIGIN` to the exact production
+origin for CSRF checks behind a proxy. Forwarded host headers cannot change the
+allowed origin. Responses use no-store for private data; global security headers
+prevent third-party framing and disable unsafe embedded objects.
+
+`npm run setup:admin` creates account, session, and voucher indexes while preserving
+the existing admin. Required account indexes are also ensured before registration,
+sign-in, and order pricing; the database role needs createIndex permission.
+Admin accounts are provisioned through the existing local setup command. There
+is no administrator registration page or API. Customer forms are white; the admin
+sign-in card is navy on a white page. Authentication screens share the public
+site's centered 1280px container and 16px mobile / 32px desktop gutters.
+Desktop intro and form columns fill the site's content margins with a 48px gap.
+Intro headings align to the top of the wider form and scale to 72px on desktop, without
+repeated logos or intro taglines.
+
+`/admin/customers` is an admin-only searchable, paginated customer table. Individual
+profiles show account details, voucher use, completed-order totals, and paginated
+order history. Each account-backed order has a customer link icon; historical
+guest orders retain a Guest label. Customer profiles link back to filtered Orders.
+
+Email verification, password recovery, and MFA are not implemented. An account
+does not establish a verified real-world identity; vouchers are one per account.
+
+```bash
+npm run test:auth
+npm run test:auth:api
+```
+
+The auth API check uses local port 3100 (override with `AUTH_TEST_ORIGIN`) and
+isolated temporary fixtures. It covers account races, role injection, session
+rotation/revocation, account isolation, CSRF, throttling, concurrent voucher use,
+and private customer information. It removes only its own records.
 
 ```bash
 npm run test:orders

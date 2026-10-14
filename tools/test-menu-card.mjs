@@ -29,9 +29,10 @@ function setup(item = meal, fail = false) {
       if (name === "react") return {
         useState: (initial) => { const index = cursor++; if (!(index in state)) state[index] = initial; return [state[index], (value) => { state[index] = typeof value === "function" ? value(state[index]) : value; }]; },
         useId: () => "test-meal-title",
-        useRef: () => ({ current: { showModal: () => opens++, close: () => closes++, querySelector: () => null } }),
+        useRef: initial => ({ current: initial === false ? false : { showModal: () => opens++, close: () => closes++, querySelector: () => null } }),
       };
-      if (name === "@/lib/orders/cart") return { addToCart: (line) => { if (fail) throw Error("Storage is unavailable."); added.push(line); } };
+      if (name === "@/lib/orders/cart") return { addToCart: async (line) => { if (fail) throw Error("Storage is unavailable."); added.push(line); return true; } };
+      if (name === "next/navigation") return { useRouter: () => ({ push() {} }) };
       if (name === "@/lib/public/menu-artwork") return { menuArtwork, flavorArtwork };
       if (name === "@/lib/public/assets") return { isLocalMenuImage };
       if (name === "next/link" || name === "next/image") return { default: name };
@@ -43,24 +44,24 @@ function setup(item = meal, fail = false) {
   return { render, added, opens: () => opens, closes: () => closes };
 }
 
-test("meal panel opens and closes, validates distinct flavors, and preserves centavos and quantity", () => {
+test("meal panel opens and closes, validates distinct flavors, and preserves centavos and quantity", async () => {
   const view = setup();
   view.render().find((e) => e.props["aria-haspopup"] === "dialog").props.onClick();
   assert.equal(view.opens(), 1);
   const add = () => view.render().find((e) => e.type === "button" && String(e.props.children).startsWith("Add to cart")).props.onClick();
   const pick = (index, flavor) => view.render().find((e) => e.type === "input" && e.props.type === "radio" && e.props.name.endsWith(`-${index}`) && e.props.value === flavor).props.onChange();
-  add();
+  await add();
   assert.equal(view.added.length, 0);
   assert.ok(view.render().some((e) => e.props.role === "alert" && e.props.children === "Choose Flavor 1 to continue."));
   pick(0, "Original");
   pick(1, "Original");
-  add();
+  await add();
   assert.equal(view.added.length, 0);
   assert.ok(view.render().some((e) => e.props.role === "alert" && e.props.children === "Choose a different flavor for this box."));
   pick(1, "Yangnyeom");
   view.render().find((e) => e.props["aria-label"] === "Increase quantity of 14-Piece Chicken, Two Flavors").props.onClick();
   assert.ok(view.render().some((e) => e.props.children === "Add to cart · ₱791"));
-  add();
+  await add();
   assert.equal(view.added[0].priceCentavos, 39550);
   assert.equal(view.added[0].quantity, 2);
   assert.equal(view.added[0].flavors.join(","), "Original,Yangnyeom");
@@ -69,22 +70,22 @@ test("meal panel opens and closes, validates distinct flavors, and preserves cen
   assert.equal(view.closes(), 1);
 });
 
-test("unavailable items disable ordering and storage failures remain visible", () => {
+test("unavailable items disable ordering and storage failures remain visible", async () => {
   const unavailable = setup({ ...meal, isAvailable: false }).render();
   assert.ok(unavailable.filter((e) => e.type === "input" && e.props.type === "radio").every((e) => e.props.disabled));
   assert.equal(unavailable.find((e) => e.props.children === "Unavailable for ordering").props.disabled, true);
   const view = setup({ ...meal, requiredFlavorCount: 0 }, true);
-  view.render().find((e) => e.type === "button" && String(e.props.children).startsWith("Add to cart")).props.onClick();
+  await view.render().find((e) => e.type === "button" && String(e.props.children).startsWith("Add to cart")).props.onClick();
   assert.equal(view.render().find((e) => e.props.role === "alert").props.children, "Storage is unavailable.");
 });
 
-test("both flavor choices expose all eight gallery flavors and save the chosen names", () => {
+test("both flavor choices expose all eight gallery flavors and save the chosen names", async () => {
   const view = setup({ ...meal, flavorOptions: Object.keys(flavorArtwork) });
   const radios = view.render().filter((e) => e.type === "input" && e.props.type === "radio");
   assert.equal(radios.length, 16);
   radios.find((e) => e.props.name.endsWith("-0") && e.props.value === "Snow Cheese").props.onChange();
   view.render().find((e) => e.type === "input" && e.props.type === "radio" && e.props.name.endsWith("-1") && e.props.value === "Lemon Glaze").props.onChange();
-  view.render().find((e) => e.type === "button" && String(e.props.children).startsWith("Add to cart")).props.onClick();
+  await view.render().find((e) => e.type === "button" && String(e.props.children).startsWith("Add to cart")).props.onClick();
   assert.deepEqual(Array.from(view.added[0].flavors), ["Snow Cheese", "Lemon Glaze"]);
 });
 
