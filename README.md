@@ -1,8 +1,11 @@
 # Chicken Joo
+A digital experience that reimagines Chicken Joo's online presence through modern UI/UX design, integrated marketing campaigns, content management, and interactive restaurant services.
 
-A student restaurant website demonstration built with Next.js App Router,
-TypeScript, Tailwind CSS 4, and Mongoose. This is not an official restaurant
-ordering channel. No payment or food preparation takes place.
+Built with Next.js App Router, TypeScript, Tailwind CSS 4, and MongoDB (Mongoose), the platform features a content management system (CMS), an administrative dashboard, customer accounts, a searchable menu and branch locator, and simulated pickup ordering with order tracking and promotional vouchers.
+
+The project demonstrates how a unified digital platform can strengthen brand identity, streamline restaurant operations, and improve customer engagement.
+
+Disclaimer: This is an academic demonstration and is currently not affiliated with or operated by Chicken Joo. Orders, promotions, and administrative workflows are simulated. No actual payments, food preparation, or pickup fulfillment take place.
 
 ## Local setup
 
