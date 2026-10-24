@@ -1,6 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import UserProvider from "@/components/auth/UserProvider";
+import SiteDisclaimer from "@/components/SiteDisclaimer";
 
 export default function PublicLayout({
   children,
@@ -20,6 +21,7 @@ export default function PublicLayout({
         {children}
       </main>
       <SiteFooter />
+      <SiteDisclaimer />
     </div></UserProvider>
   );
 }
